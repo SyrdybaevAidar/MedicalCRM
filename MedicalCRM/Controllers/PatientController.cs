@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MedicalCRM.Controllers {
-    [Authorize(Roles = "Patient")]
+
     public class PatientController : BaseController {
         private readonly IChatService _chatService;
         private readonly IConsultationService _consultationService;
