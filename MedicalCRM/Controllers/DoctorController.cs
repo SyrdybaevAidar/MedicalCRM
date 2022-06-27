@@ -51,7 +51,7 @@ namespace MedicalCRM.Controllers {
 
                 return View(new DoctorMainPageViewModel() { Patients = patients, Consultations = _mapper.Map<List<ConsultationIndexModel>>(consulations) });
             } catch (Exception e) {
-                return Ok(e.Message + e.InnerException.StackTrace);
+                return Ok(e.Message);
             }
         }
 
