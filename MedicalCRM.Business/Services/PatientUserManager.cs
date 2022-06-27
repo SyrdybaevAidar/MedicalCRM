@@ -29,6 +29,7 @@ namespace MedicalCRM.Business.Services {
         }
 
         public async Task UpdateUserAsync(PatientUser patientUser) {
+            await _userManager.AddToRoleAsync(patientUser, "Patient");
             _uow.Patients.Update(patientUser);
             await _uow.SaveChangesAsync();
         }

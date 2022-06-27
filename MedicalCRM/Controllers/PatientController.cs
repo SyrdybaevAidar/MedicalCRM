@@ -25,7 +25,7 @@ namespace MedicalCRM.Controllers {
             _patientService = patientService;
             _commonService = commonService;
         }
-
+        [Authorize(Roles = "Patient")]
         [HttpGet]
         public async Task<IActionResult> Index() {
             var result = await _commonService.GetDoctors(CurrentUserId);
@@ -33,19 +33,19 @@ namespace MedicalCRM.Controllers {
             var consulations = await _consultationService.GetByDoctorId(CurrentUserId, 3);
             return View(new PatientMainPageIndexModel() { Doctors = doctors , Consultations = _mapper.Map<List<ConsultationIndexModel>>(consulations) });
         }
-
+        [Authorize(Roles = "Patient")]
         [HttpPost]
         public async Task<IActionResult> Private(int chatId) {
             var result = await _chatService.GetChatByPatientId(chatId);
             return View(_mapper.Map<ChatDetailsViewModel>(result));
         }
-
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetPatientDetails(int patientId) {
             var dto = await _patientService.GetPatient(patientId);
             return View("Details", _mapper.Map<PatientDetailsViewModel>(dto));
         }
-
+        [Authorize(Roles = "Patient")]
         [HttpGet]
         public async Task<IActionResult> Details() {
             var dto = await _patientService.GetPatient(CurrentUserId);
