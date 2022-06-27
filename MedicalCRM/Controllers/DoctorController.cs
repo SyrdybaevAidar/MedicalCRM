@@ -78,10 +78,19 @@ namespace MedicalCRM.Controllers {
         public async Task<IActionResult> UpdatePatient(PatientUpdateViewModel model) {
             if (ModelState.IsValid) {
 
-                var entity = _mapper.Map<PatientUser>(model);
-                entity.BloodTypeId = model.BloodTypeId;
-                entity.DoctorUserId = model.DoctorUserId;
-                await _patientService.UpdateUserAsync(entity);
+
+                var patient = await _patientService.GetByUserNameAsync(model.UserName);
+                patient.Surname = model.Surname;
+                patient.Name = model.Name;
+                patient.BloodTypeId = model.BloodTypeId;
+                patient.DoctorUserId = model.DoctorUserId;
+                patient.Address = model.Address;
+                patient.UserName = model.UserName;
+                patient.BirthDate = model.BirthDate;
+                patient.Email = model.Email;
+                patient.Sex = model.Sex;
+                patient.Id = model.Id;
+                await _patientService.UpdateUserAsync(patient);
             }
             return RedirectToAction("Index");
         }
