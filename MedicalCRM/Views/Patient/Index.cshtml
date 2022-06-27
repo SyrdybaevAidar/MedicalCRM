@@ -1,0 +1,76 @@
+﻿@model MedicalCRM.Models.UserModels.PatientMainPageIndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Приветсвуем вас на нашем сайте!</h1>
+<a class="nav-link text-dark" asp-action="Details">Посмотреть мед карту</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                ФИО
+            </th>
+            <th>
+                Последнее сообщение
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Doctors) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                
+            </td>
+            <td>
+                 @Html.ActionLink("Открыть чат", "Private", "Chat" ,new { ReceiverId = item.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<h1>Недавние консультации</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Доктор
+            </th>
+            <th>
+                Пациент
+            </th>
+            <th>
+                Дата
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Consultations) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Doctor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Patient)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.ActionLink("Детали", "Details","Consultation", new {  consulationId = item.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@Html.ActionLink("Все мои консультации", "PatientConsultations", "Consultation")
+

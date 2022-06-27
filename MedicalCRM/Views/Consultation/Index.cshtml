@@ -1,0 +1,42 @@
+﻿@model IEnumerable<MedicalCRM.Models.Patient.ConsultationIndexModel>
+
+@{
+    ViewData["Title"] = "Consultation";
+}
+
+<h1>Ваши консультации</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Доктор
+            </th>
+            <th>
+                Пациент
+            </th>
+            <th>
+                Дата
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Doctor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Patient)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.ActionLink("Редактировать", "Update", "Consultation", new {  consulationId = item.Id }) |
+                @Html.ActionLink("Детали", "Details","Consultation", new {  consulationId = item.Id }) |
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

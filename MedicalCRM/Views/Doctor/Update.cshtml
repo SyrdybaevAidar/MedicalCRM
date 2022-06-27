@@ -1,0 +1,71 @@
+﻿@model MedicalCRM.Models.Patient.PatientUpdateViewModel
+
+@{
+    ViewData["Title"] = "Редактирование данных пациента";
+}
+
+
+<h1>Редактирование данных пациента</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="UpdatePatient">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sex" class="control-label"></label>
+                <input asp-for="Sex" class="form-control" />
+                <span asp-validation-for="Sex" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Surname" class="control-label"></label>
+                <input asp-for="Surname" class="form-control" />
+                <span asp-validation-for="Surname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Patronimic" class="control-label"></label>
+                <input asp-for="Patronimic" class="form-control" />
+                <span asp-validation-for="Patronimic" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BirthDate" class="control-label"></label>
+                <input asp-for="BirthDate" class="form-control" />
+                <span asp-validation-for="BirthDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BloodTypeId" class="control-label"></label>
+                @Html.DropDownListFor(model => model.BloodTypeId, ViewBag.BloodTypes as SelectList)
+                <span asp-validation-for="BloodTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Редактировать пользователя" class="btn btn-primary" />
+            </div>
+            @Html.HiddenFor(m => m.DoctorUserId)
+            @Html.HiddenFor(m => m.Id)
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

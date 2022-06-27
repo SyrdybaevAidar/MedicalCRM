@@ -1,0 +1,53 @@
+﻿@model MedicalCRM.Models.Patient.ConsultationViewModel
+
+@{
+    ViewData["Title"] = "UpdateConsultation";
+}
+
+<h1>UpdateConsultation</h1>
+
+<h4>ConsultationViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Update">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="DoctorName" class="control-label"></label>
+                <input asp-for="DoctorName" class="form-control" />
+                <span asp-validation-for="DoctorName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientName" class="control-label"></label>
+                <input asp-for="PatientName" class="form-control" />
+                <span asp-validation-for="PatientName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Recommendations" class="control-label"></label>
+                <input asp-for="Recommendations" class="form-control" />
+                <span asp-validation-for="Recommendations" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="ChronicalDiseasesIds" class="control-label"></label>
+                @Html.ListBoxFor(model => model.ChronicalDiseasesIds, ViewBag.Diesases as MultiSelectList, new{@class="form-control"})
+                <span asp-validation-for="ChronicalDiseasesIds" class="text-danger"></span>
+                </div>
+            <div class="form-group">
+                <input asp-for="Date" class="form-control" autocomplete="Date" aria-required="true" />
+                <label asp-for="Date"></label>
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+            @Html.HiddenFor(model => model.DoctorId);
+            @Html.HiddenFor(model => model.PatientId);
+            @Html.HiddenFor(model => model.ConsultationId);
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

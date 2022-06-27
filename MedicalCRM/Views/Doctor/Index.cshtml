@@ -1,0 +1,81 @@
+﻿@model MedicalCRM.Models.UserModels.DoctorMainPageViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Рабочее место Доктора</h1>
+<a class="nav-link text-dark" asp-action="CreatePatient">Добавить пациента</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                ФИО
+            </th>
+            <th>
+                Последнее сообщение
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Patients) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                
+            </td>
+            <td>
+                 @Html.ActionLink("Открыть чат", "Private", "Chat", new { ReceiverId = item.Id })
+                 @Html.ActionLink("Редактировать медицинскую карту", "UpdatePatient", "Doctor", new {  patientId = item.Id })
+                 @Html.ActionLink("Открыть медицинскую карту", "GetPatientDetails", "Patient", new {  patientId = item.Id })
+                 @Html.ActionLink("Назначить консультацию", "Create", "Consultation", new { patientId = item.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<h1>Недавние консультации</h1>
+
+<p>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Доктор
+            </th>
+            <th>
+                Пациент
+            </th>
+            <th>
+                Дата
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Consultations) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Doctor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Patient)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.ActionLink("Редактировать", "Update", "Consultation", new {  consulationId = item.Id }) |
+                @Html.ActionLink("Детали", "Details","Consultation", new {  consulationId = item.Id }) |
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@Html.ActionLink("Все мои консультации", "DoctorConsultations", "Consultation")
