@@ -76,44 +76,44 @@ namespace MedicalCRM.DataAccess.Seeds {
             //    }
             //}
 
-            if ((await userManager.FindByNameAsync("PatientTest")) == null) {
+            //if ((await userManager.FindByNameAsync("PatientTest")) == null) {
 
                 
-                var result = await userManager.CreateAsync(
-                    new PatientUser() {
-                        Id = 1,
-                        BirthDate = DateTime.Now,
-                        Email = "PatientTestUser@mail.ru",
-                        Name = "Березина",
-                        Surname = "Эльмира",
-                        Patronimic = "Пациент",
-                        Sex = Sex.Man,
-                        UserName = "PatientTest",
-                        BloodTypeId = 1,
-                        Address = "Московская 61"
-                    }, "Test123!");
+            //    var result = await userManager.CreateAsync(
+            //        new PatientUser() {
+            //            Id = 1,
+            //            BirthDate = DateTime.Now,
+            //            Email = "PatientTestUser@mail.ru",
+            //            Name = "Березина",
+            //            Surname = "Эльмира",
+            //            Patronimic = "Пациент",
+            //            Sex = Sex.Man,
+            //            UserName = "PatientTest",
+            //            BloodTypeId = 1,
+            //            Address = "Московская 61"
+            //        }, "Test123!");
 
-                var user = await userManager.FindByNameAsync("PatientTest");
-                await userManager.AddToRoleAsync(user, "Patient");
+            //    var user = await userManager.FindByNameAsync("PatientTest");
+            //    await userManager.AddToRoleAsync(user, "Patient");
 
-            }
+            //}
 
-            if ((await userManager.FindByNameAsync("PatientTest1") == null)) {
+            //if ((await userManager.FindByNameAsync("PatientTest1") == null)) {
 
-                await userManager.CreateAsync(
-                    new PatientUser() {
-                        Id = 3,
-                        BirthDate = DateTime.Now,
-                        Email = "PatientTestUser1@mail.ru",
-                        Name = "Садыров",
-                        Surname = "Акмат",
-                        Patronimic = "Пациент",
-                        Sex = Sex.Man,
-                        UserName = "PatientTest1",
-                    }, "Test123!");
+            //    await userManager.CreateAsync(
+            //        new PatientUser() {
+            //            Id = 3,
+            //            BirthDate = DateTime.Now,
+            //            Email = "PatientTestUser1@mail.ru",
+            //            Name = "Садыров",
+            //            Surname = "Акмат",
+            //            Patronimic = "Пациент",
+            //            Sex = Sex.Man,
+            //            UserName = "PatientTest1",
+            //        }, "Test123!");
 
-                var user = await userManager.FindByNameAsync("PatientTest1");
-                await userManager.AddToRoleAsync(user, "Patient");
+            //    var user = await userManager.FindByNameAsync("PatientTest1");
+            //    await userManager.AddToRoleAsync(user, "Patient");
             }
         }
 
