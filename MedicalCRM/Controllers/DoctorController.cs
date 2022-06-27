@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using IronPdf;
 using MedicalCRM.Business.Models;
 using MedicalCRM.Business.Services.Interfaces;
 using MedicalCRM.DataAccess.Entities.UserEntities;
@@ -7,6 +8,7 @@ using MedicalCRM.Models.UserModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MedicalCRM.Extensions;
 
 namespace MedicalCRM.Controllers {
     [Authorize(Roles = "Doctor")]
@@ -36,6 +38,17 @@ namespace MedicalCRM.Controllers {
             var result = await _commonService.GetPatients(CurrentUserId);
             var consulations = await _consultationService.GetByDoctorId(CurrentUserId, 3);
             var patients = _mapper.Map<List<UserIndexViewModel>>(result);
+            var render = new ChromePdfRenderer();
+            var m = new DoctorMainPageViewModel() { Patients = patients, Consultations = _mapper.Map<List<ConsultationIndexModel>>(consulations) };
+            var viewHtml = await this.RenderViewToString("Index", m);
+            var pdf = render.RenderHtmlAsPdf(viewHtml);
+            var smtpClient = new System.Net.Mail.SmtpClient("smtp.mail.ru", 587);
+            smtpClient.Credentials = new System.Net.NetworkCredential("medical_center_crm@mail.ru", "3V0mYsZcVtl71OCzrhCj");
+            smtpClient.EnableSsl = true;
+            var message = new System.Net.Mail.MailMessage("medical_center_crm@mail.ru", "aidar_1997_kg@mail.ru", "Тема", "Сообщение");
+            message.Attachments.Add(new System.Net.Mail.Attachment(pdf.Stream, "recept.pdf"));
+            smtpClient.Send(message);
+            pdf.SaveAs(@"C:\Users\Admin\Documents\GitHub\MedicalCRM1\MedicalCRM\File2.pdf");
             return View(new DoctorMainPageViewModel() { Patients = patients , Consultations = _mapper.Map<List<ConsultationIndexModel>>(consulations)});
         }
 
