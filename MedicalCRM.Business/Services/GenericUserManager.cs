@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MedicalCRM.Business.Models;
 using MedicalCRM.Business.Services.Interfaces;
+using MedicalCRM.Business.UOWork;
 using MedicalCRM.DataAccess.Entities.UserEntities;
 using MedicalCRM.DataAccess.Enums;
 using Microsoft.AspNetCore.Identity;
@@ -15,16 +16,21 @@ namespace MedicalCRM.Business.Services {
     public class GenericUserManager<TUser>: IGenericUserManager<TUser> where TUser: User {
         protected readonly UserManager<User> _userManager;
         protected readonly SignInManager<User> _signInManager;
+        protected readonly IUnitOfWork _uow;
         protected IMapper _mapper;
 
-        public GenericUserManager(UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper) {
+        public GenericUserManager(UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, IUnitOfWork unitOf) {
             _userManager = userManager;
             _mapper = mapper;
             _signInManager = signInManager;
+            _uow = unitOf;
         }
 
         public async Task<IdentityResult> RegisterAsync(UserDTO userDTO) {
             var entity = _mapper.Map<TUser>(userDTO);
+            var count = _uow.Doctors.All.Count();
+            var count2 = _uow.Patients.All.Count();
+            entity.Id = count + count2 + 1;
             var result = await _userManager.CreateAsync(entity,  userDTO.Password);
             return result;
         }

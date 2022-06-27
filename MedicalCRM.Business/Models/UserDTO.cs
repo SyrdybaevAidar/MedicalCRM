@@ -13,5 +13,6 @@ namespace MedicalCRM.Business.Models {
         public DateTime BirthDate { get; set; }
         public int BloodTypeId { get; set; }
         public string Address { get; set; }
+        public int DoctorUserId { get; set; }
     }
 }

@@ -516,8 +516,7 @@ namespace MedicalCRM.DataAccess.Migrations
                         .HasColumnType("int")
                         .HasColumnName("doctor_details_id");
 
-                    b.HasIndex("DoctorDetailsId")
-                        .IsUnique();
+                    b.HasIndex("DoctorDetailsId");
 
                     b.HasDiscriminator().HasValue("Doctor");
                 });
@@ -678,7 +677,7 @@ namespace MedicalCRM.DataAccess.Migrations
                     b.HasOne("MedicalCRM.DataAccess.Entities.DoctorDetails", "DoctorDetails")
                         .WithOne()
                         .HasForeignKey("MedicalCRM.DataAccess.Entities.UserEntities.DoctorUser", "DoctorDetailsId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("DoctorDetails");
                 });

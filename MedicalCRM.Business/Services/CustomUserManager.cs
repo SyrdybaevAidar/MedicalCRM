@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MedicalCRM.Business.Services.Interfaces;
+using MedicalCRM.Business.UOWork;
 using MedicalCRM.DataAccess.Entities.UserEntities;
 using MedicalCRM.DataAccess.Enums;
 using Microsoft.AspNetCore.Identity;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MedicalCRM.Business.Services {
     public class CustomUserManager : GenericUserManager<User>, ICustomUserManager {
-        public CustomUserManager(UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper) : base(userManager, signInManager, mapper) {
+        public CustomUserManager(UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, IUnitOfWork unitOf) : base(userManager, signInManager, mapper, unitOf) {
         }
 
         public async Task<UserType> GetUserTypeById(int id) {

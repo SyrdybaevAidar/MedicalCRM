@@ -14,7 +14,9 @@ namespace MedicalCRM.DataAccess.Entities.Configurations {
             builder.HasOne(i => i.DoctorDetails)
             .WithOne()
             .HasForeignKey<DoctorUser>(i => i.DoctorDetailsId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.SetNull);
+
+            builder.HasIndex(x => x.DoctorDetailsId).IsUnique(false);
 
             builder.HasMany(x => x.Chats)
                 .WithOne(x => x.Doctor)

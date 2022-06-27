@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace MedicalCRM.Business.Services {
     public class PatientManager : GenericUserManager<PatientUser>, IPatientManager {
         private readonly IUnitOfWork _uow;
-        public PatientManager(UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, IUnitOfWork uow) : base(userManager, signInManager, mapper) {
+        public PatientManager(UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, IUnitOfWork uow) : base(userManager, signInManager, mapper, uow) {
             _uow = uow;
         }
 

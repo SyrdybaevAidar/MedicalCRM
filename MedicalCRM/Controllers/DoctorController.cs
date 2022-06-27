@@ -51,6 +51,7 @@ namespace MedicalCRM.Controllers {
             if (ModelState.IsValid) {
                 var user = _mapper.Map<UserDTO>(model);
                 user.Password = "Test123!";
+                user.DoctorUserId = CurrentUserId;
                 var result = await _patientService.RegisterAsync(user);
 
                 if (result.Succeeded) {
@@ -77,8 +78,9 @@ namespace MedicalCRM.Controllers {
         public async Task<IActionResult> UpdatePatient(PatientUpdateViewModel model) {
             if (ModelState.IsValid) {
 
-                var dto = _mapper.Map<PatientDTO>(model);
-                var entity = _mapper.Map<PatientUser>(dto);
+                var entity = _mapper.Map<PatientUser>(model);
+                entity.BloodTypeId = model.BloodTypeId;
+                entity.DoctorUserId = model.DoctorUserId;
                 await _patientService.UpdateUserAsync(entity);
             }
             return RedirectToAction("Index");
