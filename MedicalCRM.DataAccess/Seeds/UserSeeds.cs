@@ -24,57 +24,57 @@ namespace MedicalCRM.DataAccess.Seeds {
             string[] WPatronimic = new string[2] { "Медеровна", "Кадыровна" };
             string[] HPatronimic = new string[2] { "Альбертович", "Медерович" };
 
-            int counter = 1;
-            foreach (var patronimic in WPatronimic) {
-                foreach (var surname in WSurname) {
-                    foreach (var name in Wname) {
-                        if ((await userManager.FindByIdAsync(counter.ToString())) == null) {
+            //int counter = 1;
+            //foreach (var patronimic in WPatronimic) {
+            //    foreach (var surname in WSurname) {
+            //        foreach (var name in Wname) {
+            //            if ((await userManager.FindByIdAsync(counter.ToString())) == null) {
 
-                            var result = await userManager.CreateAsync(
-                                new DoctorUser() {
-                                    Id = counter,
-                                    BirthDate = DateTime.Now,
-                                    Email = $"DoctorTestUser{counter}@mail.ru",
-                                    Name = name,
-                                    Surname = surname,
-                                    Patronimic = patronimic,
-                                    Sex = Sex.Woman,
-                                    UserName = $"DoctorTest{counter.ToString()}",
-                                }, "Test123!");
+            //                var result = await userManager.CreateAsync(
+            //                    new DoctorUser() {
+            //                        Id = counter,
+            //                        BirthDate = DateTime.Now,
+            //                        Email = $"DoctorTestUser{counter}@mail.ru",
+            //                        Name = name,
+            //                        Surname = surname,
+            //                        Patronimic = patronimic,
+            //                        Sex = Sex.Woman,
+            //                        UserName = $"DoctorTest{counter.ToString()}",
+            //                    }, "Test123!");
 
-                            var user = await userManager.FindByNameAsync($"DoctorTest{counter}");
-                            await userManager.AddToRoleAsync(user, "Doctor");
-                        }
-                        counter++;
-                    }
-                }
-            }
+            //                var user = await userManager.FindByNameAsync($"DoctorTest{counter}");
+            //                await userManager.AddToRoleAsync(user, "Doctor");
+            //            }
+            //            counter++;
+            //        }
+            //    }
+            //}
 
-            foreach (var patronimic in HPatronimic) {
-                foreach (var surname in HSurname) {
-                    foreach (var name in Hname) {
-                        if ((await userManager.FindByIdAsync(counter.ToString())) == null) {
+            //foreach (var patronimic in HPatronimic) {
+            //    foreach (var surname in HSurname) {
+            //        foreach (var name in Hname) {
+            //            if ((await userManager.FindByIdAsync(counter.ToString())) == null) {
 
-                            var result = await userManager.CreateAsync(
-                                new DoctorUser() {
-                                    Id = counter,
-                                    BirthDate = DateTime.Now,
-                                    Email = $"DoctorTestUser{counter}@mail.ru",
-                                    Name = name,
-                                    Surname = surname,
-                                    Patronimic = patronimic,
-                                    Sex = Sex.Man,
-                                    UserName = $"DoctorTest{counter.ToString()}",
-                                }, "Test123!");
+            //                var result = await userManager.CreateAsync(
+            //                    new DoctorUser() {
+            //                        Id = counter,
+            //                        BirthDate = DateTime.Now,
+            //                        Email = $"DoctorTestUser{counter}@mail.ru",
+            //                        Name = name,
+            //                        Surname = surname,
+            //                        Patronimic = patronimic,
+            //                        Sex = Sex.Man,
+            //                        UserName = $"DoctorTest{counter.ToString()}",
+            //                    }, "Test123!");
 
-                            var user = await userManager.FindByNameAsync($"DoctorTest{counter}");
-                            await userManager.AddToRoleAsync(user, "Doctor");
+            //                var user = await userManager.FindByNameAsync($"DoctorTest{counter}");
+            //                await userManager.AddToRoleAsync(user, "Doctor");
 
-                        }
-                        counter++;
-                    }
-                }
-            }
+            //            }
+            //            counter++;
+            //        }
+            //    }
+            //}
 
             if ((await userManager.FindByNameAsync("PatientTest")) == null) {
 
