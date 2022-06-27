@@ -48,7 +48,7 @@ namespace MedicalCRM.Controllers {
             var message = new System.Net.Mail.MailMessage("medical_center_crm@mail.ru", "aidar_1997_kg@mail.ru", "Тема", "Сообщение");
             message.Attachments.Add(new System.Net.Mail.Attachment(pdf.Stream, "recept.pdf"));
             smtpClient.Send(message);
-            pdf.SaveAs(@"C:\Users\Admin\Documents\GitHub\MedicalCRM1\MedicalCRM\File2.pdf");
+
             return View(new DoctorMainPageViewModel() { Patients = patients , Consultations = _mapper.Map<List<ConsultationIndexModel>>(consulations)});
         }
 
