@@ -52,6 +52,20 @@ namespace MedicalCRM.Controllers {
         }
 
         [HttpGet]
+        public async Task<IActionResult> Patients() {
+            try {
+                var result = await _commonService.GetPatients(CurrentUserId);
+                var consulations = await _consultationService.GetByDoctorId(CurrentUserId);
+                var patients = _mapper.Map<List<UserIndexViewModel>>(result);
+                var m = new DoctorMainPageViewModel() { Patients = patients, Consultations = _mapper.Map<List<ConsultationIndexModel>>(consulations) };
+
+                return View(new DoctorMainPageViewModel() { Patients = patients, Consultations = _mapper.Map<List<ConsultationIndexModel>>(consulations) });
+            } catch (Exception e) {
+                return Ok(e.Message);
+            }
+        }
+
+        [HttpGet]
         public async Task<IActionResult> CreatePatient() {
             var bloodTypes = await _commonService.BloodTypes();
             ViewBag.BloodTypes = new SelectList(bloodTypes, "Id", "Name");

@@ -25,9 +25,13 @@ namespace MedicalCRM.Business.Services {
             return await _uow.Diseases.GetAllAsync();
         }
 
-        public async Task<List<PatientDTO>> GetPatients(int doctorId) {
-            var result = await _uow.Patients.All.Where(i => i.DoctorUserId == doctorId).ToListAsync();
-            return _mapper.Map<List<PatientDTO>>(result);
+        public async Task<List<PatientDTO>> GetPatients(int doctorId, int count = 0) {
+            var result = _uow.Patients.All.Where(i => i.DoctorUserId == doctorId);
+
+            if (count > 0) {
+                result.Take(count);
+            };
+            return _mapper.Map<List<PatientDTO>>(await result.ToListAsync());
         }
 
         public async Task<List<UserDTO>> GetDoctors(int patientId) {
