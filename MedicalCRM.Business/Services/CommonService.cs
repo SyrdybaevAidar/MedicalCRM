@@ -25,8 +25,8 @@ namespace MedicalCRM.Business.Services {
             return await _uow.Diseases.GetAllAsync();
         }
 
-        public async Task<List<PatientDTO>> GetPatients(int doctorId, int count = 0) {
-            var result = _uow.Patients.All.Where(i => i.DoctorUserId == doctorId);
+        public async Task<List<PatientDTO>> GetPatients(int doctorId, string Inn, int count = 0) {
+            var result = _uow.Patients.All.Where(i => i.DoctorUserId == doctorId && (i.UserName.Contains(Inn ?? "")));
 
             if (count > 0) {
                 result.Take(count);

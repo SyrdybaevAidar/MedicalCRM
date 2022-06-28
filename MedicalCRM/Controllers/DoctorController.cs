@@ -40,7 +40,7 @@ namespace MedicalCRM.Controllers {
         [HttpGet]
         public async Task<IActionResult> Index() {
             try {
-                var result = await _commonService.GetPatients(CurrentUserId);
+                var result = await _commonService.GetPatients(CurrentUserId, "");
                 var consulations = await _consultationService.GetByDoctorId(CurrentUserId, 3);
                 var patients = _mapper.Map<List<UserIndexViewModel>>(result);
                 var m = new DoctorMainPageViewModel() { Patients = patients, Consultations = _mapper.Map<List<ConsultationIndexModel>>(consulations) };
@@ -52,9 +52,9 @@ namespace MedicalCRM.Controllers {
         }
 
         [HttpGet]
-        public async Task<IActionResult> Patients() {
+        public async Task<IActionResult> Patients(string Inn) {
             try {
-                var result = await _commonService.GetPatients(CurrentUserId);
+                var result = await _commonService.GetPatients(CurrentUserId, Inn);
                 var consulations = await _consultationService.GetByDoctorId(CurrentUserId);
                 var patients = _mapper.Map<List<UserIndexViewModel>>(result);
                 var m = new DoctorMainPageViewModel() { Patients = patients, Consultations = _mapper.Map<List<ConsultationIndexModel>>(consulations) };

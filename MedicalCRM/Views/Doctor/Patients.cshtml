@@ -4,8 +4,14 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Рабочее место Доктора</h1>
-<a class="nav-link text-dark" asp-action="CreatePatient">Добавить пациента</a>
+<form method="get">
+    <div class="form-inline form-group">
+        <label class="control-label">Инн </label>
+        <input name="Inn" class="form-control" />
+ 
+        <input type="submit" value="Фильтр" class="btn btn-default" />
+    </div>
+</form>
 
 <table class="table">
     <thead>

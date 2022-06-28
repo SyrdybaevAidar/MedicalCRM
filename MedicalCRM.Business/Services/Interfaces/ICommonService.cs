@@ -11,7 +11,7 @@ namespace MedicalCRM.Business.Services.Interfaces {
         Task<List<UserDTO>> GetDoctors();
         Task<List<BloodTypeDTO>> BloodTypes();
         Task<List<Disease>> GetDiseasesAsync();
-        Task<List<PatientDTO>> GetPatients(int doctorId, int count = 0);
+        Task<List<PatientDTO>> GetPatients(int doctorId, string Inn, int count = 0);
         Task<List<UserDTO>> GetDoctors(int patientId);
     }
 }
