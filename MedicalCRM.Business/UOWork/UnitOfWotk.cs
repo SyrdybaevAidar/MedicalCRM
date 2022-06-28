@@ -25,6 +25,9 @@ namespace MedicalCRM.Business.UOWork {
         private readonly Lazy<IDoctorUserRepository> _doctorRepository;
         private readonly Lazy<IPatientUserRepository> _patientRepository;
         private readonly Lazy<IRepository<ConsultationDisease>> _consultationDiseaseRepository;
+        private readonly Lazy<IRepository<Recept>> _receptRepository;
+        private readonly Lazy<IRepository<Medicament>> _medicamentRepository;
+        private readonly Lazy<IRepository<ReceptByMedicament>> _receptByMedicamentRepository;
 
         private bool _disposed;
 
@@ -38,6 +41,10 @@ namespace MedicalCRM.Business.UOWork {
         public IDoctorUserRepository Doctors => _doctorRepository.Value;
         public IPatientUserRepository Patients => _patientRepository.Value;
         public IRepository<ConsultationDisease> ConsultationDiseases => _consultationDiseaseRepository.Value;
+        public IRepository<Recept> Recepts => _receptRepository.Value;
+        public IRepository<Medicament> Medicaments => _medicamentRepository.Value;
+
+        public IRepository<ReceptByMedicament> ReceptByMedicaments => _receptByMedicamentRepository.Value;
 
         public UnitOfWork(ApplicationDbContext context) {
             _context = context;
@@ -51,6 +58,9 @@ namespace MedicalCRM.Business.UOWork {
             _doctorRepository = new Lazy<IDoctorUserRepository>(() => new DoctorUserRepository(context));
             _patientRepository = new Lazy<IPatientUserRepository>(() => new PatientUserRepository(context));
             _consultationDiseaseRepository = new Lazy<IRepository<ConsultationDisease>>(() => new Repository<ConsultationDisease>(context));
+            _receptRepository = new Lazy<IRepository<Recept>>(() => new Repository<Recept>(context));
+            _receptByMedicamentRepository = new Lazy<IRepository<ReceptByMedicament>>(() => new Repository<ReceptByMedicament>(context));
+            _medicamentRepository = new Lazy<IRepository<Medicament>>(() => new Repository<Medicament>(context));
         }
 
         public async Task SaveChangesAsync(){

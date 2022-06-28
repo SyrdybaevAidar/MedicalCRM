@@ -10,5 +10,6 @@ namespace MedicalCRM.DataAccess.Entities.UserEntities {
         public int? DoctorDetailsId { get; set; }
         public DoctorDetails? DoctorDetails { get; set; }
         public ICollection<Chat> Chats { get; set; }
+        public byte[] Image { get; set; }
     }
 }

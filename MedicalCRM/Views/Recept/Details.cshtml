@@ -1,0 +1,82 @@
+﻿@model MedicalCRM.DataAccess.Entities.Recept
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Министерство здравоохранения
+            </th>
+            <th>
+                
+            </th>
+            <th>
+                Поликлиника №5
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                ФИО пациента
+            </td>
+            <td>
+                @Model.Consultation.Patient.GetFullName()
+            </td>
+            <td>
+                 
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Возраст
+            </td>
+            <td>
+                25
+            </td>
+            <td>
+                 
+            </td>
+        </tr>
+                <tr>
+            <td>
+                ФИО лечащего врача
+            </td>
+            <td>
+                @Model.Consultation.Doctor.GetFullName();
+            </td>
+            <td>
+                 
+            </td>
+        </tr>
+        @foreach (var i in Model.Medicaments) {
+        <tr>
+            <td>
+                @i.Medicament.Name
+            </td>
+            <td>
+                @i.Count
+            </td>
+            <td>
+                 @i.Medicament.Price
+            </td>
+        </tr>
+        }
+    </tbody>
+
+</table>
+
+<div class="row">
+    <div class="col-md-4">
+        @using (Html.BeginForm("Add", "Recept", FormMethod.Post))
+        {   
+            <input class="form-control" name ="count" aria-required="true" />
+             @Html.ListBox("medicamentId", ViewBag.Diesases as MultiSelectList)
+             <input type="submit" id="btnCancel" value="Cancel"/>
+             @Html.HiddenFor(model => model.Id);
+        }
+    </div>
+</div>

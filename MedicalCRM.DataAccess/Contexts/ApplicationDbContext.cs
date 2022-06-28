@@ -23,6 +23,9 @@ namespace MedicalCRM.DataAccess.Context {
             modelBuilder.ApplyConfiguration(new ChatConfiguration());
             modelBuilder.ApplyConfiguration(new MessageConfiguration());
             modelBuilder.ApplyConfiguration(new ConsultationDiseaseConfiguration());
+            modelBuilder.ApplyConfiguration(new MedicamentConfiguration());
+            modelBuilder.ApplyConfiguration(new ReceptByMedicamentConfiguration());
+            modelBuilder.ApplyConfiguration(new ReceptConfiguration());
 
             modelBuilder.ApplyConfiguration(new PositionSeeds());
             modelBuilder.ApplyConfiguration(new DiseaseSeeds());

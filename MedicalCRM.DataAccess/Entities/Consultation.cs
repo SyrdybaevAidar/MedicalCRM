@@ -16,5 +16,6 @@ namespace MedicalCRM.DataAccess.Entities {
         public ICollection<ConsultationDisease>? ChronicalDiseases { get; set; }
         public DateTime Date { get; set; }
         public string Recommendations { get; set; }
+        public Recept Recept { get; set; }
     }
 }

@@ -20,6 +20,8 @@ namespace MedicalCRM.Business.UOWork {
         IPatientUserRepository Patients { get; }
         IRepository<Message> Messages { get; }
         IRepository<ConsultationDisease> ConsultationDiseases { get; }
+        IRepository<Recept> Recepts { get; }
+        IRepository<ReceptByMedicament> ReceptByMedicaments { get; }
 
         Task SaveChangesAsync();
 

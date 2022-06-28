@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
+using GemBox.Document;
 using MedicalCRM.Business.Services.Interfaces;
+using MedicalCRM.Extensions;
 using MedicalCRM.Models.ChatModels;
 using MedicalCRM.Models.Patient;
 using MedicalCRM.Models.UserModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MedicalCRM.Controllers {
 
@@ -64,6 +67,27 @@ namespace MedicalCRM.Controllers {
         public async Task<IActionResult> Login(PatientLoginViewModel model) {
             await _patientManager.LoginAsync(model.Inn, model.RememberMe);
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SendRecept(int PatientId) {
+            ComponentInfo.SetLicense("FREE-LIMITED-KEY");
+            var user = await _patientManager.GetById(PatientId);
+            var htmlLoadOptions = new HtmlLoadOptions();
+            var stream = new MemoryStream();
+            using (var htmlStream = new MemoryStream(htmlLoadOptions.Encoding.GetBytes("<h1>Рецепт</h1>"))) {
+
+                var document = DocumentModel.Load(htmlStream, htmlLoadOptions);
+                document.Save(stream, SaveOptions.PdfDefault);
+            }
+
+            var smtpClient = new System.Net.Mail.SmtpClient("smtp.mail.ru", 587);
+            smtpClient.Credentials = new System.Net.NetworkCredential("medical_center_crm@mail.ru", "3V0mYsZcVtl71OCzrhCj");
+            smtpClient.EnableSsl = true;
+            var message = new System.Net.Mail.MailMessage("medical_center_crm@mail.ru", user.Email, "Тема", "Сообщение");
+            message.Attachments.Add(new System.Net.Mail.Attachment(stream, "recept.pdf"));
+            smtpClient.Send(message);
+            return RedirectToAction("Details", PatientId);
         }
     }
 }

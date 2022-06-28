@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using MedicalCRM.Extensions;
 using GemBox;
 using GemBox.Document;
+using MedicalCRM.Models;
 
 namespace MedicalCRM.Controllers {
     [Authorize(Roles = "Doctor")]
@@ -104,6 +105,16 @@ namespace MedicalCRM.Controllers {
                 await _patientService.UpdateUserAsync(patient);
             }
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddPhoto() {
+            return View(new AddPhotoViewModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddPhoto(AddPhotoViewModel model) {
+            return RedirectToAction("AddPhoto", model);
         }
     }
 }

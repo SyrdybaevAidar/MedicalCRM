@@ -1,11 +1,12 @@
 ﻿@using MedicalCRM.Business.Services.Interfaces;
+@using System.Security.Claims
 @inject IPatientManager SignInManager
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        Приветствуем вас!
+        @User.FindFirstValue(ClaimTypes.Name);
     </li>
     <li class="nav-item">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">

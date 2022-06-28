@@ -88,4 +88,6 @@
 </table>
 <div>
     <a asp-action="Index">Back to List</a>
+    <a asp-action="SendRecept" >Отправить рецепт</a>
+    @Html.ActionLink("Отправить рецепт", "SendRecept", new {PatientId = Model.Id});
 </div>

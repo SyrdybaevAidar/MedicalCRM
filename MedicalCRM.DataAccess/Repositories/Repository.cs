@@ -21,7 +21,7 @@ namespace MedicalCRM.DataAccess.Repositories {
             All = context.Set<TEntity>().AsQueryable();
         }
 
-        public async Task<List<TEntity>> GetAllAsync() {
+        public async virtual Task<List<TEntity>> GetAllAsync() {
             return await All.ToListAsync();
         }
 
