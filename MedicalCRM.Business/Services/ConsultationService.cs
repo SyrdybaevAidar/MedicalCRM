@@ -21,13 +21,12 @@ namespace MedicalCRM.Business.Services {
 
         public async Task AddConsultation(ConsultationDTO dto) {
             var entity = _mapper.Map<Consultation>(dto);
+            entity.Diesases = dto.Diseases;
             var result = await _uow.Consultations.InsertAsync(entity);
             await _uow.SaveChangesAsync();
 
             var diseases = new List<ConsultationDisease>();
-            foreach (var i in dto.ChronicalDiseasesIds) {
-                diseases.Add(new ConsultationDisease { ConsultationId = result.Id, DiseaseId = i });
-            }
+            diseases.Add(new ConsultationDisease { ConsultationId = result.Id, DiseaseId = 1 });
 
             await _uow.ConsultationDiseases.InsertAsync(diseases);
             await _uow.SaveChangesAsync();
@@ -36,14 +35,6 @@ namespace MedicalCRM.Business.Services {
         public async Task EditConsultation(ConsultationDTO consultation) {
             var entity = _mapper.Map<Consultation>(consultation);
             _uow.Consultations.Update(entity);
-            var diseases = new List<ConsultationDisease>();
-            foreach (var i in consultation.ChronicalDiseasesIds) {
-                diseases.Add(new ConsultationDisease { ConsultationId = entity.Id, DiseaseId = i });
-            }
-            var ids = await _uow.ConsultationDiseases.All.AsNoTracking().Where(i => i.ConsultationId == consultation.Id).Select(i => i.Id).ToListAsync();
-            await _uow.ConsultationDiseases.DeleteByIds(ids);
-            await _uow.SaveChangesAsync();
-            await _uow.ConsultationDiseases.InsertAsync(diseases);
             await _uow.SaveChangesAsync();
         }
 

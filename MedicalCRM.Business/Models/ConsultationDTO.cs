@@ -14,6 +14,7 @@ namespace MedicalCRM.Business.Models {
         public int? PatientId { get; set; }
         public ICollection<ConsultationDisease>? ChronicalDiseases { get; set; }
         public ICollection<int>? ChronicalDiseasesIds { get; set; }
+        public string Diseases { get; set; }
         public string Recommendations { get; set; }
         public DateTime Date { get; set; }
         public string Complaints { get; set; }

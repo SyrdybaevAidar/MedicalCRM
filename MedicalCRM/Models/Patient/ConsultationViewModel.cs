@@ -10,6 +10,8 @@ namespace MedicalCRM.Models.Patient {
         public string DoctorName{ get; set; }
         [Display(Name = "Пациент")]
         public string PatientName { get; set; }
+        [Display(Name = "Диагноз")]
+        public string Diseases { get; set; }
         public ICollection<ConsultationDisease> ChronicalDiseases { get; set; }
         [Display(Name = "Диагноз")]
         public ICollection<int> ChronicalDiseasesIds { get; set; }
