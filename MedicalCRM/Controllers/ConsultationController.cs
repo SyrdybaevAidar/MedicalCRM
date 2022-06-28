@@ -33,8 +33,6 @@ namespace MedicalCRM.Controllers {
             var model = new ConsultationViewModel();
             model.PatientId = patientId;
             model.DoctorId = CurrentUserId;
-            ViewBag.Diesases = await _commonService.GetDiseasesAsync();
-            ViewBag.Diesases = new MultiSelectList(await _commonService.GetDiseasesAsync(), "Id", "Name");
             return View(model);
         }
 
@@ -59,7 +57,6 @@ namespace MedicalCRM.Controllers {
         public async Task<IActionResult> Update(int consulationId) {
             var dto = await _consultationService.GetConsultationById(consulationId);
             var model = _mapper.Map<ConsultationViewModel>(dto);
-            ViewBag.Diesases = new MultiSelectList(await _commonService.GetDiseasesAsync(), "Id", "Name", model.ChronicalDiseasesIds);
             return View(model);
         }
         [Authorize(Roles = "Patient")]

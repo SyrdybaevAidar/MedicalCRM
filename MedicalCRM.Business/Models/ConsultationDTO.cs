@@ -12,21 +12,9 @@ namespace MedicalCRM.Business.Models {
         public int? DoctorId { get; set; }
         public PatientDTO Patient { get; set; }
         public int? PatientId { get; set; }
-        public ICollection<ConsultationDisease>? ChronicalDiseases { get; set; }
-        public ICollection<int>? ChronicalDiseasesIds { get; set; }
         public string Diseases { get; set; }
         public string Recommendations { get; set; }
         public DateTime Date { get; set; }
         public string Complaints { get; set; }
-
-        public string CheckedChronicalDiseases { get {
-
-                if (ChronicalDiseases != null && ChronicalDiseases.Count() > 0) {
-                    return ChronicalDiseases.Select(i => i.Disease.Name).Aggregate((txt, name) => txt + ", " + name);
-                }
-                return "";
-            } 
-        
-       }
     }
 }

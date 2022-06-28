@@ -105,60 +105,6 @@ namespace MedicalCRM.DataAccess.Migrations
                     b.ToTable("Consultation");
                 });
 
-            modelBuilder.Entity("MedicalCRM.DataAccess.Entities.ConsultationDisease", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ConsultationId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("DiseaseId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ConsultationId");
-
-                    b.HasIndex("DiseaseId");
-
-                    b.ToTable("consultation_by_disaeses", (string)null);
-                });
-
-            modelBuilder.Entity("MedicalCRM.DataAccess.Entities.Disease", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("int");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("varchar(500)")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("disease", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Гайморит"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Ангина"
-                        });
-                });
-
             modelBuilder.Entity("MedicalCRM.DataAccess.Entities.DoctorDetails", b =>
                 {
                     b.Property<int>("Id")
@@ -178,26 +124,6 @@ namespace MedicalCRM.DataAccess.Migrations
                     b.HasIndex("PositionId");
 
                     b.ToTable("DoctorDetails");
-                });
-
-            modelBuilder.Entity("MedicalCRM.DataAccess.Entities.Medicament", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Price")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("medicament", (string)null);
                 });
 
             modelBuilder.Entity("MedicalCRM.DataAccess.Entities.Position", b =>
@@ -256,17 +182,23 @@ namespace MedicalCRM.DataAccess.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int>("Count")
-                        .HasColumnType("integer");
+                        .HasColumnType("int")
+                        .HasColumnName("column");
 
-                    b.Property<int>("MedicamentId")
-                        .HasColumnType("integer");
+                    b.Property<string>("MedicamentName")
+                        .IsRequired()
+                        .HasColumnType("varchar(700)")
+                        .HasColumnName("medicament_name");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasColumnType("varchar(700)")
+                        .HasColumnName("note");
 
                     b.Property<int>("ReceptId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MedicamentId");
 
                     b.HasIndex("ReceptId");
 
@@ -631,25 +563,6 @@ namespace MedicalCRM.DataAccess.Migrations
                     b.Navigation("Patient");
                 });
 
-            modelBuilder.Entity("MedicalCRM.DataAccess.Entities.ConsultationDisease", b =>
-                {
-                    b.HasOne("MedicalCRM.DataAccess.Entities.Consultation", "Consultation")
-                        .WithMany("ChronicalDiseases")
-                        .HasForeignKey("ConsultationId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
-
-                    b.HasOne("MedicalCRM.DataAccess.Entities.Disease", "Disease")
-                        .WithMany("Consultations")
-                        .HasForeignKey("DiseaseId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
-
-                    b.Navigation("Consultation");
-
-                    b.Navigation("Disease");
-                });
-
             modelBuilder.Entity("MedicalCRM.DataAccess.Entities.DoctorDetails", b =>
                 {
                     b.HasOne("MedicalCRM.DataAccess.Entities.Position", "Position")
@@ -679,14 +592,6 @@ namespace MedicalCRM.DataAccess.Migrations
                         .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
-
-                    b.HasOne("MedicalCRM.DataAccess.Entities.Medicament", "Medicament")
-                        .WithMany("ReceptByMedicaments")
-                        .HasForeignKey("MedicamentId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
-
-                    b.Navigation("Medicament");
 
                     b.Navigation("Recept");
                 });
@@ -801,20 +706,8 @@ namespace MedicalCRM.DataAccess.Migrations
 
             modelBuilder.Entity("MedicalCRM.DataAccess.Entities.Consultation", b =>
                 {
-                    b.Navigation("ChronicalDiseases");
-
                     b.Navigation("Recept")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("MedicalCRM.DataAccess.Entities.Disease", b =>
-                {
-                    b.Navigation("Consultations");
-                });
-
-            modelBuilder.Entity("MedicalCRM.DataAccess.Entities.Medicament", b =>
-                {
-                    b.Navigation("ReceptByMedicaments");
                 });
 
             modelBuilder.Entity("MedicalCRM.DataAccess.Entities.Recept", b =>

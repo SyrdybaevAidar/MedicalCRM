@@ -21,17 +21,24 @@ namespace MedicalCRM.Business.Services {
             return _mapper.Map<List<BloodTypeDTO>>(await _uow.BloodTypes.GetAllAsync());
         }
 
-        public async Task<List<Disease>> GetDiseasesAsync() {
-            return await _uow.Diseases.GetAllAsync();
-        }
+        public async Task<FilterResult> GetPatients(PatientFilterDTO filter) {
+            var query = _uow.Patients.All
+                .Where(i => i.UserName.Contains(filter.Inn ?? ""))
+                .Where(i => i.Name.Contains(filter.Name ?? ""))
+                .Where(i => i.Surname.Contains(filter.Surname ?? ""))
+                .Where(i => i.Patronimic.Contains(filter.Patronimic ?? ""))
+                .Where(i => filter.BirthDateEnd == null || i.BirthDate < filter.BirthDateEnd)
+                .Where(i => filter.BirthDateStart == null || i.BirthDate > filter.BirthDateStart)
+                .Where(i => filter.DoctorId == null ||  i.DoctorUserId == filter.DoctorId)
+                .Skip(filter.PageSize * (filter.Page - 1)).Take(filter.PageSize)
+                .OrderBy(i => i.UserName);
 
-        public async Task<List<PatientDTO>> GetPatients(int doctorId, string Inn, int count = 0) {
-            var result = _uow.Patients.All.Where(i => i.DoctorUserId == doctorId && (i.UserName.Contains(Inn ?? "")));
-
-            if (count > 0) {
-                result.Take(count);
+            var count = await query.CountAsync();
+            var users = _mapper.Map<List<UserDTO>>(await query.ToListAsync());
+            return new() { 
+                Users = users,
+                TotalItemCount = count
             };
-            return _mapper.Map<List<PatientDTO>>(await result.ToListAsync());
         }
 
         public async Task<List<UserDTO>> GetDoctors(int patientId) {

@@ -24,7 +24,6 @@ namespace MedicalCRM.Controllers {
 
         public async Task<IActionResult> Details(int receptId) {
             var recept = await _uow.Recepts.All.Where(i => i.Id == receptId).
-                Include(i => i.Medicaments).ThenInclude(i => i.Medicament).
                 Include(i => i.Consultation).ThenInclude(i => i.Patient).
                 Include(i => i.Consultation).ThenInclude(i => i.Doctor)
                 .FirstOrDefaultAsync();
@@ -32,9 +31,9 @@ namespace MedicalCRM.Controllers {
         }
 
         public async Task<IActionResult> AddMedicament(MedicamentCreateViewModel model) {
-            var medicament = new ReceptByMedicament() { ReceptId = model.Id, MedicamentId = model.MedicamentId, Count = model.Count };
-            await _uow.ReceptByMedicaments.InsertAsync(medicament);
-            await _uow.SaveChangesAsync();
+            //var medicament = new ReceptByMedicament() { ReceptId = model.Id, MedicamentId = model.MedicamentId, Count = model.Count };
+            //await _uow.ReceptByMedicaments.InsertAsync(medicament);
+            //await _uow.SaveChangesAsync();
             return RedirectToAction("Details", model.Id);
         }
     }

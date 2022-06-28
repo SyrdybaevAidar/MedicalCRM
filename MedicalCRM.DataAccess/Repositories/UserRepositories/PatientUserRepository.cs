@@ -17,7 +17,7 @@ namespace MedicalCRM.DataAccess.Repositories.UserRepositories {
             return await All.Where(i => i.Id == id)
                 .Include(i => i.BloodType)
                 .Include(i => i.DoctorUser)
-                .Include(i => i.Consultations.Where(i => i.ChronicalDiseases.Count() > 0))!.ThenInclude(i => i.ChronicalDiseases)!.ThenInclude(i => i.Disease)
+                .Include(i => i.Consultations.Where(i => i.Diesases != null))
                 .FirstOrDefaultAsync();
         }
     }

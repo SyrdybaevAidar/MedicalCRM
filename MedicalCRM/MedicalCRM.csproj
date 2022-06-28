@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="QtBinaresLinux\**" />
+    <Content Remove="QtBinaresLinux\**" />
+    <EmbeddedResource Remove="QtBinaresLinux\**" />
+    <None Remove="QtBinaresLinux\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="GemBox.Document" Version="35.0.1020" />
     <PackageReference Include="GemBox.Pdf" Version="17.0.1165" />
@@ -28,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="QtBinaresLinux\" />
+    <Folder Include="Views\Recept\" />
   </ItemGroup>
 
 </Project>

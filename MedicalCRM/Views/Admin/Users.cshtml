@@ -1,0 +1,20 @@
+﻿@model List<MedicalCRM.Business.Models.UserDTO>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                ФИО
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

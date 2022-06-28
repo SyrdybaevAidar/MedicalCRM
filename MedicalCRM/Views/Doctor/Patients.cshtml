@@ -1,23 +1,52 @@
-﻿@model MedicalCRM.Models.UserModels.DoctorMainPageViewModel
+﻿@model MedicalCRM.Business.Models.FilterResult;
 
 @{
     ViewData["Title"] = "Index";
 }
 
 <form method="get">
-    <div class="form-inline form-group">
-        <label class="control-label">Инн </label>
-        <input name="Inn" class="form-control" />
- 
-        <input type="submit" value="Фильтр" class="btn btn-default" />
+  <div class="row">
+    <div class="col">
+      <input type="text" name="Inn" class="form-control" placeholder="Инн">
     </div>
+    <div class="col">
+      <input type="text" name="Surname" class="form-control" placeholder="Фамилия">
+    </div>
+    <div class="col">
+      <input type="text" name="Name" class="form-control" placeholder="Имя">
+    </div>
+    <div class="col">
+      <input type="text" name="Patronimic" class="form-control" placeholder="Отчество">
+    </div>
+     <div class="col">
+      <input type="date" name="BirthDateStart" class="form-control" placeholder="Дата рождения от">
+    </div>
+    <div class="col">
+      <input type="date" name="BirthDateEnd" class="form-control" placeholder="Дата рождения до">
+    </div>
+    <div class="col">
+     <input type="submit" value="Фильтр" class="btn btn-default" />
+    </div>
+  </div>
 </form>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                ФИО
+                Инн
+            </th>
+                        <th>
+               Фамилия
+            </th>
+                        <th>
+                Имя
+            </th>
+                        <th>
+                Отчество
+            </th>
+                        <th>
+                Дата рождения
             </th>
             <th>
                 Последнее сообщение
@@ -26,13 +55,22 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Patients) {
+@foreach (var item in Model.Users) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.UserName)
             </td>
             <td>
-                
+                @Html.DisplayFor(modelItem => item.Surname)
+            </td>
+                        <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+                        <td>
+                @Html.DisplayFor(modelItem => item.Patronimic)
+            </td>
+                        <td>
+                @Html.DisplayFor(modelItem => item.BirthDate)
             </td>
             <td>
                  @Html.ActionLink("Открыть чат", "Private", "Chat", new { ReceiverId = item.Id })

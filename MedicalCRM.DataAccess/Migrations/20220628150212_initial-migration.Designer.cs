@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MedicalCRM.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220619185620_initial-migration")]
+    [Migration("20220628150212_initial-migration")]
     partial class initialmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,21 +23,6 @@ namespace MedicalCRM.DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("consultation_by_disaeses", b =>
-                {
-                    b.Property<int>("ChronicalDiseasesId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ConsultationsId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ChronicalDiseasesId", "ConsultationsId");
-
-                    b.HasIndex("ConsultationsId");
-
-                    b.ToTable("consultation_by_disaeses");
-                });
 
             modelBuilder.Entity("MedicalCRM.DataAccess.Entities.BloodType", b =>
                 {
@@ -59,6 +44,32 @@ namespace MedicalCRM.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("blood_type", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            RhesusFactore = 0,
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            RhesusFactore = 0,
+                            Type = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            RhesusFactore = 0,
+                            Type = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            RhesusFactore = 0,
+                            Type = 4
+                        });
                 });
 
             modelBuilder.Entity("MedicalCRM.DataAccess.Entities.Consultation", b =>
@@ -69,10 +80,18 @@ namespace MedicalCRM.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("DoctorId")
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Diesases")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("DoctorId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("PatientId")
+                    b.Property<int?>("PatientId")
+                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<string>("Recommendations")
@@ -86,25 +105,6 @@ namespace MedicalCRM.DataAccess.Migrations
                     b.HasIndex("PatientId");
 
                     b.ToTable("Consultation");
-                });
-
-            modelBuilder.Entity("MedicalCRM.DataAccess.Entities.Disease", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("int");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("varchar(500)")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("disease", (string)null);
                 });
 
             modelBuilder.Entity("MedicalCRM.DataAccess.Entities.DoctorDetails", b =>
@@ -128,37 +128,6 @@ namespace MedicalCRM.DataAccess.Migrations
                     b.ToTable("DoctorDetails");
                 });
 
-            modelBuilder.Entity("MedicalCRM.DataAccess.Entities.MedicalCard", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("varchar(700)")
-                        .HasColumnName("address");
-
-                    b.Property<int>("BloodTypeId")
-                        .HasColumnType("int")
-                        .HasColumnName("blood_type_id");
-
-                    b.Property<string>("FamilyDoctorName")
-                        .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("varchar(700)")
-                        .HasColumnName("address");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BloodTypeId");
-
-                    b.ToTable("medical_card", (string)null);
-                });
-
             modelBuilder.Entity("MedicalCRM.DataAccess.Entities.Position", b =>
                 {
                     b.Property<int>("Id")
@@ -176,6 +145,66 @@ namespace MedicalCRM.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Position", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Врач терапевт"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Хирург"
+                        });
+                });
+
+            modelBuilder.Entity("MedicalCRM.DataAccess.Entities.Recept", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ConsultationId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConsultationId")
+                        .IsUnique();
+
+                    b.ToTable("recept", (string)null);
+                });
+
+            modelBuilder.Entity("MedicalCRM.DataAccess.Entities.ReceptByMedicament", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int")
+                        .HasColumnName("column");
+
+                    b.Property<string>("MedicamentName")
+                        .IsRequired()
+                        .HasColumnType("varchar(700)")
+                        .HasColumnName("medicament_name");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasColumnType("varchar(700)")
+                        .HasColumnName("note");
+
+                    b.Property<int>("ReceptId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceptId");
+
+                    b.ToTable("recept_by_medicament", (string)null);
                 });
 
             modelBuilder.Entity("MedicalCRM.DataAccess.Entities.UserEntities.ChatEntities.Chat", b =>
@@ -197,11 +226,9 @@ namespace MedicalCRM.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DoctorId")
-                        .IsUnique();
+                    b.HasIndex("DoctorId");
 
-                    b.HasIndex("PatientId")
-                        .IsUnique();
+                    b.HasIndex("PatientId");
 
                     b.ToTable("chat", (string)null);
                 });
@@ -321,7 +348,8 @@ namespace MedicalCRM.DataAccess.Migrations
 
                     b.Property<string>("UserType")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(10)")
+                        .HasColumnName("user_type");
 
                     b.HasKey("Id");
 
@@ -477,7 +505,7 @@ namespace MedicalCRM.DataAccess.Migrations
                 {
                     b.HasBaseType("MedicalCRM.DataAccess.Entities.UserEntities.User");
 
-                    b.HasDiscriminator().HasValue("admin");
+                    b.HasDiscriminator().HasValue("Admin");
                 });
 
             modelBuilder.Entity("MedicalCRM.DataAccess.Entities.UserEntities.DoctorUser", b =>
@@ -488,53 +516,48 @@ namespace MedicalCRM.DataAccess.Migrations
                         .HasColumnType("int")
                         .HasColumnName("doctor_details_id");
 
-                    b.HasIndex("DoctorDetailsId")
-                        .IsUnique();
+                    b.Property<byte[]>("Image")
+                        .IsRequired()
+                        .HasColumnType("bytea");
 
-                    b.HasDiscriminator().HasValue("doctor");
+                    b.HasIndex("DoctorDetailsId");
+
+                    b.HasDiscriminator().HasValue("Doctor");
                 });
 
             modelBuilder.Entity("MedicalCRM.DataAccess.Entities.UserEntities.PatientUser", b =>
                 {
                     b.HasBaseType("MedicalCRM.DataAccess.Entities.UserEntities.User");
 
-                    b.Property<int?>("MedicalCardId")
+                    b.Property<string>("Address")
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("address");
+
+                    b.Property<int?>("BloodTypeId")
                         .HasColumnType("int")
-                        .HasColumnName("medical_card_id");
+                        .HasColumnName("blood_type_id");
 
-                    b.HasIndex("MedicalCardId")
-                        .IsUnique();
+                    b.Property<int?>("DoctorUserId")
+                        .HasColumnType("int")
+                        .HasColumnName("doctor_id");
 
-                    b.HasDiscriminator().HasValue("patient");
-                });
+                    b.HasIndex("BloodTypeId");
 
-            modelBuilder.Entity("consultation_by_disaeses", b =>
-                {
-                    b.HasOne("MedicalCRM.DataAccess.Entities.Disease", null)
-                        .WithMany()
-                        .HasForeignKey("ChronicalDiseasesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasIndex("DoctorUserId");
 
-                    b.HasOne("MedicalCRM.DataAccess.Entities.Consultation", null)
-                        .WithMany()
-                        .HasForeignKey("ConsultationsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasDiscriminator().HasValue("Patient");
                 });
 
             modelBuilder.Entity("MedicalCRM.DataAccess.Entities.Consultation", b =>
                 {
                     b.HasOne("MedicalCRM.DataAccess.Entities.UserEntities.DoctorUser", "Doctor")
                         .WithMany()
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DoctorId");
 
                     b.HasOne("MedicalCRM.DataAccess.Entities.UserEntities.PatientUser", "Patient")
-                        .WithMany()
+                        .WithMany("Consultations")
                         .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.Navigation("Doctor");
@@ -553,29 +576,40 @@ namespace MedicalCRM.DataAccess.Migrations
                     b.Navigation("Position");
                 });
 
-            modelBuilder.Entity("MedicalCRM.DataAccess.Entities.MedicalCard", b =>
+            modelBuilder.Entity("MedicalCRM.DataAccess.Entities.Recept", b =>
                 {
-                    b.HasOne("MedicalCRM.DataAccess.Entities.BloodType", "BloodType")
-                        .WithMany()
-                        .HasForeignKey("BloodTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                    b.HasOne("MedicalCRM.DataAccess.Entities.Consultation", "Consultation")
+                        .WithOne("Recept")
+                        .HasForeignKey("MedicalCRM.DataAccess.Entities.Recept", "ConsultationId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("BloodType");
+                    b.Navigation("Consultation");
+                });
+
+            modelBuilder.Entity("MedicalCRM.DataAccess.Entities.ReceptByMedicament", b =>
+                {
+                    b.HasOne("MedicalCRM.DataAccess.Entities.Recept", "Recept")
+                        .WithMany("Medicaments")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired();
+
+                    b.Navigation("Recept");
                 });
 
             modelBuilder.Entity("MedicalCRM.DataAccess.Entities.UserEntities.ChatEntities.Chat", b =>
                 {
                     b.HasOne("MedicalCRM.DataAccess.Entities.UserEntities.DoctorUser", "Doctor")
-                        .WithOne()
-                        .HasForeignKey("MedicalCRM.DataAccess.Entities.UserEntities.ChatEntities.Chat", "DoctorId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .WithMany("Chats")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.HasOne("MedicalCRM.DataAccess.Entities.UserEntities.PatientUser", "Patient")
-                        .WithOne()
-                        .HasForeignKey("MedicalCRM.DataAccess.Entities.UserEntities.ChatEntities.Chat", "PatientId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .WithMany("Chats")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.Navigation("Doctor");
@@ -650,24 +684,54 @@ namespace MedicalCRM.DataAccess.Migrations
                     b.HasOne("MedicalCRM.DataAccess.Entities.DoctorDetails", "DoctorDetails")
                         .WithOne()
                         .HasForeignKey("MedicalCRM.DataAccess.Entities.UserEntities.DoctorUser", "DoctorDetailsId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("DoctorDetails");
                 });
 
             modelBuilder.Entity("MedicalCRM.DataAccess.Entities.UserEntities.PatientUser", b =>
                 {
-                    b.HasOne("MedicalCRM.DataAccess.Entities.MedicalCard", "MedicalCard")
-                        .WithOne()
-                        .HasForeignKey("MedicalCRM.DataAccess.Entities.UserEntities.PatientUser", "MedicalCardId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                    b.HasOne("MedicalCRM.DataAccess.Entities.BloodType", "BloodType")
+                        .WithMany()
+                        .HasForeignKey("BloodTypeId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
-                    b.Navigation("MedicalCard");
+                    b.HasOne("MedicalCRM.DataAccess.Entities.UserEntities.DoctorUser", "DoctorUser")
+                        .WithOne()
+                        .HasForeignKey("MedicalCRM.DataAccess.Entities.UserEntities.PatientUser", "DoctorUserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("BloodType");
+
+                    b.Navigation("DoctorUser");
+                });
+
+            modelBuilder.Entity("MedicalCRM.DataAccess.Entities.Consultation", b =>
+                {
+                    b.Navigation("Recept")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MedicalCRM.DataAccess.Entities.Recept", b =>
+                {
+                    b.Navigation("Medicaments");
                 });
 
             modelBuilder.Entity("MedicalCRM.DataAccess.Entities.UserEntities.ChatEntities.Chat", b =>
                 {
                     b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("MedicalCRM.DataAccess.Entities.UserEntities.DoctorUser", b =>
+                {
+                    b.Navigation("Chats");
+                });
+
+            modelBuilder.Entity("MedicalCRM.DataAccess.Entities.UserEntities.PatientUser", b =>
+                {
+                    b.Navigation("Chats");
+
+                    b.Navigation("Consultations");
                 });
 #pragma warning restore 612, 618
         }

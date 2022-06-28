@@ -32,9 +32,5 @@ namespace MedicalCRM.Business.Services {
         public async Task<List<BloodTypeDTO>> BloodTypes() {
             return _mapper.Map<List<BloodTypeDTO>>(await _uow.BloodTypes.GetAllAsync());
         }
-
-        public async Task<List<Disease>> GetDiseasesAsync() {
-            return _mapper.Map<List<Disease>>(await _uow.Diseases.GetAllAsync());
-        }
     }
 }

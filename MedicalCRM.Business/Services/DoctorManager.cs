@@ -13,5 +13,7 @@ namespace MedicalCRM.Business.Services {
     public class DoctorManager : GenericUserManager<DoctorUser>, IDoctorManager {
         public DoctorManager(UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, IUnitOfWork unitOf) : base(userManager, signInManager, mapper, unitOf) {
         }
+
+        public async Task DoctorRegister() { }
     }
 }

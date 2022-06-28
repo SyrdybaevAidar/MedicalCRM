@@ -12,16 +12,18 @@ namespace MedicalCRM.Mappings {
             CreateMap<UserRegistrationViewModel, UserDTO>();
             CreateMap<PatientRegisterViewModel, UserDTO>();
             CreateMap<UserAuthorizationViewModel, UserDTO>();
-            CreateMap<MessageDTO, MessageIndexViewModel> ();
+            CreateMap<MessageDTO, MessageIndexViewModel>();
             CreateMap<ChatDTO, ChatDetailsViewModel>()
                 .ForMember(dest => dest.Messages, opt => opt.MapFrom(src => src.Messages))
                 .ForMember(dest => dest.PatientUserName, opt => opt.MapFrom(src => $"{src.PatientUser.Surname} {src.PatientUser.Name} {src.PatientUser.Patronimic}"))
                 .ForMember(dest => dest.DoctorUserName, opt => opt.MapFrom(src => $"{src.DoctorUser.Surname} {src.DoctorUser.Name} {src.DoctorUser.Patronimic}"));
+
             CreateMap<ChatDTO, ChatIndexViewModel>()
                 .ForMember(dest => dest.PatientUserName, opt => opt.MapFrom(src => $"{src.PatientUser.Surname} {src.PatientUser.Name} {src.PatientUser.Patronimic}"))
                 .ForMember(dest => dest.DoctorUserName, opt => opt.MapFrom(src => $"{src.DoctorUser.Surname} {src.DoctorUser.Name} {src.DoctorUser.Patronimic}"))
                 .ForMember(dest => dest.PatientId, opt => opt.MapFrom(src => src.PatientUser.Id))
                 .ForMember(dest => dest.DoctorId, opt => opt.MapFrom(src => src.DoctorUser.Id));
+
             CreateMap<UserDTO, UserIndexViewModel>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => $"{src.Surname} {src.Name} {src.Patronimic}"));
             CreateMap<PatientDTO, UserIndexViewModel>()
@@ -29,6 +31,7 @@ namespace MedicalCRM.Mappings {
 
             CreateMap<MedicalCardViewModel, MedicalCardDTO>()
                 .ForMember(i => i.Id, a => a.MapFrom(src => src.MedicalCardId));
+
             CreateMap<MedicalCardDTO, MedicalCardViewModel>()
                 .ForMember(i => i.MedicalCardId, a => a.MapFrom(src => src.Id));
 
@@ -40,18 +43,14 @@ namespace MedicalCRM.Mappings {
                 .ForMember(dest => dest.ConsultationId, opt => opt.MapFrom(src => src.Id) )
                 .ForMember(dest => dest.PatientName, opt => opt.MapFrom(src => $"{src.Patient.Surname} {src.Patient.Name} {src.Patient.Patronimic}"))
                 .ForMember(dest => dest.DoctorName, opt => opt.MapFrom(src => $"{src.Doctor.Surname} {src.Doctor.Name} {src.Doctor.Patronimic}"))
-                .ForMember(dest => dest.ChronicalDiseasesIds, opt => opt.MapFrom(src => src.ChronicalDiseases.Select(i => i.DiseaseId).ToList()))
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date.ToLocalTime()));
 
             CreateMap<ConsultationViewModel, ConsultationDTO>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ConsultationId))
-                .ForMember(dest => dest.ChronicalDiseasesIds, opt => opt.MapFrom(src => src.ChronicalDiseasesIds))
-                .ForMember(dest => dest.ChronicalDiseases, opt => opt.Ignore())
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date.ToUniversalTime()));
 
             CreateMap<ConsultationDTO, DiseaseIndexViewModel>()
-                .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date))
-                .ForMember(dest => dest.Diseases, opt => opt.MapFrom(src => src.CheckedChronicalDiseases));
+                .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date));
 
             CreateMap<PatientDTO, PatientDetailsViewModel>()
                 .ForMember(dest => dest.Diseases, opt => opt.MapFrom(src => src.Consultations))
@@ -63,6 +62,7 @@ namespace MedicalCRM.Mappings {
             CreateMap<PatientDTO, PatientUpdateViewModel>();
             CreateMap<PatientUser, PatientUpdateViewModel>()
                 .ForMember(dest => dest.BloodTypeId, opt => opt.MapFrom(src => src.BloodTypeId));
+
             CreateMap<PatientUpdateViewModel, PatientUser>()
                 .ForMember(dest => dest.BloodTypeId, opt => opt.MapFrom(src => src.BloodTypeId));
         }

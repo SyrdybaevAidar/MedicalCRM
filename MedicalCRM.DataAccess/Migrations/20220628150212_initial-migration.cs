@@ -40,19 +40,6 @@ namespace MedicalCRM.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "disease",
-                columns: table => new
-                {
-                    @int = table.Column<int>(name: "int", type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "varchar(500)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_disease", x => x.@int);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Position",
                 columns: table => new
                 {
@@ -87,26 +74,6 @@ namespace MedicalCRM.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "medical_card",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    address = table.Column<string>(type: "varchar(700)", nullable: false),
-                    blood_type_id = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_medical_card", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_medical_card_blood_type_blood_type_id",
-                        column: x => x.blood_type_id,
-                        principalTable: "blood_type",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "DoctorDetails",
                 columns: table => new
                 {
@@ -137,9 +104,12 @@ namespace MedicalCRM.DataAccess.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     Patronimic = table.Column<string>(type: "text", nullable: false),
                     birth_date = table.Column<DateTime>(type: "TIMESTAMP", nullable: false),
-                    UserType = table.Column<string>(type: "text", nullable: false),
+                    user_type = table.Column<string>(type: "varchar(10)", nullable: false),
                     doctor_details_id = table.Column<int>(type: "int", nullable: true),
-                    medical_card_id = table.Column<int>(type: "int", nullable: true),
+                    Image = table.Column<byte[]>(type: "bytea", nullable: true),
+                    blood_type_id = table.Column<int>(type: "int", nullable: true),
+                    address = table.Column<string>(type: "varchar(500)", nullable: true),
+                    doctor_id = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -159,17 +129,23 @@ namespace MedicalCRM.DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_AspNetUsers_AspNetUsers_doctor_id",
+                        column: x => x.doctor_id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_blood_type_blood_type_id",
+                        column: x => x.blood_type_id,
+                        principalTable: "blood_type",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
                         name: "FK_AspNetUsers_DoctorDetails_doctor_details_id",
                         column: x => x.doctor_details_id,
                         principalTable: "DoctorDetails",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_AspNetUsers_medical_card_medical_card_id",
-                        column: x => x.medical_card_id,
-                        principalTable: "medical_card",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -274,13 +250,13 @@ namespace MedicalCRM.DataAccess.Migrations
                         column: x => x.doctor_id,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_chat_AspNetUsers_patient_id",
                         column: x => x.patient_id,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -289,8 +265,10 @@ namespace MedicalCRM.DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    DoctorId = table.Column<int>(type: "integer", nullable: false),
+                    DoctorId = table.Column<int>(type: "integer", nullable: true),
                     PatientId = table.Column<int>(type: "integer", nullable: false),
+                    Diesases = table.Column<string>(type: "text", nullable: false),
+                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Recommendations = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
@@ -300,14 +278,13 @@ namespace MedicalCRM.DataAccess.Migrations
                         name: "FK_Consultation_AspNetUsers_DoctorId",
                         column: x => x.DoctorId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Consultation_AspNetUsers_PatientId",
                         column: x => x.PatientId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -334,27 +311,63 @@ namespace MedicalCRM.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "consultation_by_disaeses",
+                name: "recept",
                 columns: table => new
                 {
-                    ChronicalDiseasesId = table.Column<int>(type: "integer", nullable: false),
-                    ConsultationsId = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ConsultationId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_consultation_by_disaeses", x => new { x.ChronicalDiseasesId, x.ConsultationsId });
+                    table.PrimaryKey("PK_recept", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_consultation_by_disaeses_Consultation_ConsultationsId",
-                        column: x => x.ConsultationsId,
+                        name: "FK_recept_Consultation_ConsultationId",
+                        column: x => x.ConsultationId,
                         principalTable: "Consultation",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "recept_by_medicament",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    column = table.Column<int>(type: "int", nullable: false),
+                    medicament_name = table.Column<string>(type: "varchar(700)", nullable: false),
+                    note = table.Column<string>(type: "varchar(700)", nullable: false),
+                    ReceptId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_recept_by_medicament", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_consultation_by_disaeses_disease_ChronicalDiseasesId",
-                        column: x => x.ChronicalDiseasesId,
-                        principalTable: "disease",
-                        principalColumn: "int",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_recept_by_medicament_recept_Id",
+                        column: x => x.Id,
+                        principalTable: "recept",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Position",
+                columns: new[] { "int", "name" },
+                values: new object[,]
+                {
+                    { 1, "Врач терапевт" },
+                    { 2, "Хирург" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "blood_type",
+                columns: new[] { "id", "rhesus_factore", "type" },
+                values: new object[,]
+                {
+                    { 1, 0, 1 },
+                    { 2, 0, 2 },
+                    { 3, 0, 3 },
+                    { 4, 0, 4 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -389,16 +402,19 @@ namespace MedicalCRM.DataAccess.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_doctor_details_id",
+                name: "IX_AspNetUsers_blood_type_id",
                 table: "AspNetUsers",
-                column: "doctor_details_id",
-                unique: true);
+                column: "blood_type_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_medical_card_id",
+                name: "IX_AspNetUsers_doctor_details_id",
                 table: "AspNetUsers",
-                column: "medical_card_id",
-                unique: true);
+                column: "doctor_details_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_doctor_id",
+                table: "AspNetUsers",
+                column: "doctor_id");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -409,14 +425,12 @@ namespace MedicalCRM.DataAccess.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_chat_doctor_id",
                 table: "chat",
-                column: "doctor_id",
-                unique: true);
+                column: "doctor_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_chat_patient_id",
                 table: "chat",
-                column: "patient_id",
-                unique: true);
+                column: "patient_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Consultation_DoctorId",
@@ -429,24 +443,25 @@ namespace MedicalCRM.DataAccess.Migrations
                 column: "PatientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_consultation_by_disaeses_ConsultationsId",
-                table: "consultation_by_disaeses",
-                column: "ConsultationsId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_DoctorDetails_PositionId",
                 table: "DoctorDetails",
                 column: "PositionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_medical_card_blood_type_id",
-                table: "medical_card",
-                column: "blood_type_id");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_message_chat_id",
                 table: "message",
                 column: "chat_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_recept_ConsultationId",
+                table: "recept",
+                column: "ConsultationId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_recept_by_medicament_ReceptId",
+                table: "recept_by_medicament",
+                column: "ReceptId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -467,37 +482,34 @@ namespace MedicalCRM.DataAccess.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "consultation_by_disaeses");
+                name: "message");
 
             migrationBuilder.DropTable(
-                name: "message");
+                name: "recept_by_medicament");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Consultation");
-
-            migrationBuilder.DropTable(
-                name: "disease");
-
-            migrationBuilder.DropTable(
                 name: "chat");
+
+            migrationBuilder.DropTable(
+                name: "recept");
+
+            migrationBuilder.DropTable(
+                name: "Consultation");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
+                name: "blood_type");
+
+            migrationBuilder.DropTable(
                 name: "DoctorDetails");
 
             migrationBuilder.DropTable(
-                name: "medical_card");
-
-            migrationBuilder.DropTable(
                 name: "Position");
-
-            migrationBuilder.DropTable(
-                name: "blood_type");
         }
     }
 }

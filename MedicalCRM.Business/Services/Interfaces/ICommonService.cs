@@ -10,8 +10,7 @@ namespace MedicalCRM.Business.Services.Interfaces {
     public interface ICommonService {
         Task<List<UserDTO>> GetDoctors();
         Task<List<BloodTypeDTO>> BloodTypes();
-        Task<List<Disease>> GetDiseasesAsync();
-        Task<List<PatientDTO>> GetPatients(int doctorId, string Inn, int count = 0);
+        Task<FilterResult> GetPatients(PatientFilterDTO filterDTO);
         Task<List<UserDTO>> GetDoctors(int patientId);
     }
 }

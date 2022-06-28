@@ -5,15 +5,17 @@ using AutoMapper;
 using MedicalCRM.DataAccess.Context;
 using MedicalCRM.Mappings;
 using MedicalCRM.Hubs;
+using MedicalCRM.Business.Models.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("TestConnection");
 builder.Services.RegisterServices(connectionString);
 builder.Services.AddAutoMapper(typeof(MappingProfile), typeof(MedicalCRM.Business.Mappings.MappingProfile));
 builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
+builder.Services.Configure<OrganizationEmailConfiguration>(builder.Configuration.GetSection("OrganizationEmail"));
 
 var app = builder.Build();
 

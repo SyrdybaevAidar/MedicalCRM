@@ -28,11 +28,6 @@ namespace MedicalCRM.DataAccess.Entities.Configurations {
                 .HasForeignKey(i => i.DoctorId)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            builder.HasMany(i => i.ChronicalDiseases)
-                .WithOne(i => i.Consultation)
-                .HasForeignKey(i => i.ConsultationId)
-                .OnDelete(DeleteBehavior.SetNull);
-
             builder.HasOne(x => x.Recept)
                 .WithOne(x => x.Consultation)
                 .HasForeignKey<Recept>(x => x.ConsultationId)

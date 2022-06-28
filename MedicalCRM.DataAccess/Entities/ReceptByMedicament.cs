@@ -9,8 +9,8 @@ namespace MedicalCRM.DataAccess.Entities {
     public class ReceptByMedicament: IEntity {
         public int Id { get; set; }
         public int Count { get; set; }
-        public int MedicamentId { get; set; }
-        public Medicament Medicament { get; set; }
+        public string MedicamentName { get; set; }
+        public string Note { get; set; }
         public int ReceptId { get; set; }
         public Recept Recept { get; set; }
     }

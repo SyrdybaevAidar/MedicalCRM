@@ -1,66 +1,55 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using MedicalCRM.Business.Models;
+using MedicalCRM.Business.Services.Interfaces;
+using MedicalCRM.Models.UserModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MedicalCRM.Controllers {
-    [Authorize(Roles ="Admin")]
+
     public class AdminController : Controller {
+        private readonly IDoctorManager _doctorManager;
+        private readonly ICommonService _commonService;
+        private readonly IMapper _mapper;
+        public AdminController(IDoctorManager doctorManager, IMapper mapper, ICommonService commonService) {
+            _doctorManager = doctorManager;
+            _commonService = commonService;
+            _mapper = mapper;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DoctorRegister() {
+            return View(new UserRegistrationViewModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DoctorRegister(UserRegistrationViewModel model) {
+            var dto = _mapper.Map<UserDTO>(model);
+            await _doctorManager.RegisterAsync(dto);
+            return View("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Doctors() {
+            var doctors = await _commonService.GetDoctors();
+            return View("Users", doctors);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Patients(PatientFilterDTO filter) {
+            var patients = await _commonService.GetPatients(filter);
+            return View("Users", patients);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Login() {
+            return View();
+        }
+
         // GET: AdminController
         public ActionResult Index() {
             return View();
-        }
-
-        // GET: AdminController/Details/5
-        public ActionResult Details(int id) {
-            return View();
-        }
-
-        // GET: AdminController/Create
-        public ActionResult Create() {
-            return View();
-        }
-
-        // POST: AdminController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection) {
-            try {
-                return RedirectToAction(nameof(Index));
-            } catch {
-                return View();
-            }
-        }
-
-        // GET: AdminController/Edit/5
-        public ActionResult Edit(int id) {
-            return View();
-        }
-
-        // POST: AdminController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection) {
-            try {
-                return RedirectToAction(nameof(Index));
-            } catch {
-                return View();
-            }
-        }
-
-        // GET: AdminController/Delete/5
-        public ActionResult Delete(int id) {
-            return View();
-        }
-
-        // POST: AdminController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection) {
-            try {
-                return RedirectToAction(nameof(Index));
-            } catch {
-                return View();
-            }
         }
     }
 }

@@ -13,7 +13,6 @@ namespace MedicalCRM.DataAccess.Entities {
         public DoctorUser Doctor {get;set;}
         public int? PatientId { get; set; }
         public PatientUser Patient { get; set; } 
-        public ICollection<ConsultationDisease>? ChronicalDiseases { get; set; }
         public string Diesases { get; set; }
         public DateTime Date { get; set; }
         public string Recommendations { get; set; }

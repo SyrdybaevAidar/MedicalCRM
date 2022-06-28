@@ -13,18 +13,28 @@ namespace MedicalCRM.DataAccess.Entities.Configurations {
 
             builder.HasKey(x => x.Id);
 
-            builder.HasIndex(x => x.MedicamentId).IsUnique(false);
-            builder.HasIndex(x => x.ReceptId).IsUnique(false);
-
-            builder.HasOne(x => x.Medicament)
-                .WithMany(x => x.ReceptByMedicaments)
-                .HasForeignKey(x => x.MedicamentId)
-                .OnDelete(DeleteBehavior.SetNull);
+            builder.HasIndex(x => x.ReceptId)
+                .IsUnique(false);
 
             builder.HasOne(x => x.Recept)
                 .WithMany(x => x.Medicaments)
                 .HasForeignKey(x => x.ReceptId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            builder.Property(x => x.Note)
+                .HasColumnType("varchar(700)")
+                .HasColumnName("note")
+                .IsRequired();
+
+            builder.Property(x => x.MedicamentName)
+                .HasColumnType("varchar(700)")
+                .HasColumnName("medicament_name")
+                .IsRequired();
+
+            builder.Property(x => x.Count)
+                .HasColumnName("column")
+                .HasColumnType("int")
+                .IsRequired();
         }
     }
 }

@@ -40,7 +40,7 @@ namespace MedicalCRM.Controllers {
         [HttpGet]
         public async Task<IActionResult> Index() {
             try {
-                var result = await _commonService.GetPatients(CurrentUserId, "");
+                var result = await _commonService.GetPatients(new PatientFilterDTO() { DoctorId = CurrentUserId });
                 var consulations = await _consultationService.GetByDoctorId(CurrentUserId, 3);
                 var patients = _mapper.Map<List<UserIndexViewModel>>(result);
                 var m = new DoctorMainPageViewModel() { Patients = patients, Consultations = _mapper.Map<List<ConsultationIndexModel>>(consulations) };
@@ -52,14 +52,11 @@ namespace MedicalCRM.Controllers {
         }
 
         [HttpGet]
-        public async Task<IActionResult> Patients(string Inn) {
+        public async Task<IActionResult> Patients(PatientFilterDTO filterDTO) {
             try {
-                var result = await _commonService.GetPatients(CurrentUserId, Inn);
-                var consulations = await _consultationService.GetByDoctorId(CurrentUserId);
-                var patients = _mapper.Map<List<UserIndexViewModel>>(result);
-                var m = new DoctorMainPageViewModel() { Patients = patients, Consultations = _mapper.Map<List<ConsultationIndexModel>>(consulations) };
+                var result = await _commonService.GetPatients(filterDTO);
 
-                return View(new DoctorMainPageViewModel() { Patients = patients, Consultations = _mapper.Map<List<ConsultationIndexModel>>(consulations) });
+                return View(result);
             } catch (Exception e) {
                 return Ok(e.Message);
             }
@@ -106,6 +103,7 @@ namespace MedicalCRM.Controllers {
 
 
                 var patient = await _patientService.GetByUserNameAsync(model.UserName);
+                patient.Patronimic = model.Patronimic;
                 patient.Surname = model.Surname;
                 patient.Name = model.Name;
                 patient.BloodTypeId = model.BloodTypeId;

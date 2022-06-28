@@ -1,5 +1,6 @@
 ﻿using MedicalCRM.DataAccess.Context;
 using MedicalCRM.DataAccess.Entities;
+using MedicalCRM.DataAccess.Entities.UserEntities;
 using MedicalCRM.DataAccess.Entities.UserEntities.ChatEntities;
 using MedicalCRM.DataAccess.Repositories;
 using MedicalCRM.DataAccess.Repositories.ChatRepositores;
@@ -16,7 +17,6 @@ namespace MedicalCRM.Business.UOWork {
     public class UnitOfWork : IUnitOfWork, IDisposable {
         private ApplicationDbContext _context;
         private readonly Lazy<IRepository<Consultation>> _consultationRepository;
-        private readonly Lazy<IRepository<Disease>> _diseaseRepository;
         private readonly Lazy<IRepository<DoctorDetails>> _doctorDetailsRepostory;
         private readonly Lazy<IRepository<Position>> _positionRepository;
         private readonly Lazy<IRepository<BloodType>> _bloodTypesRepository;
@@ -24,15 +24,14 @@ namespace MedicalCRM.Business.UOWork {
         private readonly Lazy<IRepository<Message>> _messageRepository;
         private readonly Lazy<IDoctorUserRepository> _doctorRepository;
         private readonly Lazy<IPatientUserRepository> _patientRepository;
-        private readonly Lazy<IRepository<ConsultationDisease>> _consultationDiseaseRepository;
         private readonly Lazy<IRepository<Recept>> _receptRepository;
-        private readonly Lazy<IRepository<Medicament>> _medicamentRepository;
         private readonly Lazy<IRepository<ReceptByMedicament>> _receptByMedicamentRepository;
+        private readonly Lazy<IRepository<AdminUser>> _adminUserRepository;
+
 
         private bool _disposed;
 
         public IRepository<Consultation> Consultations => _consultationRepository.Value;
-        public IRepository<Disease> Diseases => _diseaseRepository.Value;
         public IRepository<DoctorDetails> DoctorDetails => _doctorDetailsRepostory.Value;
         public IRepository<Position> Positions => _positionRepository.Value;
         public IRepository<BloodType> BloodTypes => _bloodTypesRepository.Value;
@@ -40,27 +39,23 @@ namespace MedicalCRM.Business.UOWork {
         public IRepository<Message> Messages => _messageRepository.Value;
         public IDoctorUserRepository Doctors => _doctorRepository.Value;
         public IPatientUserRepository Patients => _patientRepository.Value;
-        public IRepository<ConsultationDisease> ConsultationDiseases => _consultationDiseaseRepository.Value;
         public IRepository<Recept> Recepts => _receptRepository.Value;
-        public IRepository<Medicament> Medicaments => _medicamentRepository.Value;
-
+        public IRepository<AdminUser> Admins => _adminUserRepository.Value;
         public IRepository<ReceptByMedicament> ReceptByMedicaments => _receptByMedicamentRepository.Value;
 
         public UnitOfWork(ApplicationDbContext context) {
             _context = context;
             _doctorDetailsRepostory = new Lazy<IRepository<DoctorDetails>>(() => new Repository<DoctorDetails>(context));
             _consultationRepository = new Lazy<IRepository<Consultation>>(() => new Repository<Consultation>(context));
-            _diseaseRepository = new Lazy<IRepository<Disease>>(() => new Repository<Disease>(context));
             _positionRepository = new Lazy<IRepository<Position>>(() => new Repository<Position>(context));
             _bloodTypesRepository = new Lazy<IRepository<BloodType>>(() => new Repository<BloodType>(context));
             _chatRepository = new Lazy<IChatRepository>(() => new ChatRepository(context));
             _messageRepository = new Lazy<IRepository<Message>>(() => new Repository<Message>(context));
             _doctorRepository = new Lazy<IDoctorUserRepository>(() => new DoctorUserRepository(context));
             _patientRepository = new Lazy<IPatientUserRepository>(() => new PatientUserRepository(context));
-            _consultationDiseaseRepository = new Lazy<IRepository<ConsultationDisease>>(() => new Repository<ConsultationDisease>(context));
             _receptRepository = new Lazy<IRepository<Recept>>(() => new Repository<Recept>(context));
             _receptByMedicamentRepository = new Lazy<IRepository<ReceptByMedicament>>(() => new Repository<ReceptByMedicament>(context));
-            _medicamentRepository = new Lazy<IRepository<Medicament>>(() => new Repository<Medicament>(context));
+            _adminUserRepository = new Lazy<IRepository<AdminUser>>(() => new Repository<AdminUser>(context));
         }
 
         public async Task SaveChangesAsync(){

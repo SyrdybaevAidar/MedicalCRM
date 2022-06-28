@@ -24,12 +24,6 @@ namespace MedicalCRM.Business.Services {
             entity.Diesases = dto.Diseases;
             var result = await _uow.Consultations.InsertAsync(entity);
             await _uow.SaveChangesAsync();
-
-            var diseases = new List<ConsultationDisease>();
-            diseases.Add(new ConsultationDisease { ConsultationId = result.Id, DiseaseId = 1 });
-
-            await _uow.ConsultationDiseases.InsertAsync(diseases);
-            await _uow.SaveChangesAsync();
         }
 
         public async Task EditConsultation(ConsultationDTO consultation) {
@@ -40,7 +34,6 @@ namespace MedicalCRM.Business.Services {
 
         public async Task<ConsultationDTO?> GetConsultationById(int Id) {
             var entity = await _uow.Consultations.All
-                .Include(i => i.ChronicalDiseases)!.ThenInclude(i => i.Disease)
                 .Include(i => i.Doctor)
                 .Include(i => i.Patient)
                 .Where(i => i.Id == Id)
@@ -49,7 +42,6 @@ namespace MedicalCRM.Business.Services {
         }
         public async Task<List<ConsultationDTO>> GetByDoctorId(int doctorId, int count = 0) {
             var entities = _uow.Consultations.All
-                .Include(i => i.ChronicalDiseases!).ThenInclude(i => i.Disease)
                 .Include(i => i.Doctor)
                 .Include(i => i.Patient)
                 .Where(i => i.DoctorId == doctorId);
@@ -64,7 +56,6 @@ namespace MedicalCRM.Business.Services {
 
         public async Task<List<ConsultationDTO>> GetByPatientId(int patientId, int count = 0) {
             var entities = _uow.Consultations.All
-                .Include(i => i.ChronicalDiseases!).ThenInclude(i => i.Disease)
                 .Include(i => i.Doctor)
                 .Include(i => i.Patient)
                 .Where(i => i.PatientId == patientId);

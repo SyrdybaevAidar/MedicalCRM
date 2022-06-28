@@ -28,15 +28,16 @@ namespace MedicalCRM.Business.Services {
 
         public async Task<IdentityResult> RegisterAsync(UserDTO userDTO) {
             var entity = _mapper.Map<TUser>(userDTO);
-            var count = _uow.Doctors.All.Count();
-            var count2 = _uow.Patients.All.Count();
-            entity.Id = count + count2 + 1;
+            var doctorCount = _uow.Doctors.All.Count();
+            var patientCount = _uow.Patients.All.Count();
+            var adminCount = _uow.Admins.All.Count();
+            entity.Id = doctorCount + patientCount + adminCount + 1;
             var result = await _userManager.CreateAsync(entity,  userDTO.Password);
             return result;
         }
 
-        public async Task<UserType> LoginAsync(string Inn, bool rememberMe) {
-            var user = await _userManager.FindByNameAsync(Inn);
+        public async Task<UserType> LoginAsync(string inn, bool rememberMe) {
+            var user = await _userManager.FindByNameAsync(inn);
             var result = await _signInManager.PasswordSignInAsync(user, "Test123!", rememberMe, lockoutOnFailure: false);
             if (!result.Succeeded) {
                 return UserType.Unauthorized;
