@@ -13,8 +13,8 @@ namespace MedicalCRM.DataAccess.Seeds {
     public static class UserSeeds {
         public static async Task AddUserSeeds(this UserManager<User> userManager, RoleManager<IdentityRole<int>> roleManager) {
 
-
-           await userManager.AddPatientSeeds(roleManager);
+            await userManager.AddDoctorSeeds();
+            await userManager.AddPatientSeeds(roleManager);
         }
         public static async Task AddPatientSeeds(this UserManager<User> userManager, RoleManager<IdentityRole<int>> roleManager) {
             string[] WSurname = new string[5] { "Окубаева", "Айылчиева", "Куприна", "Арокина", "Седокина"};
@@ -166,9 +166,9 @@ namespace MedicalCRM.DataAccess.Seeds {
                         Surname = "Айгуль",
                         Patronimic = "Кубатовна",
                         Sex = Sex.Man,
-                        UserName = "DoctorTest",
+                        UserName = "AigulSultanovna",
                     }, "Test123!");
-                var user = await userManager.FindByNameAsync("DoctorTest");
+                var user = await userManager.FindByNameAsync("AigulSultanovna");
                 await userManager.AddToRoleAsync(user, "Doctor");
             }
 
@@ -183,10 +183,10 @@ namespace MedicalCRM.DataAccess.Seeds {
                         Surname = "Канымкуль",
                         Patronimic = "Исраиловна",
                         Sex = Sex.Man,
-                        UserName = "DoctorTest1",
+                        UserName = "KanymkylUsrailovna",
                     }, "Test123!");
 
-                var user = await userManager.FindByNameAsync("DoctorTest1");
+                var user = await userManager.FindByNameAsync("KanymkylUsrailovna");
                 await userManager.AddToRoleAsync(user, "Doctor");
             }
         }
