@@ -87,7 +87,7 @@ namespace MedicalCRM.Controllers {
             var message = new System.Net.Mail.MailMessage("medical_center_crm@mail.ru", user.Email, "Тема", "Сообщение");
             message.Attachments.Add(new System.Net.Mail.Attachment(stream, "recept.pdf"));
             smtpClient.Send(message);
-            return RedirectToAction("Details", PatientId);
+            return RedirectToAction("Index","Doctor", PatientId);
         }
     }
 }
