@@ -9,10 +9,10 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-    <PackageReference Include="IronPdf.Linux" Version="2022.6.6115" />
+    <PackageReference Include="GemBox.Document" Version="35.0.1020" />
+    <PackageReference Include="GemBox.Pdf" Version="17.0.1165" />
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.6">
@@ -25,6 +25,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MedicalCRM.Business\MedicalCRM.Business.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="QtBinaresLinux\" />
   </ItemGroup>
 
 </Project>
