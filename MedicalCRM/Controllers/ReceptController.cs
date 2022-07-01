@@ -31,9 +31,6 @@ namespace MedicalCRM.Controllers {
         }
 
         public async Task<IActionResult> AddMedicament(MedicamentCreateViewModel model) {
-            //var medicament = new ReceptByMedicament() { ReceptId = model.Id, MedicamentId = model.MedicamentId, Count = model.Count };
-            //await _uow.ReceptByMedicaments.InsertAsync(medicament);
-            //await _uow.SaveChangesAsync();
             return RedirectToAction("Details", model.Id);
         }
     }

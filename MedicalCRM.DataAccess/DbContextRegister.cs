@@ -1,4 +1,4 @@
-﻿using MedicalCRM.DataAccess.Context;
+﻿using MedicalCRM.DataAccess.Contexts;
 using MedicalCRM.DataAccess.Entities.UserEntities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

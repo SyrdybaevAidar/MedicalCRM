@@ -1,16 +1,13 @@
 ﻿using AutoMapper;
 using MedicalCRM.Business.Models;
 using MedicalCRM.Business.Services.Interfaces;
-using MedicalCRM.DataAccess.Entities.UserEntities;
 using MedicalCRM.Models.Patient;
 using MedicalCRM.Models.UserModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using MedicalCRM.Extensions;
-using GemBox;
-using GemBox.Document;
 using MedicalCRM.Models;
+using MedicalCRM.Models.Pagination;
 
 namespace MedicalCRM.Controllers {
     [Authorize(Roles = "Doctor")]
@@ -42,7 +39,7 @@ namespace MedicalCRM.Controllers {
             try {
                 var result = await _commonService.GetPatients(new PatientFilterDTO() { DoctorId = CurrentUserId });
                 var consulations = await _consultationService.GetByDoctorId(CurrentUserId, 3);
-                var patients = _mapper.Map<List<UserIndexViewModel>>(result);
+                var patients = _mapper.Map<List<UserIndexViewModel>>(result.Users);
                 var m = new DoctorMainPageViewModel() { Patients = patients, Consultations = _mapper.Map<List<ConsultationIndexModel>>(consulations) };
 
                 return View(new DoctorMainPageViewModel() { Patients = patients, Consultations = _mapper.Map<List<ConsultationIndexModel>>(consulations) });
@@ -54,7 +51,8 @@ namespace MedicalCRM.Controllers {
         [HttpGet]
         public async Task<IActionResult> Patients(PatientFilterDTO filterDTO) {
             try {
-                var result = await _commonService.GetPatients(filterDTO);
+                var filterResult = await _commonService.GetPatients(filterDTO);
+                var result = new UserPaginationViewModel() { FilterResult = filterResult, PatientFilter = filterDTO};
 
                 return View(result);
             } catch (Exception e) {

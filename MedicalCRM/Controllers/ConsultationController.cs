@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
 using MedicalCRM.Business.Models;
-using MedicalCRM.Business.Services;
 using MedicalCRM.Business.Services.Interfaces;
 using MedicalCRM.Models.Patient;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+ using Microsoft.AspNetCore.Mvc;
 
 namespace MedicalCRM.Controllers {
     public class ConsultationController : BaseController {

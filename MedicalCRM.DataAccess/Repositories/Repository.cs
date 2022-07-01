@@ -1,4 +1,4 @@
-﻿using MedicalCRM.DataAccess.Context;
+﻿using MedicalCRM.DataAccess.Contexts;
 using MedicalCRM.DataAccess.Entities.Abstract;
 using MedicalCRM.DataAccess.Exceptions;
 using MedicalCRM.DataAccess.Repositories.Interfaces;

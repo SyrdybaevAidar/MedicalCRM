@@ -11,25 +11,37 @@ namespace MedicalCRM.DataAccess.Seeds {
     internal class BloodTypeSeeds : IEntityTypeConfiguration<BloodType> {
         public void Configure(EntityTypeBuilder<BloodType> builder) {
             builder.HasData(new BloodType[] {
-                new(){ 
+                new(){
                     Id = 1,
-                    RhesusFactore = Enums.RhesusFactor.Positive,
-                    Type = 1
+                    Name = "1-положительная"
                 },
                 new(){
                     Id = 2,
-                    RhesusFactore = Enums.RhesusFactor.Positive,
-                    Type = 2
+                    Name = "2-положительная"
                 },
                 new(){
                     Id = 3,
-                    RhesusFactore = Enums.RhesusFactor.Positive,
-                    Type = 3
+                    Name = "3-положительная"
                 },
                 new(){
                     Id = 4,
-                    RhesusFactore = Enums.RhesusFactor.Positive,
-                    Type = 4
+                    Name = "4-положительная"
+                },
+                new(){
+                    Id = 1,
+                    Name = "1-отрицательная"
+                },
+                new(){
+                    Id = 2,
+                    Name = "2-отрицательная"
+                },
+                new(){
+                    Id = 3,
+                    Name = "3-отрицательная"
+                },
+                new(){
+                    Id = 4,
+                    Name = "4-отрицательная"
                 }
             });
 

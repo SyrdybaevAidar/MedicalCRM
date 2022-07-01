@@ -8,9 +8,11 @@ using System.Threading.Tasks;
 
 namespace MedicalCRM.Business.Services.Interfaces {
     public interface ICommonService {
-        Task<List<UserDTO>> GetDoctors();
+        Task<FilterResult> GetDoctors(PatientFilterDTO patient);
         Task<List<BloodTypeDTO>> BloodTypes();
         Task<FilterResult> GetPatients(PatientFilterDTO filterDTO);
         Task<List<UserDTO>> GetDoctors(int patientId);
+        Task<List<UserDTO>> GetNewPatients();
+        Task<List<UserDTO>> GetNewDoctors();
     }
 }

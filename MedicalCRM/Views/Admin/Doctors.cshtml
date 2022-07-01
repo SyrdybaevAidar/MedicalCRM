@@ -1,13 +1,13 @@
 ﻿@model MedicalCRM.Models.Pagination.UserPaginationViewModel;
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Список докторов";
 }
 
 <form method="get">
   <div class="row">
     <div class="col">
-      <input type="text" name="Inn" class="form-control" placeholder="Инн">
+      <input type="text" name="Inn" class="form-control" placeholder="Логин">
     </div>
     <div class="col">
       <input type="text" name="Surname" class="form-control" placeholder="Фамилия">
@@ -25,7 +25,7 @@
       <input type="date" name="BirthDateEnd" class="form-control" placeholder="Дата рождения до">
     </div>
     <div class="col">
-     <input type="submit" value="Фильтр" class="btn btn-default" />
+     <input type="submit" value="Фильтр" class="btn btn-default " />
     </div>
   </div>
 </form>

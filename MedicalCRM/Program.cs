@@ -2,7 +2,6 @@ using MedicalCRM.Business;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
-using MedicalCRM.DataAccess.Context;
 using MedicalCRM.Mappings;
 using MedicalCRM.Hubs;
 using MedicalCRM.Business.Models.Configuration;

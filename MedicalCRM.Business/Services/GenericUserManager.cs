@@ -32,6 +32,8 @@ namespace MedicalCRM.Business.Services {
             var patientCount = _uow.Patients.All.Count();
             var adminCount = _uow.Admins.All.Count();
             entity.Id = doctorCount + patientCount + adminCount + 1;
+            entity.CreateDateTime = DateTime.Now;
+            entity.IsActive = true;
             var result = await _userManager.CreateAsync(entity,  userDTO.Password);
             return result;
         }

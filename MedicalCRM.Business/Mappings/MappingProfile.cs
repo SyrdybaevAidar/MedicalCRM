@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MedicalCRM.Business.Models;
+using MedicalCRM.DataAccess;
 using MedicalCRM.DataAccess.Entities;
 using MedicalCRM.DataAccess.Entities.UserEntities;
 using MedicalCRM.DataAccess.Entities.UserEntities.ChatEntities;
@@ -36,13 +37,14 @@ namespace MedicalCRM.Business.Mappings {
                 .ForMember(dest => dest.Doctor, opt => opt.Ignore())
                 .ForMember(dest => dest.Messages, opt => opt.MapFrom(src => src.Messages));
 
-            CreateMap<BloodType, BloodTypeDTO>()
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => $"{src.Type} - {src.RhesusFactore}"));
+            CreateMap<BloodType, BloodTypeDTO>();
 
             CreateMap<Consultation, ConsultationDTO>()
                 .ForMember(dest => dest.Patient, opt => opt.MapFrom(src => src.Patient))
                 .ForMember(dest => dest.Doctor, opt => opt.MapFrom(src => src.Doctor));
             CreateMap<ConsultationDTO, Consultation>();
+
+            CreateMap<PatientFilterDTO, UserFilterView>();
         }
     }
 }

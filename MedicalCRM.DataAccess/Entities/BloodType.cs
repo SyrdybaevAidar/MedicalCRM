@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 namespace MedicalCRM.DataAccess.Entities {
     public class BloodType: IEntity {
         public int Id { get; set; }
-        public int Type { get; set; }
-        public RhesusFactor RhesusFactore { get; set; }
+        public string Name { get; set; }
     }
 }

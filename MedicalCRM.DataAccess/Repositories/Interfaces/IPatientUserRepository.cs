@@ -8,5 +8,7 @@ using System.Threading.Tasks;
 namespace MedicalCRM.DataAccess.Repositories.Interfaces {
     public interface IPatientUserRepository: IRepository<PatientUser> {
         Task<PatientUser?> GetByIdWithNavigations(int id);
+
+        Task<(List<PatientUser> Users, int Count)> GetFilteredPatientsQuery(PatientFilter filter);
     }
 }

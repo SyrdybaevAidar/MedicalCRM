@@ -2,6 +2,7 @@
 using MedicalCRM.Business.Models;
 using MedicalCRM.Business.Services.Interfaces;
 using MedicalCRM.Business.UOWork;
+using MedicalCRM.DataAccess;
 using MedicalCRM.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,12 +14,22 @@ namespace MedicalCRM.Business.Services {
             _uow = uow;
             _mapper = mapper;
         }
-        public async Task<List<UserDTO>> GetDoctors() {
-            return _mapper.Map<List<UserDTO>>(await _uow.Doctors.GetAllAsync());
+        public async Task<FilterResult> GetDoctors(PatientFilterDTO patient) {
+            var users = await _uow.Doctors.GetFilteredPatientsQuery(_mapper.Map<UserFilterView>(patient));
+            return new(users.Count, patient.Page, _mapper.Map<List<UserDTO>>(users.Users));
         }
 
         public async Task<List<BloodTypeDTO>> BloodTypes() {
             return _mapper.Map<List<BloodTypeDTO>>(await _uow.BloodTypes.GetAllAsync());
+        }
+        public async Task<List<UserDTO>> GetNewPatients() {
+            var patients = await _uow.Patients.All.OrderByDescending(i => i.CreateDateTime).Take(5).ToListAsync();
+            return _mapper.Map<List<UserDTO>>(patients);
+        }
+
+        public async Task<List<UserDTO>> GetNewDoctors() {
+            var patients = await _uow.Patients.All.OrderByDescending(i => i.CreateDateTime).Take(5).ToListAsync();
+            return _mapper.Map<List<UserDTO>>(patients);
         }
 
         public async Task<FilterResult> GetPatients(PatientFilterDTO filter) {
@@ -29,16 +40,15 @@ namespace MedicalCRM.Business.Services {
                 .Where(i => i.Patronimic.Contains(filter.Patronimic ?? ""))
                 .Where(i => filter.BirthDateEnd == null || i.BirthDate < filter.BirthDateEnd)
                 .Where(i => filter.BirthDateStart == null || i.BirthDate > filter.BirthDateStart)
-                .Where(i => filter.DoctorId == null ||  i.DoctorUserId == filter.DoctorId)
-                .Skip(filter.PageSize * (filter.Page - 1)).Take(filter.PageSize)
-                .OrderBy(i => i.UserName);
+                .Where(i => filter.DoctorId == null || i.DoctorUserId == filter.DoctorId);
 
             var count = await query.CountAsync();
-            var users = _mapper.Map<List<UserDTO>>(await query.ToListAsync());
-            return new() { 
-                Users = users,
-                TotalItemCount = count
-            };
+            var users = await query.OrderBy(i => i.UserName)
+                .Skip(filter.PageSize * (filter.Page - 1))
+                .Take(filter.PageSize)
+                .ToListAsync();
+            var usersDto = _mapper.Map<List<UserDTO>>(users);
+            return new(count, filter.Page, usersDto);
         }
 
         public async Task<List<UserDTO>> GetDoctors(int patientId) {

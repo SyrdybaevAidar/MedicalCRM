@@ -17,15 +17,9 @@ namespace MedicalCRM.DataAccess.Entities.Configurations {
                 .HasColumnType("int")
                 .HasColumnName("id");
 
-            builder.Property(i => i.Type)
-                .HasColumnType("int")
-                .HasColumnName("type")
-                .IsRequired(true);
-
-            builder.Property(i => i.RhesusFactore)
-                .HasColumnType("int")
-                .HasColumnName("rhesus_factore")
-                .HasConversion<int>()
+            builder.Property(i => i.Name)
+                .HasColumnName("name")
+                .HasColumnType("varchar")
                 .IsRequired();
         }
     }

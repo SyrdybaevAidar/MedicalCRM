@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
 using GemBox.Document;
 using MedicalCRM.Business.Services.Interfaces;
-using MedicalCRM.Extensions;
 using MedicalCRM.Models.ChatModels;
 using MedicalCRM.Models.Patient;
 using MedicalCRM.Models.UserModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace MedicalCRM.Controllers {
 

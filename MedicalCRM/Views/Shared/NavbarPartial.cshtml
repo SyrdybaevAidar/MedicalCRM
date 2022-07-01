@@ -1,0 +1,70 @@
+﻿@using MedicalCRM.Business.Services.Interfaces;
+@using System.Security.Claims;
+@using MedicalCRM.DataAccess.Entities.UserEntities
+@using MedicalCRM.DataAccess.Enums
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> userManager;
+
+<div class="pos-f-t">
+    <div class="collapse" id="navbarToggleExternalContent">
+        <div class="d-flex justify-content-between align-items-center bg-info">
+            <div class="p-4 row">
+                @if (User.Identity.IsAuthenticated) {
+                    var user = await userManager.GetUserAsync(User);
+                    <h4 class="text-white font-weight-bold">
+                        @user.GetFullName()
+                    </h4>
+                    if (user.UserType == UserType.Patient) {
+                        <div>
+                            @Html.ActionLink("На главную", "Index", "Patient", new { }, new{ @class = "text-decoration-none text-white font-weight-bold"})
+                        </div>
+                        <div>
+                            @Html.ActionLink("Открыть чат c доктором", "Private", "Chat", new { ReceiverId = ((PatientUser)user).DoctorUserId }, new{ @class = "text-decoration-none text-white font-weight-bold"})
+                        </div>
+                        <div>
+                            @Html.ActionLink("Все мои консультации", "PatientConsultations", "Consultation", new{}, new{ @class = "text-decoration-none text-white font-weight-bold"})
+                        </div>
+
+                    }
+
+                    if (user.UserType == UserType.Admin) {
+                        <div>
+                            @Html.ActionLink("Главная", "Index", "Admin", new { }, new{ @class = "text-decoration-none text-white font-weight-bold"})
+                        </div>
+                        <div>
+                            @Html.ActionLink("Все Пациенты", "Patients", "Admin", new{ @class = "text-decoration-none text-white font-weight-bold"})
+                        </div>
+                        <div>
+                            @Html.ActionLink("Все Докторы", "Doctors", "Admin", new{ @class = "text-decoration-none text-white font-weight-bold"})
+                        </div>
+                    }
+
+                    if (user.UserType == UserType.Doctor) {
+                        <div>
+                            @Html.ActionLink("Главная", "Index", "Doctor", new{}, new{ @class = "text-decoration-none text-white font-weight-bold"})
+                        </div>
+                        <div>
+                            @Html.ActionLink("Добавить пациента", "CreatePatient", "Doctor", new{}, new{ @class = "text-decoration-none text-white font-weight-bold"})
+                        </div>
+                        <div>
+                            @Html.ActionLink("Все мои консультации", "DoctorConsultations", "Consultation",  new{}, new{ @class = "text-decoration-none text-white font-weight-bold"})
+                        </div>
+                        <div>
+                            @Html.ActionLink("Все мои пациенты", "Patients", "Doctor", new{}, new{ @class = "text-decoration-none text-white font-weight-bold"})
+                        </div>
+                    }
+                }
+            </div>
+            <div class="p-4">
+                <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button type="submit" class="nav-link btn btn-link btn-light"><span class="text-info">Выйти из учетной записи</span></button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar navbar-dark bg-info">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+</div>

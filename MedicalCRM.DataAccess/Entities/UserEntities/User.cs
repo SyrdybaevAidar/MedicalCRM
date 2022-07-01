@@ -16,6 +16,8 @@ namespace MedicalCRM.DataAccess.Entities.UserEntities {
         public string Patronimic { get; set; }
         public DateTime BirthDate { get; set; }
         public UserType UserType { get; set; }
+        public DateTime CreateDateTime { get; set; }
+        public bool IsActive { get; set; }
         public string GetFullName() {
             return $"{Surname} {Name} {Patronimic}";
         }

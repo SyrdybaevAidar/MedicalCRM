@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using MedicalCRM.Business.Models;
 using MedicalCRM.Business.Services.Interfaces;
+using MedicalCRM.Models.Pagination;
 using MedicalCRM.Models.UserModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MedicalCRM.Controllers {
-
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller {
         private readonly IDoctorManager _doctorManager;
         private readonly ICommonService _commonService;
@@ -31,15 +32,17 @@ namespace MedicalCRM.Controllers {
         }
 
         [HttpGet]
-        public async Task<IActionResult> Doctors() {
-            var doctors = await _commonService.GetDoctors();
-            return View("Users", doctors);
+        public async Task<IActionResult> Doctors(PatientFilterDTO patient) {
+            var doctors = await _commonService.GetDoctors(patient);
+            var result = new UserPaginationViewModel() { FilterResult = doctors, PatientFilter = patient};
+            return View(result);
         }
 
         [HttpGet]
         public async Task<IActionResult> Patients(PatientFilterDTO filter) {
             var patients = await _commonService.GetPatients(filter);
-            return View("Users", patients);
+            var result = new UserPaginationViewModel() { FilterResult = patients, PatientFilter = filter };
+            return View(result);
         }
 
         [HttpGet]

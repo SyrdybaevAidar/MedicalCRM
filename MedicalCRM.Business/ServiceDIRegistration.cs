@@ -2,7 +2,6 @@
 using MedicalCRM.Business.Services.Interfaces;
 using MedicalCRM.Business.UOWork;
 using MedicalCRM.DataAccess;
-using MedicalCRM.DataAccess.Context;
 using MedicalCRM.DataAccess.Entities.UserEntities;
 using MedicalCRM.DataAccess.Seeds;
 using Microsoft.AspNetCore.Identity;

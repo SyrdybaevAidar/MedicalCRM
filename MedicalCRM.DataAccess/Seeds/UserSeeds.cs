@@ -15,6 +15,7 @@ namespace MedicalCRM.DataAccess.Seeds {
 
             await userManager.AddDoctorSeeds();
             await userManager.AddPatientSeeds(roleManager);
+            await userManager.AddAdminSeeds();
         }
         public static async Task AddPatientSeeds(this UserManager<User> userManager, RoleManager<IdentityRole<int>> roleManager) {
             string[] WSurname = new string[5] { "Окубаева", "Айылчиева", "Куприна", "Арокина", "Седокина"};
@@ -30,11 +31,12 @@ namespace MedicalCRM.DataAccess.Seeds {
                 await userManager.CreateAsync(
                     new PatientUser() {
                         Id = 3,
+                        CreateDateTime = DateTime.Now.ToUniversalTime(),
                         BirthDate = DateTime.Now,
                         Email = "asel.muzurotbek@gmail.com",
-                        Name = "Садыров",
-                        Surname = "Акмат",
-                        Patronimic = "Пациент",
+                        Name = "Акмат",
+                        Surname = "Садыров",
+                        Patronimic = "Кемелович",
                         Sex = Sex.Man,
                         UserName = "12512201810213",
                         DoctorUserId = 1
@@ -49,11 +51,12 @@ namespace MedicalCRM.DataAccess.Seeds {
                 await userManager.CreateAsync(
                     new PatientUser() {
                         Id = 4,
+                        CreateDateTime = DateTime.Now.ToUniversalTime(),
                         BirthDate = DateTime.Now,
                         Email = "asel.muzurotbek@gmail.com",
-                        Name = "Садыров",
-                        Surname = "Акмат",
-                        Patronimic = "Пациент",
+                        Name = "Бекназар",
+                        Surname = "Акматов",
+                        Patronimic = "Медерович",
                         Sex = Sex.Man,
                         UserName = "12512201810214",
                         DoctorUserId = 2
@@ -69,12 +72,13 @@ namespace MedicalCRM.DataAccess.Seeds {
                 await userManager.CreateAsync(
                     new DoctorUser() {
                         Id = 1,
+                        CreateDateTime = DateTime.Now.ToUniversalTime(),
                         BirthDate = DateTime.Now,
                         Email = "DoctorTestUser@mail.ru",
-                        Name = "Султанова",
-                        Surname = "Айгуль",
+                        Name = "Айгуль",
+                        Surname = "Султанова",
                         Patronimic = "Кубатовна",
-                        Sex = Sex.Man,
+                        Sex = Sex.Woman,
                         UserName = "AigulSultanovna",
                     }, "Test123!");
                 var user = await userManager.FindByNameAsync("AigulSultanovna");
@@ -86,17 +90,37 @@ namespace MedicalCRM.DataAccess.Seeds {
                 await userManager.CreateAsync(
                     new DoctorUser() {
                         Id = 2,
+                        CreateDateTime = DateTime.Now.ToUniversalTime(),
                         BirthDate = DateTime.Now,
                         Email = "DoctorTestUser1@mail.ru",
-                        Name = "Саткынова",
-                        Surname = "Канымкуль",
+                        Name = "Канымкуль",
+                        Surname = "Саткынова",
                         Patronimic = "Исраиловна",
-                        Sex = Sex.Man,
+                        Sex = Sex.Woman,
                         UserName = "KanymkylUsrailovna",
                     }, "Test123!");
 
                 var user = await userManager.FindByNameAsync("KanymkylUsrailovna");
                 await userManager.AddToRoleAsync(user, "Doctor");
+            }
+        }
+
+        public static async Task AddAdminSeeds(this UserManager<User> userManager) {
+            if ((await userManager.FindByNameAsync("Admin")) == null) {
+                await userManager.CreateAsync(
+                    new AdminUser() {
+                        Id = 5,
+                        CreateDateTime = DateTime.Now.ToUniversalTime(),
+                        BirthDate = DateTime.Now,
+                        Email = "AdminTestUser@mail.ru",
+                        Name = "Администратор",
+                        Surname = "",
+                        Patronimic = "",
+                        Sex = Sex.Man,
+                        UserName = "Admin",
+                    }, "Test123!");
+                var user = await userManager.FindByNameAsync("Admin");
+                await userManager.AddToRoleAsync(user, "Admin");
             }
         }
     }
