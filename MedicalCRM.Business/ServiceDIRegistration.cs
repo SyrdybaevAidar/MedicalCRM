@@ -27,6 +27,7 @@ namespace MedicalCRM.Business {
             services.AddScoped<IPatientService, PatientService>();
             services.AddScoped<IConsultationService, ConsultationService>();
             services.AddScoped<ICommonService, CommonService>();
+            services.AddScoped<IReceptService, ReceptService>();
         }
 
         public static async Task AddSeeds(this IServiceScope services) {

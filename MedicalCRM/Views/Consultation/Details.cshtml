@@ -87,11 +87,15 @@
 
     @if (user.UserType == MedicalCRM.DataAccess.Enums.UserType.Doctor) {
         @await Html.PartialAsync("AddMedicamentPartial", new MedicamentDTO(){ ReceptId = 1})
+        @Html.ActionLink("Отправить рецепт", "SendRecept","Patient", new {ReceptId = 1});
     }
 } else {
     if (user.UserType == MedicalCRM.DataAccess.Enums.UserType.Doctor) {
         <div>
         @Html.ActionLink("Создать рецепт", "Create", "Recept", new {consultationId = Model.ConsultationId});
+        </div>
+        <div>
+            
         </div>
     }
 }

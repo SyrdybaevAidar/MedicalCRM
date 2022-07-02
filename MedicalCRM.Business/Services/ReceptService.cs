@@ -37,6 +37,8 @@ namespace MedicalCRM.Business.Services {
 
         public async Task<Recept> GetById(int id) {
             return await _uow.Recepts.All.Where(i => i.Id == id)
+                .Include(i => i.Consultation).ThenInclude(i => i.Doctor)
+                .Include(i => i.Consultation).ThenInclude(i => i.Patient)
                 .Include(i => i.Medicaments)
                 .FirstOrDefaultAsync();
         }

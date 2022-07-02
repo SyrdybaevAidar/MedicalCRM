@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using GemBox.Document;
+using MedicalCRM.Business.Models;
 using MedicalCRM.Business.Services.Interfaces;
 using MedicalCRM.Extensions;
 using MedicalCRM.Models.ChatModels;
@@ -7,6 +8,7 @@ using MedicalCRM.Models.Patient;
 using MedicalCRM.Models.UserModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 namespace MedicalCRM.Controllers {
 
@@ -16,16 +18,18 @@ namespace MedicalCRM.Controllers {
         private readonly IPatientManager _patientManager;
         private readonly IPatientService _patientService;
         private readonly ICommonService _commonService;
+        private readonly IReceptService _receptService;
         private readonly IMapper _mapper;
 
-        public PatientController(IMapper mapper, IChatService chatService, IConsultationService consultationService, IPatientManager patientManager, IPatientService patientService, ICommonService commonService) {
-            
+        public PatientController(IMapper mapper, IChatService chatService, IConsultationService consultationService, IPatientManager patientManager, IPatientService patientService, ICommonService commonService, IReceptService receptService) {
+
             _mapper = mapper;
             _chatService = chatService;
             _consultationService = consultationService;
             _patientManager = patientManager;
             _patientService = patientService;
             _commonService = commonService;
+            _receptService = receptService;
         }
         [Authorize(Roles = "Patient")]
         [HttpGet]
@@ -33,7 +37,7 @@ namespace MedicalCRM.Controllers {
             var result = await _commonService.GetDoctors(CurrentUserId);
             var doctors = _mapper.Map<List<UserIndexViewModel>>(result);
             var consulations = await _consultationService.GetByDoctorId(CurrentUserId, 3);
-            return View(new PatientMainPageIndexModel() { Doctors = doctors , Consultations = _mapper.Map<List<ConsultationIndexModel>>(consulations) });
+            return View(new PatientMainPageIndexModel() { Doctors = doctors, Consultations = _mapper.Map<List<ConsultationIndexModel>>(consulations) });
         }
         [Authorize(Roles = "Patient")]
         [HttpPost]
@@ -69,25 +73,25 @@ namespace MedicalCRM.Controllers {
         }
 
         [HttpGet]
-        public async Task<IActionResult> SendRecept(int PatientId) {
-            ComponentInfo.SetLicense("FREE-LIMITED-KEY");
-            var user = await _patientManager.GetById(PatientId);
-            var htmlLoadOptions = new HtmlLoadOptions();
+        public async Task<IActionResult> SendRecept(int ReceptId) {
+            var recept = await _receptService.GetById(ReceptId);
+            var model = new ReceptFormViewModel();
+            model.Recept = recept;
+            model.User = _mapper.Map<UserDTO>(recept.Consultation.Patient);
+            model.Doctor = _mapper.Map<UserDTO>(recept.Consultation.Doctor);
+            var strings = await this.RenderViewToString("ReceptForm", model);
             var stream = new MemoryStream();
-            var strings = await this.RenderViewToString("ReceptForm", "Patient");
-            using (var htmlStream = new MemoryStream(htmlLoadOptions.Encoding.GetBytes(strings))) {
-
-                var document = DocumentModel.Load(htmlStream, htmlLoadOptions);
-                document.Save(stream, SaveOptions.PdfDefault);
-            }
-
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            var pdf = TheArtOfDev.HtmlRenderer.PdfSharp.PdfGenerator.GeneratePdf(strings, PdfSharp.PageSize.A4);
+            pdf.Save(stream);
+            var stream2 = new MemoryStream(stream.ToArray());
             var smtpClient = new System.Net.Mail.SmtpClient("smtp.mail.ru", 587);
             smtpClient.Credentials = new System.Net.NetworkCredential("medical_center_crm@mail.ru", "3V0mYsZcVtl71OCzrhCj");
             smtpClient.EnableSsl = true;
             var message = new System.Net.Mail.MailMessage("medical_center_crm@mail.ru", "aidar_1997_kg@mail.ru", "Тема", "Сообщение");
-            message.Attachments.Add(new System.Net.Mail.Attachment(stream, "recept.pdf"));
+            message.Attachments.Add(new System.Net.Mail.Attachment(stream2, "recept.pdf"));
             smtpClient.Send(message);
-            return RedirectToAction("Index","Doctor", PatientId);
+            return RedirectToAction("Details", "Patient", recept.Consultation.PatientId);
         }
 
         public async Task<IActionResult> ReceptForm() {

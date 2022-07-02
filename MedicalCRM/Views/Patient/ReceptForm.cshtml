@@ -1,4 +1,6 @@
-﻿@{
+﻿@model MedicalCRM.Models.Patient.ReceptFormViewModel;
+
+@{
     Layout = null;
 }
 
@@ -12,8 +14,6 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="fbody">
-    </div>
     <table class="table">
         <thead>
             <tr>
@@ -84,13 +84,9 @@
 
 
     <div>
-        <p>ФИО пациента </p>
-        <p>Возраст </p>
-        <p>ФИО семейного врача </p>
-    </div>
-
-    <body>
-    <div class="fbody">
+        <p>ФИО пациента - @Model.User.GetFullName()</p>
+        <p>Возраст @(DateTime.Now.Year - Model.User.BirthDate.Year)</p>
+        <p>ФИО семейного врача - @Model.Doctor.GetFullName()</p>
     </div>
     <table class="table">
         <thead>
@@ -101,20 +97,26 @@
                 <th>
                     Количество
                 <th>
-                    Заметки
+                    Рекомендации
                 </th>
 
             </tr>
         </thead>
         <tbody>
+            @foreach(var medicament in Model.Recept.Medicaments)
+            {
             <tr>
                 <td>
+                    @medicament.MedicamentName
                 </td>
                 <td>
+                    @medicament.Count
                 </td>
                 <td>
+                    @medicament.Note
                 </td>
             </tr>
+            }
         </tbody>
     </table>
 </body>
