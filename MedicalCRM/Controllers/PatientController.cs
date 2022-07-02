@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using GemBox.Document;
 using MedicalCRM.Business.Services.Interfaces;
+using MedicalCRM.Extensions;
 using MedicalCRM.Models.ChatModels;
 using MedicalCRM.Models.Patient;
 using MedicalCRM.Models.UserModels;
@@ -73,7 +74,8 @@ namespace MedicalCRM.Controllers {
             var user = await _patientManager.GetById(PatientId);
             var htmlLoadOptions = new HtmlLoadOptions();
             var stream = new MemoryStream();
-            using (var htmlStream = new MemoryStream(htmlLoadOptions.Encoding.GetBytes("<h1>Рецепт</h1>"))) {
+            var strings = await this.RenderViewToString("ReceptForm", "Patient");
+            using (var htmlStream = new MemoryStream(htmlLoadOptions.Encoding.GetBytes(strings))) {
 
                 var document = DocumentModel.Load(htmlStream, htmlLoadOptions);
                 document.Save(stream, SaveOptions.PdfDefault);
@@ -82,10 +84,14 @@ namespace MedicalCRM.Controllers {
             var smtpClient = new System.Net.Mail.SmtpClient("smtp.mail.ru", 587);
             smtpClient.Credentials = new System.Net.NetworkCredential("medical_center_crm@mail.ru", "3V0mYsZcVtl71OCzrhCj");
             smtpClient.EnableSsl = true;
-            var message = new System.Net.Mail.MailMessage("medical_center_crm@mail.ru", user.Email, "Тема", "Сообщение");
+            var message = new System.Net.Mail.MailMessage("medical_center_crm@mail.ru", "aidar_1997_kg@mail.ru", "Тема", "Сообщение");
             message.Attachments.Add(new System.Net.Mail.Attachment(stream, "recept.pdf"));
             smtpClient.Send(message);
             return RedirectToAction("Index","Doctor", PatientId);
+        }
+
+        public async Task<IActionResult> ReceptForm() {
+            return View();
         }
     }
 }
