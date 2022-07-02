@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace MedicalCRM.Business.Models {
     public class FilterResult {
-        public FilterResult(int totalItemCount, int page, List<UserDTO> users) {
+        public FilterResult(int totalItemCount, int page, List<UserDTO> users, int pageSize) {
             TotalItemCount = totalItemCount;
-            PageCount = totalItemCount / PageSize;
+            PageSize = pageSize;
+            PageCount = totalItemCount / pageSize + (totalItemCount % pageSize == 0 ? 0 : 1);
             PageCount = PageCount == 0 ? 1 : PageCount;
             Users = users;
             Page = page;

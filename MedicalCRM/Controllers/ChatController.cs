@@ -35,7 +35,9 @@ namespace MedicalCRM.Controllers {
             var patientId = userType == UserType.Patient ? CurrentUserId : receiverId;
             var chat = await _chatService.CreateOrGetChatAsyncOr(patientId, doctorId);
             var receiverName = CurrentUserId == chat.PatientUser.Id ? chat.DoctorUser.UserName : chat.PatientUser.UserName;
-            var senderName = CurrentUserId != chat.PatientUser.Id ? chat.DoctorUser.UserName : chat.PatientUser.UserName;
+            var senderName = CurrentUserId == chat.PatientUser.Id ? chat.DoctorUser.UserName : chat.PatientUser.UserName;
+            var receiverFullName = CurrentUserId == chat.PatientUser.Id ? chat.DoctorUser.GetFullName() : chat.PatientUser.GetFullName();
+            var senderFullName = CurrentUserId == chat.PatientUser.Id ? chat.DoctorUser.GetFullName() : chat.PatientUser.GetFullName();
             if (chat.Messages.Count() > 0) {
                 chat.Messages = chat.Messages.Select(i => {
                     i.IsCurrentUserMessage = i.UserId == CurrentUserId;
@@ -43,7 +45,7 @@ namespace MedicalCRM.Controllers {
                 }).ToList();
             }
 
-            return View("Private2", new PrivateChatModel(senderName, receiverName) { Messages = chat.Messages });
+            return View("Private2", new PrivateChatModel(senderName, receiverName, senderFullName, receiverFullName) { Messages = chat.Messages });
         }
 
         private async Task<IActionResult> Create(int receiveUserId) {

@@ -14,7 +14,6 @@
 }
 
 .chat-app .people-list {
-    width: 280px;
     position: absolute;
     left: 0;
     top: 0;
@@ -22,10 +21,6 @@
     z-index: 7
 }
 
-.chat-app .chat {
-    margin-left: 280px;
-    border-left: 1px solid #eaeaea
-}
 
 .people-list {
     -moz-transition: .5s;

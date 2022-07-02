@@ -1,8 +1,12 @@
 ﻿@using MedicalCRM.Business.Models
-@model MedicalCRM.Models.Patient.ConsultationViewModel
+@model MedicalCRM.Models.Patient.ConsultationViewModel;
+@using MedicalCRM.DataAccess.Entities.UserEntities;
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> userManager;
 
 @{
     ViewData["Title"] = "View";
+    var user = await userManager.FindByNameAsync(User.Identity.Name);
 }
 
 <h1>View</h1>
@@ -80,9 +84,16 @@
             }
         </tbody>
     </table>
-    
+
+    @if (user.UserType == MedicalCRM.DataAccess.Enums.UserType.Doctor) {
+        @await Html.PartialAsync("AddMedicamentPartial", new MedicamentDTO(){ ReceptId = 1})
+    }
 } else {
-    @await Html.PartialAsync("AddMedicamentPartial", new MedicamentDTO(){ ReceptId = 1});
+    if (user.UserType == MedicalCRM.DataAccess.Enums.UserType.Doctor) {
+        <div>
+        @Html.ActionLink("Создать рецепт", "Create", "Recept", new {consultationId = Model.ConsultationId});
+        </div>
+    }
 }
 
 <div>

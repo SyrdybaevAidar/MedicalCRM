@@ -16,7 +16,7 @@ namespace MedicalCRM.Business.Services {
         }
         public async Task<FilterResult> GetDoctors(PatientFilterDTO patient) {
             var users = await _uow.Doctors.GetFilteredPatientsQuery(_mapper.Map<UserFilterView>(patient));
-            return new(users.Count, patient.Page, _mapper.Map<List<UserDTO>>(users.Users));
+            return new(users.Count, patient.Page, _mapper.Map<List<UserDTO>>(users.Users), patient.PageSize);
         }
 
         public async Task<List<BloodTypeDTO>> BloodTypes() {
@@ -28,7 +28,7 @@ namespace MedicalCRM.Business.Services {
         }
 
         public async Task<List<UserDTO>> GetNewDoctors() {
-            var patients = await _uow.Patients.All.OrderByDescending(i => i.CreateDateTime).Take(5).ToListAsync();
+            var patients = await _uow.Doctors.All.OrderByDescending(i => i.CreateDateTime).Take(5).ToListAsync();
             return _mapper.Map<List<UserDTO>>(patients);
         }
 
@@ -48,7 +48,7 @@ namespace MedicalCRM.Business.Services {
                 .Take(filter.PageSize)
                 .ToListAsync();
             var usersDto = _mapper.Map<List<UserDTO>>(users);
-            return new(count, filter.Page, usersDto);
+            return new(count, filter.Page, usersDto, filter.PageSize);
         }
 
         public async Task<List<UserDTO>> GetDoctors(int patientId) {

@@ -18,8 +18,9 @@ namespace MedicalCRM.Controllers {
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> Details(int consulationId) {
-            var dto = await _consultationService.GetConsultationById(consulationId);
+        public async Task<IActionResult> Details(int consultationId) {
+            var user = User;
+            var dto = await _consultationService.GetConsultationById(consultationId);
             var model = _mapper.Map<ConsultationViewModel>(dto);
             return View(model);
         }
@@ -51,8 +52,8 @@ namespace MedicalCRM.Controllers {
 
         [Authorize(Roles = "Doctor")]
         [HttpGet]
-        public async Task<IActionResult> Update(int consulationId) {
-            var dto = await _consultationService.GetConsultationById(consulationId);
+        public async Task<IActionResult> Update(int consultationId) {
+            var dto = await _consultationService.GetConsultationById(consultationId);
             var model = _mapper.Map<ConsultationViewModel>(dto);
             return View(model);
         }

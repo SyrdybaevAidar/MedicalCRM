@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using MedicalCRM.Models;
 using MedicalCRM.Models.Pagination;
 using MedicalCRM.DataAccess.Enums;
+using MedicalCRM.DataAccess.Static;
 
 namespace MedicalCRM.Controllers {
     [Authorize(Roles = "Doctor")]
@@ -19,14 +20,15 @@ namespace MedicalCRM.Controllers {
         private readonly IPatientManager _patientService;
         private readonly IMapper _mapper;
         private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment;
-        public DoctorController(IDoctorService doctorService, IMapper mapper, ICommonService commonService, IConsultationService consultationService, IPatientManager patientManager, Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment) {
+        private readonly IChatService _chatService;
+        public DoctorController(IDoctorService doctorService, IMapper mapper, ICommonService commonService, IConsultationService consultationService, IPatientManager patientManager, Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment, IChatService chatService) {
             _mapper = mapper;
             _doctorService = doctorService;
             _commonService = commonService;
             _consultationService = consultationService;
             _patientService = patientManager;
             _hostingEnvironment = hostingEnvironment;
-
+            _chatService = chatService;
         }
 
         [HttpGet]
@@ -50,6 +52,12 @@ namespace MedicalCRM.Controllers {
         }
 
         [HttpGet]
+        public async Task<IActionResult> Chats() {
+            var dtos = await _chatService.GetChatByDoctorId(CurrentUserId);
+            return View(dtos);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Patients(PatientFilterDTO filterDTO) {
             try {
                 var filterResult = await _commonService.GetPatients(filterDTO);
@@ -64,6 +72,7 @@ namespace MedicalCRM.Controllers {
         [HttpGet]
         public async Task<IActionResult> CreatePatient() {
             var bloodTypes = await _commonService.BloodTypes();
+            ViewBag.Sex = new SelectList(EnumsExtensions.GetSexLookUpItem(), "Key", "Value");
             ViewBag.BloodTypes = new SelectList(bloodTypes, "Id", "Name");
             return View("Register", new PatientRegisterViewModel());
         }
@@ -93,6 +102,7 @@ namespace MedicalCRM.Controllers {
             var patient = await _patientService.GetById(patientId);
             var result = _mapper.Map<PatientUpdateViewModel>(patient);
             var bloodTypes = await _commonService.BloodTypes();
+            ViewBag.Sex = new SelectList(EnumsExtensions.GetSexLookUpItem(), "Key", "Value");
             ViewBag.BloodTypes = new SelectList(bloodTypes, "Id", "Name");
             return View("Update", result);
         }

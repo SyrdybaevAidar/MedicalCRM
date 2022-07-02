@@ -14,5 +14,8 @@ namespace MedicalCRM.Business.Models {
         public int BloodTypeId { get; set; }
         public string Address { get; set; }
         public int DoctorUserId { get; set; }
+        public string GetFullName() {
+            return $"{Surname} {Name} {Patronimic}";
+        }
     }
 }

@@ -1,0 +1,42 @@
+﻿@model IEnumerable<MedicalCRM.Business.Models.ChatDTO>
+
+@{
+    ViewData["Title"] = "Chat";
+}
+
+<h1>Chat</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Пациент
+            </th>
+            <th>
+                Последнее сообщение
+            </th>
+            <th>
+                Действия
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @item.PatientUser.GetFullName()
+                </td>
+                <td>
+                    @{var text = item.Messages.Count() > 0 ? item.Messages.First().Text : null; }
+                    @Html.DisplayFor(modelItem => text);
+                </td>
+                <td>
+                    @Html.ActionLink("Открыть чат", "Private", "Chat", new { ReceiverId = item.PatientUser.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

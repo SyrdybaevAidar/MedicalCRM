@@ -32,13 +32,14 @@ namespace MedicalCRM.Controllers {
         }
 
         public async Task<IActionResult> AddMedicament(MedicamentDTO model) {
-            var entity = new ReceptByMedicament() { ReceptId = model.ReceptId, MedicamentName = model.MedicamentName, Count = model.Count };
+            var entity = new ReceptByMedicament() { ReceptId = model.ReceptId, MedicamentName = model.MedicamentName, Count = model.Count, Note = model.Note };
             var recept = await _uow.Recepts.GetByIdAsync(model.ReceptId);
             if (recept == null) {
                 return BadRequest("Не существующая консультация");
             }
             await _uow.ReceptByMedicaments.InsertAsync(entity);
-            return RedirectToAction("Details", "Consultation", recept.Id);
+            await _uow.SaveChangesAsync();
+            return RedirectToAction("Details", "Consultation", new { consultationId = recept.ConsultationId });
         }
     }
 }

@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using MedicalCRM.Business.Models;
 using MedicalCRM.Business.Services.Interfaces;
+using MedicalCRM.DataAccess.Static;
 using MedicalCRM.Models.Admin;
 using MedicalCRM.Models.Pagination;
 using MedicalCRM.Models.UserModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MedicalCRM.Controllers {
     [Authorize(Roles = "Admin")]
@@ -22,11 +24,13 @@ namespace MedicalCRM.Controllers {
 
         [HttpGet]
         public async Task<IActionResult> DoctorRegister() {
+            ViewBag.Sex = new SelectList(EnumsExtensions.GetSexLookUpItem(), "Key", "Value");
             return View(new UserRegistrationViewModel());
         }
 
         [HttpPost]
         public async Task<IActionResult> DoctorRegister(UserRegistrationViewModel model) {
+            ViewBag.Sex = new SelectList(EnumsExtensions.GetSexLookUpItem(), "Key", "Value");
             var dto = _mapper.Map<UserDTO>(model);
             await _doctorManager.RegisterAsync(dto);
             return View("Index");
@@ -54,7 +58,7 @@ namespace MedicalCRM.Controllers {
         // GET: AdminController
         public async Task<ActionResult> Index() {
             var result = new AdminPageViewModel();
-            result.LastPatients = await _commonService.GetNewPatients();
+            result.LastPatients = await _commonService.GetNewDoctors();
             result.LastDoctors = await _commonService.GetNewPatients();
             return View(result);
         }

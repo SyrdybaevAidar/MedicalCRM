@@ -21,7 +21,7 @@ namespace MedicalCRM.DataAccess {
             }
             set { _page = value; }
         }
-        public int PageSize => 1;
+        public int PageSize { get; set; }
         public int TotalItem { get; set; }
     }
 }

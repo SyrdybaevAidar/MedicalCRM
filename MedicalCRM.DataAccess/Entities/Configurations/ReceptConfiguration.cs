@@ -15,7 +15,7 @@ namespace MedicalCRM.DataAccess.Entities.Configurations {
 
             builder.HasMany(x => x.Medicaments)
                 .WithOne(x => x.Recept)
-                .HasForeignKey(x => x.Id)
+                .HasForeignKey(x => x.ReceptId)
                 .OnDelete(DeleteBehavior.SetNull);
         }
     }
