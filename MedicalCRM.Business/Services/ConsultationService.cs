@@ -36,6 +36,7 @@ namespace MedicalCRM.Business.Services {
             var entity = await _uow.Consultations.All
                 .Include(i => i.Doctor)
                 .Include(i => i.Patient)
+                .Include(i => i.Recept).ThenInclude(i => i.Medicaments)
                 .Where(i => i.Id == Id)
                 .FirstOrDefaultAsync();
             return _mapper.Map<ConsultationDTO>(entity);

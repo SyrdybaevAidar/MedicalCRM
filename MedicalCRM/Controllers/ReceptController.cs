@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MedicalCRM.Business.Models;
 using MedicalCRM.Business.UOWork;
 using MedicalCRM.DataAccess.Entities;
 using MedicalCRM.Models;
@@ -30,8 +31,14 @@ namespace MedicalCRM.Controllers {
             return View(recept);
         }
 
-        public async Task<IActionResult> AddMedicament(MedicamentCreateViewModel model) {
-            return RedirectToAction("Details", model.Id);
+        public async Task<IActionResult> AddMedicament(MedicamentDTO model) {
+            var entity = new ReceptByMedicament() { ReceptId = model.ReceptId, MedicamentName = model.MedicamentName, Count = model.Count };
+            var recept = await _uow.Recepts.GetByIdAsync(model.ReceptId);
+            if (recept == null) {
+                return BadRequest("Не существующая консультация");
+            }
+            await _uow.ReceptByMedicaments.InsertAsync(entity);
+            return RedirectToAction("Details", "Consultation", recept.Id);
         }
     }
 }

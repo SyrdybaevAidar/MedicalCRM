@@ -1,4 +1,5 @@
-﻿@model MedicalCRM.Models.Patient.ConsultationViewModel
+﻿@using MedicalCRM.Business.Models
+@model MedicalCRM.Models.Patient.ConsultationViewModel
 
 @{
     ViewData["Title"] = "View";
@@ -10,40 +11,81 @@
     <h4>Подоброно о консультации</h4>
     <hr />
     <dl class="row">
-        </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DoctorName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DoctorName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PatientName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PatientName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Recommendations)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Recommendations)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Date)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Date)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Диагноз
         </dt>
-        <dd class = "col-sm-10">
-           @Html.DisplayFor(model => model.Diseases)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Diseases)
         </dd>
     </dl>
 </div>
+@if (Model.Recept != null) {
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Препарат
+                </th>
+                <th>
+                    Количество
+                </th>
+                <th>
+                    Заметки
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var medicament in Model.Recept.Medicaments) {
+                <tr>
+                    <td>
+                        @medicament.MedicamentName
+                    </td>
+                    <td>
+                        @medicament.Count
+                    </td>
+                    <td>
+                        @medicament.Note
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+    
+} else {
+    @await Html.PartialAsync("AddMedicamentPartial", new MedicamentDTO(){ ReceptId = 1});
+}
+
 <div>
-    @Html.ActionLink("Редактировать", "Update", new { consultationId = Model.ConsultationId}) |
+    @Html.ActionLink("Редактировать", "Update", new { consultationId = Model.ConsultationId})
     <a asp-action="Index" asp-controller="Doctor">Вернуться обратно</a>
 </div>

@@ -16,5 +16,6 @@ namespace MedicalCRM.Models.Patient {
         public string Recommendations { get; set; }
         [Display(Name = "Дата приема")]
         public DateTime Date { get; set; }
+        public Recept Recept { get; set; }
     }
 }
