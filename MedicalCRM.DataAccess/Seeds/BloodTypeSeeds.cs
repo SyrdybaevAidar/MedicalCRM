@@ -28,19 +28,19 @@ namespace MedicalCRM.DataAccess.Seeds {
                     Name = "4-положительная"
                 },
                 new(){
-                    Id = 1,
+                    Id = 5,
                     Name = "1-отрицательная"
                 },
                 new(){
-                    Id = 2,
+                    Id = 6,
                     Name = "2-отрицательная"
                 },
                 new(){
-                    Id = 3,
+                    Id = 7,
                     Name = "3-отрицательная"
                 },
                 new(){
-                    Id = 4,
+                    Id = 8,
                     Name = "4-отрицательная"
                 }
             });

@@ -31,13 +31,10 @@ namespace MedicalCRM.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("RhesusFactore")
-                        .HasColumnType("int")
-                        .HasColumnName("rhesus_factore");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int")
-                        .HasColumnName("type");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar")
+                        .HasColumnName("name");
 
                     b.HasKey("Id");
 
@@ -47,26 +44,42 @@ namespace MedicalCRM.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            RhesusFactore = 0,
-                            Type = 1
+                            Name = "1-положительная"
                         },
                         new
                         {
                             Id = 2,
-                            RhesusFactore = 0,
-                            Type = 2
+                            Name = "2-положительная"
                         },
                         new
                         {
                             Id = 3,
-                            RhesusFactore = 0,
-                            Type = 3
+                            Name = "3-положительная"
                         },
                         new
                         {
                             Id = 4,
-                            RhesusFactore = 0,
-                            Type = 4
+                            Name = "4-положительная"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "1-отрицательная"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "2-отрицательная"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "3-отрицательная"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "4-отрицательная"
                         });
                 });
 

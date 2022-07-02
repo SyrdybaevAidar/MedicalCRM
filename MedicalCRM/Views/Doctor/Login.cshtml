@@ -1,23 +1,31 @@
-﻿@model MedicalCRM.Models.UserModels.UserAuthorizationViewModel
-
-<h2>Вход в приложение</h2>
-<form method="post" asp-controller="Doctor" asp-action="Login">
-    <div asp-validation-summary="ModelOnly"></div>
-    <div>
-        <label asp-for="UserName"></label><br />
-        <input asp-for="UserName" />
-        <span asp-validation-for="UserName"></span>
+﻿@model MedicalCRM.Models.UserModels.UserAuthorizationViewModel;
+<div class="container d-flex justify-content-around align-items-center pt-5 mt-5">
+    <div class="form-container d-flex align-items-center justify-content-around col-6 mt-5 pt-5">
+        <form class="col-8 bg-white rounded-3 p-5" method="post">
+            <h2>Авторизация</h2>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-floating">
+                <input asp-for="UserName" class="form-control" autocomplete="username" aria-required="true" />
+                <label asp-for="UserName" class="form-label"></label>
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mt-5">
+                <input asp-for="Password" class="form-control" autocomplete="current-password" aria-required="true" />
+                <label asp-for="Password" class="form-label"></label>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="mt-5">
+                <div class="checkbox">
+                    <label asp-for="RememberMe" class="form-label">
+                        <input class="form-check-input" asp-for="RememberMe" />
+                        @Html.DisplayNameFor(m => m.RememberMe)
+                    </label>
+                </div>
+            </div>
+            <div>
+                <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Авторизоваться</button>
+            </div>
+        </form>
     </div>
-    <div>
-        <label asp-for="Password"></label><br />
-        <input asp-for="Password" />
-        <span asp-validation-for="Password"></span>
-    </div>
-    <div>
-        <label asp-for="RememberMe"></label><br />
-        <input asp-for="RememberMe" />
-    </div>
-    <div>
-        <input type="submit" value="Войти" />
-    </div>
-</form>
+</div>

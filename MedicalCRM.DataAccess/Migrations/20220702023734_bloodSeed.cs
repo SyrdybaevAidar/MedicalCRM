@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MedicalCRM.DataAccess.Migrations
 {
-    public partial class initialmigration : Migration
+    public partial class bloodSeed : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -31,8 +31,7 @@ namespace MedicalCRM.DataAccess.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    type = table.Column<int>(type: "int", nullable: false),
-                    rhesus_factore = table.Column<int>(type: "int", nullable: false)
+                    name = table.Column<string>(type: "varchar", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -105,6 +104,8 @@ namespace MedicalCRM.DataAccess.Migrations
                     Patronimic = table.Column<string>(type: "text", nullable: false),
                     birth_date = table.Column<DateTime>(type: "TIMESTAMP", nullable: false),
                     user_type = table.Column<string>(type: "varchar(10)", nullable: false),
+                    CreateDateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     doctor_details_id = table.Column<int>(type: "int", nullable: true),
                     Image = table.Column<byte[]>(type: "bytea", nullable: true),
                     blood_type_id = table.Column<int>(type: "int", nullable: true),
@@ -361,13 +362,17 @@ namespace MedicalCRM.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "blood_type",
-                columns: new[] { "id", "rhesus_factore", "type" },
+                columns: new[] { "id", "name" },
                 values: new object[,]
                 {
-                    { 1, 0, 1 },
-                    { 2, 0, 2 },
-                    { 3, 0, 3 },
-                    { 4, 0, 4 }
+                    { 1, "1-положительная" },
+                    { 2, "2-положительная" },
+                    { 3, "3-положительная" },
+                    { 4, "4-положительная" },
+                    { 5, "1-отрицательная" },
+                    { 6, "2-отрицательная" },
+                    { 7, "3-отрицательная" },
+                    { 8, "4-отрицательная" }
                 });
 
             migrationBuilder.CreateIndex(

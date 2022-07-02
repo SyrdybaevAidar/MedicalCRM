@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MedicalCRM.Models;
 using MedicalCRM.Models.Pagination;
+using MedicalCRM.DataAccess.Enums;
 
 namespace MedicalCRM.Controllers {
     [Authorize(Roles = "Doctor")]
@@ -73,6 +74,7 @@ namespace MedicalCRM.Controllers {
                 var user = _mapper.Map<UserDTO>(model);
                 user.Password = "Test123!";
                 user.DoctorUserId = CurrentUserId;
+                //user.BirthDate = user.BirthDate.ToUniversalTime();
                 var result = await _patientService.RegisterAsync(user);
 
                 if (result.Succeeded) {
@@ -125,6 +127,34 @@ namespace MedicalCRM.Controllers {
         [HttpPost]
         public async Task<IActionResult> AddPhoto(AddPhotoViewModel model) {
             return RedirectToAction("AddPhoto", model);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> Login() {
+            return View(new UserAuthorizationViewModel());
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> Login(UserAuthorizationViewModel model) {
+
+            if (ModelState.IsValid) {
+                var user = _mapper.Map<UserDTO>(model);
+                var result = await _patientService.LoginAsync(user, model.RememberMe);
+                if (result == UserType.Admin) {
+                    return RedirectToAction("Index", "Admin");
+                }
+                if (result == UserType.Doctor) {
+                    return RedirectToAction("Index", "Doctor");
+                }
+
+            } else {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return View();
+                }
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            return View();
         }
     }
 }

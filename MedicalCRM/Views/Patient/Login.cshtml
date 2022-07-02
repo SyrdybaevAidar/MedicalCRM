@@ -1,11 +1,11 @@
 ﻿
 @model MedicalCRM.Models.Patient.PatientLoginViewModel;
 
-<div class="row">
-    <div class="col-md-4">
+<div class="container d-flex justify-content-around align-items-center pt-5 mt-5">
+    <div class="form-container d-flex align-items-center justify-content-around col-6 mt-5 pt-5">
         <section>
             <form id="account" method="post">
-                <h2>Авторизация</h2>
+                <h2>Вход в кабинет пациента</h2>
                 <hr />
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-floating">
@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Войти</button>
                 </div>
             </form>
         </section>

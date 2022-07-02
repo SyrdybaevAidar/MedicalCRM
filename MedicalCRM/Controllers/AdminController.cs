@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MedicalCRM.Business.Models;
 using MedicalCRM.Business.Services.Interfaces;
+using MedicalCRM.Models.Admin;
 using MedicalCRM.Models.Pagination;
 using MedicalCRM.Models.UserModels;
 using Microsoft.AspNetCore.Authorization;
@@ -51,8 +52,11 @@ namespace MedicalCRM.Controllers {
         }
 
         // GET: AdminController
-        public ActionResult Index() {
-            return View();
+        public async Task<ActionResult> Index() {
+            var result = new AdminPageViewModel();
+            result.LastPatients = await _commonService.GetNewPatients();
+            result.LastDoctors = await _commonService.GetNewPatients();
+            return View(result);
         }
     }
 }

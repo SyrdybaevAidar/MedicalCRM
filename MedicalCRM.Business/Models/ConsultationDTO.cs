@@ -16,5 +16,6 @@ namespace MedicalCRM.Business.Models {
         public string Recommendations { get; set; }
         public DateTime Date { get; set; }
         public string Complaints { get; set; }
+        public ReceptDTO recept { get; set; }
     }
 }

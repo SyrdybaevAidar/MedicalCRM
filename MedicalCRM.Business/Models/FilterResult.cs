@@ -9,6 +9,7 @@ namespace MedicalCRM.Business.Models {
         public FilterResult(int totalItemCount, int page, List<UserDTO> users) {
             TotalItemCount = totalItemCount;
             PageCount = totalItemCount / PageSize;
+            PageCount = PageCount == 0 ? 1 : PageCount;
             Users = users;
             Page = page;
         }

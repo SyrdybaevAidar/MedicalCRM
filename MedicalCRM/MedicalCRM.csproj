@@ -34,8 +34,4 @@
     <ProjectReference Include="..\MedicalCRM.Business\MedicalCRM.Business.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Recept\" />
-  </ItemGroup>
-
 </Project>

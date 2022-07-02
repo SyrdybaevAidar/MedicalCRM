@@ -39,7 +39,7 @@ app.MapHub<ChatHub>("/chatHub");
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}");
+    pattern: "{controller=Patient}/{action=Login}");
 app.MapDefaultControllerRoute();
 app.MapRazorPages();
 
