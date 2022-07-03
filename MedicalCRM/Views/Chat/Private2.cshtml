@@ -19,9 +19,9 @@
                          @foreach (var message in Model.Messages) {
                             <li class="clearfix">
                             @if(message.IsCurrentUserMessage){
-                            <div class="message my-message float-right"> @message.Text </div>
+                            <div class="message my-message float-right"> @message.Text @message.SendDate.ToShortTimeString()</div>
                                 } else {
-                            <div class="message other-message float-left"> @message.Text </div>
+                            <div class="message other-message float-left"> @message.Text @message.SendDate.ToShortTimeString()</div>
                                 }
                              </li>
 
