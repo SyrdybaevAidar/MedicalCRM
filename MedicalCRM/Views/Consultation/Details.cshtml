@@ -94,17 +94,17 @@
 
     @if (user.UserType == MedicalCRM.DataAccess.Enums.UserType.Doctor) {
         @await Html.PartialAsync("AddMedicamentPartial", new MedicamentDTO(){ ReceptId = Model.Recept.Id})
-        @Html.ActionLink("Отправить рецепт", "SendRecept","Patient", new { ReceptId = Model.Recept.Id}, new {@class = "btn btn-primary"});
+        @Html.ActionLink("Отправить рецепт", "SendRecept","Patient", new { ReceptId = Model.Recept.Id}, new {@class = "btn btn-primary"})
     }
 } else {
     if (user.UserType == MedicalCRM.DataAccess.Enums.UserType.Doctor) {
         <div>
-        @Html.ActionLink("Создать рецепт", "Create", "Recept", new {consultationId = Model.ConsultationId}, new {@class = "btn btn-primary"});
+        @Html.ActionLink("Создать рецепт", "Create", "Recept", new {consultationId = Model.ConsultationId}, new {@class = "btn btn-primary"})
         </div>
     }
 }
 
 <div>
     @Html.ActionLink("Редактировать", "Update", new { consultationId = Model.ConsultationId})
-    <a asp-action="Index" asp-controller="Doctor">Вернуться обратно</a>
+    <a asp-action="Index" asp-controller="Doctor"  class1="btn btn-primary">Вернуться обратно</a>
 </div>
