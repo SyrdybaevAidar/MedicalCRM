@@ -21,7 +21,7 @@ namespace MedicalCRM.Business.Services {
 
         public async Task AddConsultation(ConsultationDTO dto) {
             var entity = _mapper.Map<Consultation>(dto);
-            entity.Diesases = dto.Diseases;
+            entity.Diseases = dto.Diseases;
             var result = await _uow.Consultations.InsertAsync(entity);
             await _uow.SaveChangesAsync();
         }

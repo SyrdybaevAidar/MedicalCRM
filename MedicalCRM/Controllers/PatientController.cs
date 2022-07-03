@@ -8,6 +8,7 @@ using MedicalCRM.Models.Patient;
 using MedicalCRM.Models.UserModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PdfSharp.Pdf;
 using System.Text;
 
 namespace MedicalCRM.Controllers {
@@ -51,7 +52,7 @@ namespace MedicalCRM.Controllers {
             var dto = await _patientService.GetPatient(patientId);
             return View("Details", _mapper.Map<PatientDetailsViewModel>(dto));
         }
-        [Authorize(Roles = "Patient")]
+        [Authorize(Roles = "Patient, Doctor")]
         [HttpGet]
         public async Task<IActionResult> Details() {
             var dto = await _patientService.GetPatient(CurrentUserId);
@@ -73,8 +74,8 @@ namespace MedicalCRM.Controllers {
         }
 
         [HttpGet]
-        public async Task<IActionResult> SendRecept(int ReceptId) {
-            var recept = await _receptService.GetById(ReceptId);
+        public async Task<IActionResult> SendRecept(int receptId) {
+            var recept = await _receptService.GetById(receptId);
             var model = new ReceptFormViewModel();
             model.Recept = recept;
             model.User = _mapper.Map<UserDTO>(recept.Consultation.Patient);
@@ -88,14 +89,30 @@ namespace MedicalCRM.Controllers {
             var smtpClient = new System.Net.Mail.SmtpClient("smtp.mail.ru", 587);
             smtpClient.Credentials = new System.Net.NetworkCredential("medical_center_crm@mail.ru", "3V0mYsZcVtl71OCzrhCj");
             smtpClient.EnableSsl = true;
-            var message = new System.Net.Mail.MailMessage("medical_center_crm@mail.ru", "aidar_1997_kg@mail.ru", "Тема", "Сообщение");
+            var message = new System.Net.Mail.MailMessage("medical_center_crm@mail.ru", model.User.Email, $"Рецепт от: {model.Doctor.GetFullName()}", "Доктор назначил ваш рецептуру, подробно с ней можно ознакомиться в документе ниже") ;
             message.Attachments.Add(new System.Net.Mail.Attachment(stream2, "recept.pdf"));
             smtpClient.Send(message);
-            return RedirectToAction("Details", "Patient", recept.Consultation.PatientId);
+            return RedirectToAction("Details", "Consultation", new {consultationId = recept.ConsultationId } );
         }
 
         public async Task<IActionResult> ReceptForm() {
             return View();
+        }
+
+        public string CssText() {
+            return @"        
+        .header{
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .header-item1{
+            max-width: 200px;
+        }
+
+        .header-item2{
+            max-width: 200px;
+        }";
         }
     }
 }

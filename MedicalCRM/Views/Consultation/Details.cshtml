@@ -45,6 +45,12 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Diseases)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Complaints)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Complaints)
+        </dd>
     </dl>
 </div>
 @if (Model.Recept != null) {
@@ -86,8 +92,8 @@
     </table>
 
     @if (user.UserType == MedicalCRM.DataAccess.Enums.UserType.Doctor) {
-        @await Html.PartialAsync("AddMedicamentPartial", new MedicamentDTO(){ ReceptId = 1})
-        @Html.ActionLink("Отправить рецепт", "SendRecept","Patient", new {ReceptId = 1});
+        @await Html.PartialAsync("AddMedicamentPartial", new MedicamentDTO(){ ReceptId = Model.Recept.Id})
+        @Html.ActionLink("Отправить рецепт", "SendRecept","Patient", new { ReceptId = Model.Recept.Id});
     }
 } else {
     if (user.UserType == MedicalCRM.DataAccess.Enums.UserType.Doctor) {

@@ -1,5 +1,4 @@
-﻿
-@model MedicalCRM.Models.Patient.PatientLoginViewModel;
+﻿@model MedicalCRM.Models.Patient.PatientLoginViewModel;
 
 <div class="container d-flex justify-content-around align-items-center pt-5 mt-5">
     <div class="form-container d-flex align-items-center justify-content-around col-6 mt-5 pt-5">
@@ -23,6 +22,9 @@
                 </div>
                 <div>
                     <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Войти</button>
+                </div>
+                <div>
+                    <a asp-controller="Doctor" asp-action="Login"> Вы доктор? </a>
                 </div>
             </form>
         </section>

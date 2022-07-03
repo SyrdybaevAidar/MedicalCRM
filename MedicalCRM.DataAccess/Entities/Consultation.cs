@@ -12,9 +12,10 @@ namespace MedicalCRM.DataAccess.Entities {
         public int? DoctorId { get; set; }
         public DoctorUser Doctor {get;set;}
         public int? PatientId { get; set; }
-        public PatientUser Patient { get; set; } 
-        public string Diesases { get; set; }
+        public PatientUser Patient { get; set; }
+        public string Diseases { get; set; }
         public DateTime Date { get; set; }
+        public string? Complaints { get; set; }
         public string Recommendations { get; set; }
         public Recept Recept { get; set; }
     }

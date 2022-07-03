@@ -68,6 +68,12 @@
                 Дата
             </th>
             <th>
+                Жалоба
+            </th>
+            <th>
+                Рекомендации
+            </th>
+            <th>
                 Диагноз
             </th>
         </tr>
@@ -77,6 +83,12 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Complaints)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Recommendations)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Diseases)
