@@ -75,24 +75,29 @@ namespace MedicalCRM.Controllers {
 
         [HttpGet]
         public async Task<IActionResult> SendRecept(int receptId) {
-            var recept = await _receptService.GetById(receptId);
-            var model = new ReceptFormViewModel();
-            model.Recept = recept;
-            model.User = _mapper.Map<UserDTO>(recept.Consultation.Patient);
-            model.Doctor = _mapper.Map<UserDTO>(recept.Consultation.Doctor);
-            var strings = await this.RenderViewToString("ReceptForm", model);
-            var stream = new MemoryStream();
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            var pdf = TheArtOfDev.HtmlRenderer.PdfSharp.PdfGenerator.GeneratePdf(strings, PdfSharp.PageSize.A4);
-            pdf.Save(stream);
-            var stream2 = new MemoryStream(stream.ToArray());
-            var smtpClient = new System.Net.Mail.SmtpClient("smtp.mail.ru", 587);
-            smtpClient.Credentials = new System.Net.NetworkCredential("medical_center_crm@mail.ru", "3V0mYsZcVtl71OCzrhCj");
-            smtpClient.EnableSsl = true;
-            var message = new System.Net.Mail.MailMessage("medical_center_crm@mail.ru", model.User.Email, $"Рецепт от: {model.Doctor.GetFullName()}", "Доктор назначил ваш рецептуру, подробно с ней можно ознакомиться в документе ниже") ;
-            message.Attachments.Add(new System.Net.Mail.Attachment(stream2, "recept.pdf"));
-            smtpClient.Send(message);
-            return RedirectToAction("Details", "Consultation", new {consultationId = recept.ConsultationId } );
+
+            try {
+                var recept = await _receptService.GetById(receptId);
+                var model = new ReceptFormViewModel();
+                model.Recept = recept;
+                model.User = _mapper.Map<UserDTO>(recept.Consultation.Patient);
+                model.Doctor = _mapper.Map<UserDTO>(recept.Consultation.Doctor);
+                var strings = await this.RenderViewToString("ReceptForm", model);
+                var stream = new MemoryStream();
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+                var pdf = TheArtOfDev.HtmlRenderer.PdfSharp.PdfGenerator.GeneratePdf(strings, PdfSharp.PageSize.A4);
+                pdf.Save(stream);
+                var stream2 = new MemoryStream(stream.ToArray());
+                var smtpClient = new System.Net.Mail.SmtpClient("smtp.mail.ru", 587);
+                smtpClient.Credentials = new System.Net.NetworkCredential("medical_center_crm@mail.ru", "3V0mYsZcVtl71OCzrhCj");
+                smtpClient.EnableSsl = true;
+                var message = new System.Net.Mail.MailMessage("medical_center_crm@mail.ru", model.User.Email, $"Рецепт от: {model.Doctor.GetFullName()}", "Доктор назначил ваш рецептуру, подробно с ней можно ознакомиться в документе ниже");
+                message.Attachments.Add(new System.Net.Mail.Attachment(stream2, "recept.pdf"));
+                smtpClient.Send(message);
+                return RedirectToAction("Details", "Consultation", new { consultationId = recept.ConsultationId });
+            } catch (Exception e) { 
+            
+            }
         }
 
         public async Task<IActionResult> ReceptForm() {
