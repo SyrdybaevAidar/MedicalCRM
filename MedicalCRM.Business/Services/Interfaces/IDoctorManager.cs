@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace MedicalCRM.Business.Services.Interfaces {
     public interface IDoctorManager: IGenericUserManager<DoctorUser> {
         Task<DoctorUser> GetById(int Id);
-
         Task Update(DoctorUser user);
+        Task ChangePassword(int userId, string password);
     }
 }

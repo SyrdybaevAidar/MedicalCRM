@@ -57,6 +57,9 @@ namespace MedicalCRM.Controllers {
             patient.Id = model.Id;
             await _doctorManager.Update(patient);
             ViewBag.Sex = new SelectList(EnumsExtensions.GetSexLookUpItem(), "Key", "Value");
+
+
+
             return RedirectToAction("Index");
         }
 
@@ -79,12 +82,28 @@ namespace MedicalCRM.Controllers {
             return View();
         }
 
-        // GET: AdminController
+        [HttpGet]
         public async Task<ActionResult> Index() {
             var result = new AdminPageViewModel();
             result.LastPatients = await _commonService.GetNewPatients();
             result.LastDoctors = await _commonService.GetNewDoctors();
             return View(result);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ChangeDoctorPassword(int doctorId) {
+            var doctor = await _doctorManager.GetById(doctorId);
+            if (doctor == null) {
+                return BadRequest("Нет такого доктора");
+            }
+            return View(new ChangePassword() { DoctorId = doctorId, DoctorName = doctor.GetFullName() });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeDoctorPassword(ChangePassword model) {
+            await _doctorManager.ChangePassword(model.DoctorId, model.Password);
+            return RedirectToAction("DoctorUpdate", new { doctorId = model.DoctorId });
+        }
+
     }
 }

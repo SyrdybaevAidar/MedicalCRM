@@ -26,7 +26,7 @@ namespace MedicalCRM.Business.Services {
             _uow = unitOf;
         }
 
-        public async Task<IdentityResult> RegisterAsync(UserDTO userDTO) {
+        public virtual async Task<IdentityResult> RegisterAsync(UserDTO userDTO) {
             var entity = _mapper.Map<TUser>(userDTO);
             var doctorCount = _uow.Doctors.All.Count();
             var patientCount = _uow.Patients.All.Count();

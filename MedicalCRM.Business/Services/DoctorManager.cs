@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MedicalCRM.Business.Models;
 using MedicalCRM.Business.Services.Interfaces;
 using MedicalCRM.Business.UOWork;
 using MedicalCRM.DataAccess.Entities.UserEntities;
@@ -23,6 +24,21 @@ namespace MedicalCRM.Business.Services {
         public async Task Update(DoctorUser user) {
             _uow.Doctors.Update(user);
             await _uow.SaveChangesAsync();
+        }
+
+        public override async Task<IdentityResult> RegisterAsync(UserDTO userDTO) {
+            var result = await base.RegisterAsync(userDTO);
+            var doctor = await _userManager.FindByNameAsync(userDTO.UserName);
+            await _userManager.AddToRoleAsync(doctor, "Doctor");
+            return result;
+        }
+
+        public async Task ChangePassword(int userId, string password) {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            var result = await _userManager.ResetPasswordAsync(user, token, password);
         }
     }
 }

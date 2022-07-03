@@ -12,12 +12,12 @@ namespace MedicalCRM.Models.UserModels {
         [StringLength(100, ErrorMessage = "Пароль должен содержать не меньше 6 символов", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Пароль")]
-        public string Password { get; set; }
+        public virtual string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Подтвердить пароль")]
         [Compare("Password", ErrorMessage = "Пароли не совпадают")]
-        public string ConfirmPassword { get; set; }
+        public virtual string ConfirmPassword { get; set; }
         [Required]
         [Display(Name = "Логин")]
         public string UserName { get; set; }
