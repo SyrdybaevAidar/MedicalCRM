@@ -48,6 +48,9 @@
                         <th>
                 Дата рождения
             </th>
+            <th>
+                Действия
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -67,6 +70,9 @@
             </td>
                         <td>
                 @Html.DisplayFor(modelItem => item.BirthDate)
+            </td>
+            <td>
+                @Html.ActionLink("Редактировать", "DoctorUpdate", "Admin", new {doctorId = item.Id},  new {@class = "btn btn-primary"})
             </td>
         </tr>
 }

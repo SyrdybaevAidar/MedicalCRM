@@ -15,5 +15,14 @@ namespace MedicalCRM.Business.Services {
         }
 
         public async Task DoctorRegister() { }
+
+        public async Task<DoctorUser> GetById(int Id) {
+            return await _uow.Doctors.GetByIdAsync(Id);
+        }
+
+        public async Task Update(DoctorUser user) {
+            _uow.Doctors.Update(user);
+            await _uow.SaveChangesAsync();
+        }
     }
 }

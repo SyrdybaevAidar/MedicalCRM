@@ -30,7 +30,7 @@
                 <input type="submit" value="Добавить в рецепт" class="btn btn-primary" />
                 <span asp-validation-for="Note" class="text-danger"></span>
             </div>
-            @Html.HiddenFor(model => model.ReceptId);
+            @Html.HiddenFor(model => model.ReceptId)
         </div>
     </form>
 </div>

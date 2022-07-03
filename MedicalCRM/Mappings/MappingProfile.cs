@@ -63,6 +63,8 @@ namespace MedicalCRM.Mappings {
             CreateMap<PatientUser, PatientUpdateViewModel>()
                 .ForMember(dest => dest.BloodTypeId, opt => opt.MapFrom(src => src.BloodTypeId));
 
+            CreateMap<DoctorUser, UserUpdateViewModel>();
+
             CreateMap<PatientUpdateViewModel, PatientUser>()
                 .ForMember(dest => dest.BloodTypeId, opt => opt.MapFrom(src => src.BloodTypeId));
         }

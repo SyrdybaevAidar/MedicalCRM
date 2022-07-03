@@ -37,6 +37,30 @@ namespace MedicalCRM.Controllers {
         }
 
         [HttpGet]
+        public async Task<IActionResult> DoctorUpdate(int doctorId) {
+            var doctor = await _doctorManager.GetById(doctorId);
+            var result = _mapper.Map<UserUpdateViewModel>(doctor);
+            ViewBag.Sex = new SelectList(EnumsExtensions.GetSexLookUpItem(), "Key", "Value");
+            return View(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DoctorUpdate(UserUpdateViewModel model) {
+            var patient = await _doctorManager.GetById(model.Id);
+            patient.Patronimic = model.Patronimic;
+            patient.Surname = model.Surname;
+            patient.Name = model.Name;
+            patient.UserName = model.UserName;
+            patient.BirthDate = model.BirthDate;
+            patient.Email = model.Email;
+            patient.Sex = model.Sex;
+            patient.Id = model.Id;
+            await _doctorManager.Update(patient);
+            ViewBag.Sex = new SelectList(EnumsExtensions.GetSexLookUpItem(), "Key", "Value");
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Doctors(PatientFilterDTO patient) {
             var doctors = await _commonService.GetDoctors(patient);
             var result = new UserPaginationViewModel() { FilterResult = doctors, PatientFilter = patient};

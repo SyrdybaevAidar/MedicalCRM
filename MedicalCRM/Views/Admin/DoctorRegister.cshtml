@@ -1,6 +1,6 @@
 ﻿@model MedicalCRM.Models.UserModels.UserRegistrationViewModel
 @{
-    ViewData["Title"] = "Регстрация доктора";
+    ViewData["Title"] = "Регистрация доктора";
 }
 
 <div class="row">
@@ -45,8 +45,8 @@
                 <span asp-validation-for="Patronimic" class="text-danger"></span>
             </div>
                 <div class="form-floating">
-                <input asp-for="Sex" class="form-control" autocomplete="sex" aria-required="true" />
                 <label asp-for="Sex"></label>
+                @Html.DropDownListFor(model => model.Sex, ViewBag.Sex as SelectList, new { @class = "form-select"})
                 <span asp-validation-for="Sex" class="text-danger"></span>
             </div>
              <div class="form-floating">

@@ -1,0 +1,59 @@
+﻿@model MedicalCRM.Models.UserModels.UserUpdateViewModel
+
+@{
+    ViewData["Title"] = "DoctorUpdate";
+}
+
+<h1>Редактирование доктора</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="DoctorUpdate">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating">
+                <label asp-for="Sex" class="control-label"></label>
+                @Html.DropDownListFor(model => model.Sex, ViewBag.Sex as SelectList, new { @class = "form-select"})
+                <span asp-validation-for="Sex" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Surname" class="control-label"></label>
+                <input asp-for="Surname" class="form-control" />
+                <span asp-validation-for="Surname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Patronimic" class="control-label"></label>
+                <input asp-for="Patronimic" class="form-control" />
+                <span asp-validation-for="Patronimic" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BirthDate" class="control-label"></label>
+                <input asp-for="BirthDate" class="form-control" />
+                <span asp-validation-for="BirthDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+            @Html.HiddenFor(m => m.Id)
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Вернуться обратно</a>
+</div>
+
