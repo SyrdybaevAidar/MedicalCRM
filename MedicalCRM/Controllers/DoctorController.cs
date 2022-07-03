@@ -54,6 +54,9 @@ namespace MedicalCRM.Controllers {
         [HttpGet]
         public async Task<IActionResult> Chats() {
             var dtos = await _chatService.GetChatByDoctorId(CurrentUserId);
+            if (dtos != null && dtos.Count() > 0) {
+                dtos = dtos.OrderByDescending(i => i.Messages.Count() > 0 ? i.Messages.First().SendDate : new DateTime()).ToList();
+            }
             return View(dtos);
         }
 

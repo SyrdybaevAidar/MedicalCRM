@@ -38,7 +38,6 @@ namespace MedicalCRM.DataAccess.Repositories.ChatRepositores {
                 .OrderByDescending(i => i.SendDate).Take(1))
                 .Include(i => i.Doctor)
                 .Include(i => i.Patient)
-                .OrderBy(i => i.Messages != null).ThenByDescending(i => i.Messages.OrderByDescending(i => i.SendDate))
                 .ToListAsync();
         }
 

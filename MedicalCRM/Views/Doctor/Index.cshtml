@@ -12,10 +12,7 @@
         <tr>
             <th>
                 ФИО
-            </th>
-            <th>
-                Последнее сообщение
-            </th>
+            </th>S
             <th></th>
         </tr>
     </thead>
@@ -24,9 +21,6 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.UserName)
-            </td>
-            <td>
-                
             </td>
             <td>
                  @Html.ActionLink("Открыть чат", "Private", "Chat", new { ReceiverId = item.Id })
