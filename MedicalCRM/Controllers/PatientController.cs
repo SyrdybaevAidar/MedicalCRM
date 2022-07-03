@@ -95,8 +95,8 @@ namespace MedicalCRM.Controllers {
                 message.Attachments.Add(new System.Net.Mail.Attachment(stream2, "recept.pdf"));
                 smtpClient.Send(message);
                 return RedirectToAction("Details", "Consultation", new { consultationId = recept.ConsultationId });
-            } catch (Exception e) { 
-            
+            } catch (Exception e) {
+                return BadRequest(e.InnerException + "   " + e.Message);
             }
         }
 
