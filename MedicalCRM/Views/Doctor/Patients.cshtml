@@ -75,7 +75,7 @@
                  <hr>
                  @Html.ActionLink("Редактировать медицинскую карту", "UpdatePatient", "Doctor", new {  patientId = item.Id },new {@class = "btn btn-primary"})
                  <hr>
-                 @Html.ActionLink("Открыть медицинскую карту", "GetPatientDetails", "Patient", new {  patientId = item.Id }, new {@class = "btn btn-primary"})
+                 @Html.ActionLink("Медкарта", "GetPatientDetails", "Patient", new {  patientId = item.Id }, new {@class = "btn btn-primary"})
                  <hr>
                  @Html.ActionLink("Отчет", "Create", "Consultation", new { patientId = item.Id }, new {@class = "btn btn-primary"})
                 </div>

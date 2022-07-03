@@ -20,6 +20,12 @@ namespace MedicalCRM.Models.Patient {
         public string Address { get; set; }
         [Display(Name = "Семейный врач")]
         public string FamilyDoctor { get; set; }
+        [Required]
+        [Display(Name = "ИНН")]
+        public string UserName { get; set; }
+        [Required]
+        [Display(Name = "Id паспорта")]
+        public string PassportId { get; set; }
         public List<DiseaseIndexViewModel> Diseases { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using MedicalCRM.Business.Services.Interfaces;
 using MedicalCRM.DataAccess.Static;
 using MedicalCRM.Models.Admin;
 using MedicalCRM.Models.Pagination;
+using MedicalCRM.Models.Patient;
 using MedicalCRM.Models.UserModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -15,11 +16,13 @@ namespace MedicalCRM.Controllers {
     public class AdminController : Controller {
         private readonly IDoctorManager _doctorManager;
         private readonly ICommonService _commonService;
+        private readonly IPatientManager _patientManager;
         private readonly IMapper _mapper;
-        public AdminController(IDoctorManager doctorManager, IMapper mapper, ICommonService commonService) {
+        public AdminController(IDoctorManager doctorManager, IMapper mapper, ICommonService commonService, IPatientManager patientManager) {
             _doctorManager = doctorManager;
             _commonService = commonService;
             _mapper = mapper;
+            _patientManager = patientManager;   
         }
 
         [HttpGet]
@@ -60,6 +63,36 @@ namespace MedicalCRM.Controllers {
 
 
 
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddPatientByDoctor(int doctorId) {
+            var bloodTypes = await _commonService.BloodTypes();
+            ViewBag.Sex = new SelectList(EnumsExtensions.GetSexLookUpItem(), "Key", "Value");
+            ViewBag.BloodTypes = new SelectList(bloodTypes, "Id", "Name");
+            var model = new PatientRegisterViewModel();
+            model.DoctorUserId = doctorId;
+            return View("PatientRegister", model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddPatientByDoctor(PatientRegisterViewModel model) {
+            if (ModelState.IsValid) {
+                var user = _mapper.Map<UserDTO>(model);
+                user.Password = "Test123!";
+                //user.BirthDate = user.BirthDate.ToUniversalTime();
+                var result = await _patientManager.RegisterAsync(user);
+
+                if (result.Succeeded) {
+                    var patient = await _patientManager.GetByUserNameAsync(user.UserName);
+                    patient.PassportId = model.PassportId;
+                    patient.Address = model.Address;
+                    patient.BloodTypeId = model.BloodTypeId;
+                    patient.DoctorUserId = model.DoctorUserId;
+                    await _patientManager.UpdateUserAsync(patient);
+                }
+            }
             return RedirectToAction("Index");
         }
 

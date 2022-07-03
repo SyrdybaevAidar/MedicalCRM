@@ -72,7 +72,11 @@
                 @Html.DisplayFor(modelItem => item.BirthDate)
             </td>
             <td>
-                @Html.ActionLink("Редактировать", "DoctorUpdate", "Admin", new {doctorId = item.Id},  new {@class = "btn btn-primary"})
+                <div class="row">
+                    @Html.ActionLink("Редактировать", "DoctorUpdate", "Admin", new {doctorId = item.Id},  new {@class = "btn btn-primary"})
+                    <hr>
+                    @Html.ActionLink("Добавить пациента", "AddPatientByDoctor", "Admin", new {doctorId = item.Id},  new {@class = "btn btn-primary"})
+                </div>
             </td>
         </tr>
 }

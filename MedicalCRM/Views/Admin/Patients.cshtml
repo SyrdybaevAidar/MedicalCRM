@@ -73,8 +73,11 @@
                 @Html.DisplayFor(modelItem => item.BirthDate)
             </td>
             <td>
-                
-                 @Html.ActionLink("Медкарта", "GetPatientDetails", "Patient", new {  patientId = item.Id })
+                <div class="row">
+                 @Html.ActionLink("Редактировать медицинскую карту", "UpdatePatient", "Doctor", new {  patientId = item.Id },new {@class = "btn btn-primary"})
+                 <hr>
+                 @Html.ActionLink("Медкарта", "GetPatientDetails", "Patient", new {  patientId = item.Id }, new {@class = "btn btn-primary"})
+                </div>
             </td>
         </tr>
 }

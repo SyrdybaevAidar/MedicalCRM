@@ -1,6 +1,6 @@
-﻿@model MedicalCRM.Models.UserModels.UserRegistrationViewModel
+﻿@model MedicalCRM.Models.Patient.PatientRegisterViewModel
 @{
-    ViewData["Title"] = "Регистрация доктора";
+    ViewData["Title"] = "Register";
 }
 
 <div class="row">
@@ -20,16 +20,11 @@
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
             <div class="form-floating">
-                <input asp-for="Password" class="form-control" autocomplete="username" aria-required="true" />
-                <label asp-for="Password"></label>
-                <span asp-validation-for="Password" class="text-danger"></span>
+                <input asp-for="PassportId" class="form-control" />
+                <label asp-for="PassportId" class="control-label" autocomplete="PassportId" aria-required="true"></label>
+                <span asp-validation-for="PassportId" class="text-danger"></span>
             </div>
             <div class="form-floating">
-                <input asp-for="ConfirmPassword" class="form-control" autocomplete="username" aria-required="true" />
-                <label asp-for="ConfirmPassword"></label>
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-                <div class="form-floating">
                 <input asp-for="Surname" class="form-control" autocomplete="surname" aria-required="true" />
                 <label asp-for="Surname"></label>
                 <span asp-validation-for="Surname" class="text-danger"></span>
@@ -49,12 +44,23 @@
                 <label asp-for="BirthDate"></label>
                 <span asp-validation-for="BirthDate" class="text-danger"></span>
             </div>
+            <div class="form-floating">
+                <label asp-for="Address" class="control-label" autocomplete="Address" aria-required="true"></label>
+                <input asp-for="Address"  class="form-control"/>
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
             <div class="form-group">
-                <label asp-for="Sex"></label>
+                <label asp-for="BloodTypeId"></label>
+                @Html.DropDownListFor(model => model.BloodTypeId, ViewBag.BloodTypes as SelectList, new { @class = "form-select"})
+                <span asp-validation-for="BloodTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sex" class="control-label"></label>
                 @Html.DropDownListFor(model => model.Sex, ViewBag.Sex as SelectList, new { @class = "form-select"})
                 <span asp-validation-for="Sex" class="text-danger"></span>
             </div>
-            <input type="submit" value="Добавить доктора" class="btn btn-primary" />
+            @Html.HiddenFor(model => model.DoctorUserId)
+            <input type="submit" value="Добавить пациента" class="btn btn-primary" />
         </form>
     </div>
 </div>

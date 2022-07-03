@@ -4,11 +4,14 @@ using iTextSharp.text.pdf;
 using iTextSharp.tool.xml;
 using MedicalCRM.Business.Models;
 using MedicalCRM.Business.Services.Interfaces;
+using MedicalCRM.DataAccess.Entities.UserEntities;
+using MedicalCRM.DataAccess.Enums;
 using MedicalCRM.Extensions;
 using MedicalCRM.Models.ChatModels;
 using MedicalCRM.Models.Patient;
 using MedicalCRM.Models.UserModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 
@@ -22,8 +25,9 @@ namespace MedicalCRM.Controllers {
         private readonly ICommonService _commonService;
         private readonly IReceptService _receptService;
         private readonly IMapper _mapper;
+        private readonly UserManager<User> _userManager;
 
-        public PatientController(IMapper mapper, IChatService chatService, IConsultationService consultationService, IPatientManager patientManager, IPatientService patientService, ICommonService commonService, IReceptService receptService) {
+        public PatientController(IMapper mapper, IChatService chatService, IConsultationService consultationService, IPatientManager patientManager, IPatientService patientService, ICommonService commonService, IReceptService receptService, UserManager<User> userManager) {
 
             _mapper = mapper;
             _chatService = chatService;
@@ -32,6 +36,7 @@ namespace MedicalCRM.Controllers {
             _patientService = patientService;
             _commonService = commonService;
             _receptService = receptService;
+            _userManager = userManager;
         }
         [Authorize(Roles = "Patient")]
         [HttpGet]
@@ -39,7 +44,10 @@ namespace MedicalCRM.Controllers {
             var result = await _commonService.GetDoctors(CurrentUserId);
             var doctors = _mapper.Map<List<UserIndexViewModel>>(result);
             var consulations = await _consultationService.GetByPatientId(CurrentUserId, 3);
-            return View(new PatientMainPageIndexModel() { Doctors = doctors, Consultations = _mapper.Map<List<ConsultationIndexModel>>(consulations) });
+            var chat = await _chatService.GetChatByPatientId(CurrentUserId);
+            var message = chat?.FirstOrDefault()?.Messages?.FirstOrDefault();
+
+            return View(new PatientMainPageIndexModel() { Doctors = doctors, Consultations = _mapper.Map<List<ConsultationIndexModel>>(consulations), LastMessage = message});
         }
         [Authorize(Roles = "Patient")]
         [HttpPost]
@@ -64,6 +72,19 @@ namespace MedicalCRM.Controllers {
         [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Login() {
+            if (User.Identity.IsAuthenticated) {
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                if (user.UserType == UserType.Doctor) {
+                    return RedirectToAction("Index", "Doctor");
+                }
+                if (user.UserType == UserType.Admin) {
+                    return RedirectToAction("Index", "Admin");
+                }
+
+                if (user.UserType == UserType.Patient) {
+                    return RedirectToAction("Index", "Patient");
+                }
+            }
             return View(new PatientLoginViewModel());
         }
 

@@ -38,5 +38,6 @@ namespace MedicalCRM.Models.Patient {
         [Display(Name = "Id паспорта")]
         public string PassportId { get; set; }
         public int? DoctorUserId { get; set; }
+        public bool IsAdmin { get; set; }
     }
 }

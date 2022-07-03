@@ -12,7 +12,7 @@ using MedicalCRM.DataAccess.Enums;
 using MedicalCRM.DataAccess.Static;
 
 namespace MedicalCRM.Controllers {
-    [Authorize(Roles = "Doctor")]
+    [Authorize]
     public class DoctorController : BaseController {
         private readonly IDoctorService _doctorService;
         private readonly ICommonService _commonService;
@@ -31,12 +31,14 @@ namespace MedicalCRM.Controllers {
             _chatService = chatService;
         }
 
+        [Authorize(Roles = "Doctor")]
         [HttpGet]
         public async Task<IActionResult> Details(int id) {
             var result = await _doctorService.GetDoctor(id);
             return Ok(result);
         }
 
+        [Authorize(Roles = "Doctor")]
         [HttpGet]
         public async Task<IActionResult> Index() {
             try {
@@ -51,6 +53,7 @@ namespace MedicalCRM.Controllers {
             }
         }
 
+        [Authorize(Roles = "Doctor")]
         [HttpGet]
         public async Task<IActionResult> Chats() {
             var dtos = await _chatService.GetChatByDoctorId(CurrentUserId);
@@ -60,6 +63,7 @@ namespace MedicalCRM.Controllers {
             return View(dtos);
         }
 
+        [Authorize(Roles = "Doctor")]
         [HttpGet]
         public async Task<IActionResult> Patients(PatientFilterDTO filterDTO) {
             try {
@@ -72,6 +76,7 @@ namespace MedicalCRM.Controllers {
             }
         }
 
+        [Authorize(Roles = "Doctor")]
         [HttpGet]
         public async Task<IActionResult> CreatePatient() {
             var bloodTypes = await _commonService.BloodTypes();
@@ -80,6 +85,7 @@ namespace MedicalCRM.Controllers {
             return View("Register", new PatientRegisterViewModel());
         }
 
+        [Authorize(Roles = "Doctor")]
         [HttpPost]
         public async Task<IActionResult> CreatePatient(PatientRegisterViewModel model) {
             if (ModelState.IsValid) {
@@ -101,16 +107,19 @@ namespace MedicalCRM.Controllers {
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Doctor,Admin")]
         [HttpGet]
-        public async Task<IActionResult> UpdatePatient(int patientId) {
+        public async Task<IActionResult> UpdatePatient(int patientId, bool isAdmin) {
             var patient = await _patientService.GetById(patientId);
             var result = _mapper.Map<PatientUpdateViewModel>(patient);
             var bloodTypes = await _commonService.BloodTypes();
             ViewBag.Sex = new SelectList(EnumsExtensions.GetSexLookUpItem(), "Key", "Value");
             ViewBag.BloodTypes = new SelectList(bloodTypes, "Id", "Name");
+            result.IsAdmin = isAdmin;
             return View("Update", result);
         }
 
+        [Authorize(Roles = "Doctor,Admin")]
         [HttpPost]
         public async Task<IActionResult> UpdatePatient(PatientUpdateViewModel model) {
             if (ModelState.IsValid) {
@@ -131,14 +140,21 @@ namespace MedicalCRM.Controllers {
                 patient.PassportId = model.PassportId;
                 await _patientService.UpdateUserAsync(patient);
             }
-            return RedirectToAction("Index");
+            if (model.IsAdmin) {
+                return RedirectToAction("Index", "Admin");
+            } else {
+                return RedirectToAction("Index");
+            }
+            
         }
 
+        [Authorize(Roles = "Doctor")]
         [HttpGet]
         public async Task<IActionResult> AddPhoto() {
             return View(new AddPhotoViewModel());
         }
 
+        [Authorize(Roles = "Doctor")]
         [HttpPost]
         public async Task<IActionResult> AddPhoto(AddPhotoViewModel model) {
             return RedirectToAction("AddPhoto", model);
@@ -165,10 +181,10 @@ namespace MedicalCRM.Controllers {
                 }
 
             } else {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Неправильный логин или пароль");
                     return View();
                 }
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            ModelState.AddModelError(string.Empty, "Неправильный логин или пароль");
             return View();
         }
     }

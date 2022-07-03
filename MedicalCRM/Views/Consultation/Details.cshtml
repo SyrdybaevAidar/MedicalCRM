@@ -65,11 +65,12 @@
                     <th>
                         Заметки
                     </th>
+
+
+                    <th>
+
+                    </th>
                 }
-
-                <th>
-
-                </th>
             </tr>
         </thead>
         <tbody>
@@ -85,10 +86,11 @@
                         <th>
                             @medicament.Note
                         </th>
+
+                        <td>
+                            @Html.ActionLink("Удалить из рецепта", "DeleteMedicament", "Recept", new { medicamentId = medicament.Id}, new {@class = "btn btn-danger"});
+                        </td>
                     }
-                    <td>
-                        @Html.ActionLink("Удалить из рецепта", "DeleteMedicament", "Recept", new { medicamentId = medicament.Id}, new {@class = "btn btn-danger"});
-                    </td>
                 </tr>
 
             }
@@ -104,10 +106,9 @@
         <div>
             @Html.ActionLink("Создать рецепт", "Create", "Recept", new {consultationId = Model.ConsultationId}, new {@class = "btn btn-primary"})
         </div>
+        <div>
+            @Html.ActionLink("Редактировать", "Update", new { consultationId = Model.ConsultationId}, new {@class = "btn btn-primary"})
+        </div>
     }
 }
 
-<div>
-    @Html.ActionLink("Редактировать", "Update", new { consultationId = Model.ConsultationId})
-    <a asp-action="Index" asp-controller="Doctor" class1="btn btn-primary">Вернуться обратно</a>
-</div>

@@ -9,11 +9,17 @@
 <div>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Sex)
+         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PassportId)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Sex)
+            @Html.DisplayFor(model => model.PassportId)
+        </dd>
+         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UserName)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Surname)
@@ -57,6 +63,12 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.FamilyDoctor)
         </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Sex)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Sex)
+        </dd>
     </dl>
 </div>
 <h1>История заболеваний</h1>
@@ -95,12 +107,9 @@
                 @Html.DisplayFor(modelItem => item.Diseases)
             </td>
             <td>
-                @Html.ActionLink("Посмотреть подробно", "Details", "Consultation", new {ConsultationId = item.Id});
+                @Html.ActionLink("Посмотреть подробно", "Details", "Consultation", new {ConsultationId = item.Id}, new {@class = "btn btn-primary"});
             </td>
         </tr>
 }
     </tbody>
 </table>
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
