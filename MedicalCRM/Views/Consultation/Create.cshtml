@@ -32,7 +32,12 @@
                 <span asp-validation-for="Date" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="Note"></label>
+                <input asp-for="Note" class="form-control" autocomplete="Date" aria-required="true" />
+                <span asp-validation-for="Note" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Создать" class="btn btn-primary" />
             </div>
             @Html.HiddenFor(model => model.DoctorId);
             @Html.HiddenFor(model => model.PatientId);
@@ -42,6 +47,6 @@
 </div>
 
 <div>
-    <a asp-action="Index" asp-controller="Doctor">Вернуться обратно</a>
+    <a asp-action="Index" asp-controller="Doctor" class="btn btn-primary">Вернуться обратно</a>
 </div>
 

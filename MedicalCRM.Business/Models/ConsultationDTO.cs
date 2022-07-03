@@ -15,6 +15,7 @@ namespace MedicalCRM.Business.Models {
         public string Diseases { get; set; }
         public string Complaints { get; set; }
         public string Recommendations { get; set; }
+        public string Note { get; set; }
         public DateTime Date { get; set; }
         public Recept recept { get; set; }
     }

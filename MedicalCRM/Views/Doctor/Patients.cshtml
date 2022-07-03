@@ -71,10 +71,13 @@
             </td>
             <td>
                 <div class="row">
-                 @Html.ActionLink("Открыть чат", "Private", "Chat", new { ReceiverId = item.Id })
-                 @Html.ActionLink("Редактировать медицинскую карту", "UpdatePatient", "Doctor", new {  patientId = item.Id })
-                 @Html.ActionLink("Открыть медицинскую карту", "GetPatientDetails", "Patient", new {  patientId = item.Id })
-                 @Html.ActionLink("Назначить консультацию", "Create", "Consultation", new { patientId = item.Id })
+                 @Html.ActionLink("Открыть чат", "Private", "Chat", new { ReceiverId = item.Id },new {@class = "btn btn-primary"})
+                 <hr>
+                 @Html.ActionLink("Редактировать медицинскую карту", "UpdatePatient", "Doctor", new {  patientId = item.Id },new {@class = "btn btn-primary"})
+                 <hr>
+                 @Html.ActionLink("Открыть медицинскую карту", "GetPatientDetails", "Patient", new {  patientId = item.Id }, new {@class = "btn btn-primary"})
+                 <hr>
+                 @Html.ActionLink("Назначить консультацию", "Create", "Consultation", new { patientId = item.Id }, new {@class = "btn btn-primary"})
                 </div>
                 
             </td>

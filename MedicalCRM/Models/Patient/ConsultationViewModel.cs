@@ -17,6 +17,9 @@ namespace MedicalCRM.Models.Patient {
         public string Diseases { get; set; }
         [Display(Name = "Рекомендации")]
         public string Recommendations { get; set; }
+
+        [Display(Name = "Заметки")]
+        public string Note { get; set; }
         [Display(Name = "Дата приема")]
         [Required]
         public DateTime Date { get; set; }
