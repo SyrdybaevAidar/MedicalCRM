@@ -10,6 +10,7 @@ using MedicalCRM.Models.Patient;
 using MedicalCRM.Models.UserModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 namespace MedicalCRM.Controllers {
 
@@ -83,14 +84,13 @@ namespace MedicalCRM.Controllers {
                 model.User = _mapper.Map<UserDTO>(recept.Consultation.Patient);
                 model.Doctor = _mapper.Map<UserDTO>(recept.Consultation.Doctor);
                 var strings = await this.RenderViewToString("ReceptForm", model);
-                System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-                var bytes = GetPdf(".headline{font-size:200%}", strings);
-                var stream = new MemoryStream(bytes);
                 var smtpClient = new System.Net.Mail.SmtpClient("smtp.mail.ru", 587);
                 smtpClient.Credentials = new System.Net.NetworkCredential("medical_center_crm@mail.ru", "3V0mYsZcVtl71OCzrhCj");
                 smtpClient.EnableSsl = true;
                 var message = new System.Net.Mail.MailMessage("medical_center_crm@mail.ru", model.User.Email, $"Рецепт от: {model.Doctor.GetFullName()}", "Доктор назначил ваш рецептуру, подробно с ней можно ознакомиться в документе ниже");
-                message.Attachments.Add(new System.Net.Mail.Attachment(stream, "recept.pdf"));
+                message.Body = strings;
+                message.BodyEncoding = Encoding.UTF8;
+                message.IsBodyHtml = true;
                 smtpClient.Send(message);
                 return RedirectToAction("Details", "Consultation", new { consultationId = recept.ConsultationId });
             } catch (Exception e) {

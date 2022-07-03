@@ -91,6 +91,7 @@ namespace MedicalCRM.Controllers {
 
                 if (result.Succeeded) {
                     var patient = await _patientService.GetByUserNameAsync(user.UserName);
+                    patient.PassportId = model.PassportId;
                     patient.Address = model.Address;
                     patient.BloodTypeId = model.BloodTypeId;
                     patient.DoctorUserId = CurrentUserId;
@@ -127,6 +128,7 @@ namespace MedicalCRM.Controllers {
                 patient.Email = model.Email;
                 patient.Sex = model.Sex;
                 patient.Id = model.Id;
+                patient.PassportId = model.PassportId;
                 await _patientService.UpdateUserAsync(patient);
             }
             return RedirectToAction("Index");

@@ -3,27 +3,18 @@
 @{
     Layout = null;
 }
-
-
-
+<center>
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th width="200">
                 Министерство здравоохранения и социального развития КР центр семеной медицины #5, городского управления здравоохранения
             </th>
-            <th>
+            <th width="200">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </th>
-            <th>
-                <span>Код формы по ОКУД</span>
-                <span>Код учреждения по ОКПО</span>
-                <span>Медицинская документация</span>
-                <span>Форма # 107-1/у</span>
-                <span>Утверждена приказом</span>
-                <span>Министерства здравоохранения</span>
-                <span>Кыргызской республики</span>
-                <span>от 20 декабря 2022 г.</span>
+            <th width="200">
+               
             </th>
         </tr>
     </thead>
@@ -61,35 +52,51 @@
             <td>
             </td>
         </tr>
-        <tr>
-            <td>
-            </td>
-            <td>
-                <center> Взрослый детский - нужное подчеркнуть</center>
-            </td>
-            <td>
-            </td>
-        </tr>
     </tbody>
 </table>
 
-
-
-<div>
-    <p>ФИО пациента - @Model.User.GetFullName()</p>
-    <p>Возраст @(DateTime.Now.Year - Model.User.BirthDate.Year)</p>
-    <p>ФИО семейного врача - @Model.Doctor.GetFullName()</p>
-</div>
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th width="600">
+                
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <td>
+            ФИО пациента - @Model.User.GetFullName()
+        </td>
+        </tr>
+        <tr>
+        <td>
+            Возраст @(DateTime.Now.Year - Model.User.BirthDate.Year)
+        </td>
+        </tr>
+        <tr>
+        <td>
+            ФИО семейного врача - @Model.Doctor.GetFullName()
+        </td>
+        <tr>
+        <tr  height="50">
+        <td>
+            
+        </td>
+        <tr>
+    </tbody>
+</table>
+
+<table class="table" height="80">
+    <thead>
+        <tr>
+            <th width="200">
                 Препарат
             </th>
-            <th>
+            <th width="200">
                 Количество
                 </th>
-            <th>
+            <th width="200">
                 Рекомендации
             </th>
         </tr>
@@ -98,15 +105,22 @@
         @foreach (var medicament in Model.Recept.Medicaments) {
             <tr>
                 <td>
+                    <center>
                     @medicament.MedicamentName
+                    </center>
                 </td>
                 <td>
+                    <center>
                     @medicament.Count
+                    </center>
                 </td>
                 <td>
+                    <center>
                     @medicament.Note
+                    </center>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+</center>

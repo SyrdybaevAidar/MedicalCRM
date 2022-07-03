@@ -33,6 +33,9 @@ namespace MedicalCRM.Models.Patient {
         [Required]
         [Display(Name = "Адрес")]
         public string Address { get; set; }
+        [Required]
+        [Display(Name = "Id паспорта")]
+        public string PassportId { get; set; }
         public int? DoctorUserId { get; set; }
     }
 }

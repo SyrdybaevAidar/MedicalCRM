@@ -12,6 +12,7 @@ namespace MedicalCRM.DataAccess.Entities.UserEntities {
         public int? BloodTypeId { get; set; }
         public BloodType? BloodType { get; set; }
         public string Address { get; set; }
+        public string PassportId { get; set; }
         public DoctorUser DoctorUser { get; set; }
         public int? DoctorUserId { get; set; }
     }

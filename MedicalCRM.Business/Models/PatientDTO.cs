@@ -13,6 +13,7 @@ namespace MedicalCRM.Business.Models {
         public int BloodTypeId { get; set; }
         public BloodTypeDTO BloodType { get; set; }
         public string Address { get; set; }
+        public string PassportId { get; set; }
         public string GetFullName() {
             return $"{Surname} {Name} {Patronimic}";
         }
