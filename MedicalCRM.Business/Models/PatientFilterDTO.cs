@@ -19,7 +19,7 @@ namespace MedicalCRM.Business.Models {
                     return 1;
                 return _page; 
             } set { _page = value; } }
-        public int PageSize => 2;
+        public int PageSize => 10;
         public int TotalItem { get; set; }
     }
 }
