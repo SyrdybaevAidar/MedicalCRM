@@ -33,7 +33,7 @@ namespace MedicalCRM.Controllers {
             ViewBag.Sex = new SelectList(EnumsExtensions.GetSexLookUpItem(), "Key", "Value");
             var dto = _mapper.Map<UserDTO>(model);
             await _doctorManager.RegisterAsync(dto);
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -58,8 +58,8 @@ namespace MedicalCRM.Controllers {
         // GET: AdminController
         public async Task<ActionResult> Index() {
             var result = new AdminPageViewModel();
-            result.LastPatients = await _commonService.GetNewDoctors();
-            result.LastDoctors = await _commonService.GetNewPatients();
+            result.LastPatients = await _commonService.GetNewPatients();
+            result.LastDoctors = await _commonService.GetNewDoctors();
             return View(result);
         }
     }
