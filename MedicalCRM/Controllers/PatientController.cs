@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
-using GemBox.Document;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.tool.xml;
 using MedicalCRM.Business.Models;
 using MedicalCRM.Business.Services.Interfaces;
 using MedicalCRM.Extensions;
@@ -8,8 +10,6 @@ using MedicalCRM.Models.Patient;
 using MedicalCRM.Models.UserModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PdfSharp.Pdf;
-using System.Text;
 
 namespace MedicalCRM.Controllers {
 
@@ -83,20 +83,36 @@ namespace MedicalCRM.Controllers {
                 model.User = _mapper.Map<UserDTO>(recept.Consultation.Patient);
                 model.Doctor = _mapper.Map<UserDTO>(recept.Consultation.Doctor);
                 var strings = await this.RenderViewToString("ReceptForm", model);
-                var stream = new MemoryStream();
-                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-                var pdf = TheArtOfDev.HtmlRenderer.PdfSharp.PdfGenerator.GeneratePdf(strings, PdfSharp.PageSize.A4);
-                pdf.Save(stream);
-                var stream2 = new MemoryStream(stream.ToArray());
+                System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+                var bytes = GetPdf(".headline{font-size:200%}", strings);
+                var stream = new MemoryStream(bytes);
                 var smtpClient = new System.Net.Mail.SmtpClient("smtp.mail.ru", 587);
                 smtpClient.Credentials = new System.Net.NetworkCredential("medical_center_crm@mail.ru", "3V0mYsZcVtl71OCzrhCj");
                 smtpClient.EnableSsl = true;
                 var message = new System.Net.Mail.MailMessage("medical_center_crm@mail.ru", model.User.Email, $"Рецепт от: {model.Doctor.GetFullName()}", "Доктор назначил ваш рецептуру, подробно с ней можно ознакомиться в документе ниже");
-                message.Attachments.Add(new System.Net.Mail.Attachment(stream2, "recept.pdf"));
+                message.Attachments.Add(new System.Net.Mail.Attachment(stream, "recept.pdf"));
                 smtpClient.Send(message);
                 return RedirectToAction("Details", "Consultation", new { consultationId = recept.ConsultationId });
             } catch (Exception e) {
                 return BadRequest(e.InnerException + "   " + e.Message);
+            }
+        }
+
+        public byte[] GetPdf(string cssText, string html) {
+            using (var memoryStream = new MemoryStream()) {
+                var document = new Document(PageSize.A4, 50, 50, 60, 60);
+                var writer = PdfWriter.GetInstance(document, memoryStream);
+                document.Open();
+
+                using (var cssMemoryStream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(cssText))) {
+                    using (var htmlMemoryStream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(html))) {
+                        XMLWorkerHelper.GetInstance().ParseXHtml(writer, document, htmlMemoryStream, cssMemoryStream);
+                    }
+                }
+
+                document.Close();
+
+                return memoryStream.ToArray();
             }
         }
 
