@@ -2,6 +2,7 @@
 
 namespace MedicalCRM.Models.Patient {
     public class DiseaseIndexViewModel {
+        public int Id { get; set; }
         [Display(Name ="Дата назначения")]
         public DateTime Date { get; set; }
 

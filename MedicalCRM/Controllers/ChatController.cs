@@ -34,18 +34,25 @@ namespace MedicalCRM.Controllers {
             var doctorId = userType == UserType.Doctor ? CurrentUserId : receiverId;
             var patientId = userType == UserType.Patient ? CurrentUserId : receiverId;
             var chat = await _chatService.CreateOrGetChatAsyncOr(patientId, doctorId);
-            var receiverName = CurrentUserId == chat.PatientUser.Id ? chat.DoctorUser.UserName : chat.PatientUser.UserName;
-            var senderName = CurrentUserId == chat.PatientUser.Id ? chat.DoctorUser.UserName : chat.PatientUser.UserName;
-            var receiverFullName = CurrentUserId == chat.PatientUser.Id ? chat.DoctorUser.GetFullName() : chat.PatientUser.GetFullName();
-            var senderFullName = CurrentUserId == chat.PatientUser.Id ? chat.DoctorUser.GetFullName() : chat.PatientUser.GetFullName();
+            var model = new PrivateChatModel();
+            if (CurrentUserId == patientId) {
+                model.ReceiverName = chat.DoctorUser.UserName;
+                model.SenderName = chat.PatientUser.UserName;
+                model.ReceiverFullName = chat.DoctorUser.GetFullName();
+            } else {
+                model.ReceiverName = chat.PatientUser.UserName;
+                model.SenderName = chat.DoctorUser.UserName;
+                model.ReceiverFullName = chat.PatientUser.GetFullName();
+            }
             if (chat.Messages.Count() > 0) {
                 chat.Messages = chat.Messages.Select(i => {
                     i.IsCurrentUserMessage = i.UserId == CurrentUserId;
                     return i;
                 }).ToList();
             }
+            model.Messages = chat.Messages;
 
-            return View("Private2", new PrivateChatModel(senderName, receiverName, senderFullName, receiverFullName) { Messages = chat.Messages });
+            return View("Private2", model);
         }
 
         private async Task<IActionResult> Create(int receiveUserId) {

@@ -4,16 +4,17 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Рабочее место Доктора</h1>
-<a class="nav-link text-dark" asp-action="CreatePatient">Добавить пациента</a>
+<h1 class="mt-5">Рабочее место Доктора</h1>
 
 <table class="table">
     <thead>
         <tr>
             <th>
                 ФИО
-            </th>S
-            <th></th>
+            </th>
+            <th>
+                Действия
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -22,11 +23,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.UserName)
             </td>
-            <td>
+            <td><div class="row">
                  @Html.ActionLink("Открыть чат", "Private", "Chat", new { ReceiverId = item.Id })
                  @Html.ActionLink("Редактировать медицинскую карту", "UpdatePatient", "Doctor", new {  patientId = item.Id })
-                 @Html.ActionLink("Открыть медицинскую карту", "GetPatientDetails", "Patient", new {  patientId = item.Id })
-                 @Html.ActionLink("Назначить консультацию", "Create", "Consultation", new { patientId = item.Id })
+                 @Html.ActionLink("Медкарта", "GetPatientDetails", "Patient", new {  patientId = item.Id })
+                 @Html.ActionLink("Отчет", "Create", "Consultation", new { patientId = item.Id })
+                 </div>
             </td>
         </tr>
 }

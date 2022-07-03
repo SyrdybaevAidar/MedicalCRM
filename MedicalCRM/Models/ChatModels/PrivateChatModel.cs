@@ -3,6 +3,10 @@ using MedicalCRM.Models.ChatModels.MessageModels;
 
 namespace MedicalCRM.Models.ChatModels {
     public class PrivateChatModel {
+
+        public PrivateChatModel() { 
+        
+        }
         public PrivateChatModel(string senderName, string receiverName, string senderFullName, string receiverFullName) {
             SenderName = senderName;
             ReceiverName = receiverName;

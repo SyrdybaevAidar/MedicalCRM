@@ -84,7 +84,7 @@
                         @medicament.Note
                     </td>
                     <td>
-                        @Html.ActionLink("Удалить из рецепта", "DeleteMedicament", "Recept", medicament.Id);
+                        @Html.ActionLink("Удалить из рецепта", "DeleteMedicament", "Recept", new { medicamentId = medicament.Id}, new {@class = "btn btn-danger"});
                     </td>
                 </tr>
 

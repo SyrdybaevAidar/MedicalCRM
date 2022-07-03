@@ -76,6 +76,7 @@
             <th>
                 Диагноз
             </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -92,6 +93,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Diseases)
+            </td>
+            <td>
+                @Html.ActionLink("Посмотреть подробно", "Details", "Consultation", new {ConsultationId = item.Id});
             </td>
         </tr>
 }
