@@ -77,7 +77,7 @@
                  <hr>
                  @Html.ActionLink("Открыть медицинскую карту", "GetPatientDetails", "Patient", new {  patientId = item.Id }, new {@class = "btn btn-primary"})
                  <hr>
-                 @Html.ActionLink("Назначить консультацию", "Create", "Consultation", new { patientId = item.Id }, new {@class = "btn btn-primary"})
+                 @Html.ActionLink("Отчет", "Create", "Consultation", new { patientId = item.Id }, new {@class = "btn btn-primary"})
                 </div>
                 
             </td>

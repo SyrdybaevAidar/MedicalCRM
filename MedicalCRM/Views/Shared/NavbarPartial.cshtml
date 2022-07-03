@@ -22,7 +22,7 @@
                     @Html.ActionLink("Открыть чат c доктором", "Private", "Chat", new { ReceiverId = ((PatientUser)user).DoctorUserId }, new{ @class = "text-decoration-none text-white font-weight-bold"})
                 </div>
                 <div>
-                    @Html.ActionLink("Все мои консультации", "PatientConsultations", "Consultation", new{}, new{ @class = "text-decoration-none text-white font-weight-bold"})
+                    @Html.ActionLink("Все отчеты", "PatientConsultations", "Consultation", new{}, new{ @class = "text-decoration-none text-white font-weight-bold"})
                 </div>
 
                 }
@@ -50,7 +50,7 @@
                     @Html.ActionLink("Добавить пациента", "CreatePatient", "Doctor", new{}, new{ @class = "text-decoration-none text-white font-weight-bold"})
                 </div>
                 <div>
-                    @Html.ActionLink("Все мои консультации", "DoctorConsultations", "Consultation",  new{}, new{ @class = "text-decoration-none text-white font-weight-bold"})
+                    @Html.ActionLink("Все отчеты", "DoctorConsultations", "Consultation",  new{}, new{ @class = "text-decoration-none text-white font-weight-bold"})
                 </div>
                 <div>
                     @Html.ActionLink("Все мои пациенты", "Patients", "Doctor", new{}, new{ @class = "text-decoration-none text-white font-weight-bold"})

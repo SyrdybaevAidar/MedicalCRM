@@ -10,7 +10,8 @@ namespace MedicalCRM.Models.Patient {
         public string Email { get; set; }
 
         [Required]
-        [Display(Name = "Логин")]
+        [Display(Name = "ИНН")]
+        [RegularExpression(@"^-?[0-9][0-9,\.]+$", ErrorMessage = "Инн может состоять только из цифр")]
         public string UserName { get; set; }
         [Required]
         [Display(Name = "Пол")]
