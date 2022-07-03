@@ -41,5 +41,16 @@ namespace MedicalCRM.Controllers {
             await _uow.SaveChangesAsync();
             return RedirectToAction("Details", "Consultation", new { consultationId = recept.ConsultationId });
         }
+
+        public async Task<IActionResult> DeleteMedicament(int medicamentId) {
+            var medicament = await _uow.ReceptByMedicaments.GetByIdAsync(medicamentId);
+            var recept = await _uow.Recepts.GetByIdAsync(medicament.ReceptId);
+            if (recept == null) {
+                return BadRequest("Не существующая консультация");
+            }
+            await _uow.ReceptByMedicaments.DeleteByIdAsync(medicamentId);
+            await _uow.SaveChangesAsync();
+            return RedirectToAction("Details", "Consultation", new { consultationId = recept.ConsultationId });
+        }
     }
 }

@@ -84,6 +84,7 @@
                         @medicament.Note
                     </td>
                     <td>
+                        @Html.ActionLink("Удалить из рецепта", "DeleteMedicament", "Recept", medicament.Id);
                     </td>
                 </tr>
 
@@ -99,9 +100,6 @@
     if (user.UserType == MedicalCRM.DataAccess.Enums.UserType.Doctor) {
         <div>
         @Html.ActionLink("Создать рецепт", "Create", "Recept", new {consultationId = Model.ConsultationId});
-        </div>
-        <div>
-            
         </div>
     }
 }

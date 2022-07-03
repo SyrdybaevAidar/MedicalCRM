@@ -58,6 +58,8 @@ namespace MedicalCRM.Areas.Identity.Pages.Account
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ReturnUrl = returnUrl;
+
+            RedirectToAction("Login", "Patient");
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)

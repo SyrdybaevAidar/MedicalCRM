@@ -13,10 +13,12 @@ namespace MedicalCRM.Models.Patient {
         [Display(Name = "Жалобы")]
 
         public string Complaints { get; set; }
+        [Display(Name = "Диагноз")]
         public string Diseases { get; set; }
         [Display(Name = "Рекомендации")]
         public string Recommendations { get; set; }
         [Display(Name = "Дата приема")]
+        [Required]
         public DateTime Date { get; set; }
         public Recept Recept { get; set; }
     }

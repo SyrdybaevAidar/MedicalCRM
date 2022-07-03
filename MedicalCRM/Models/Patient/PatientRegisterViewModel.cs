@@ -10,6 +10,7 @@ namespace MedicalCRM.Models.Patient {
 
         [Required]
         [Display(Name = "ИНН")]
+        [Range(0, int.MaxValue, ErrorMessage = "Инн может состоять только из цифр")]
         public string UserName { get; set; }
         [Required]
         [Display(Name = "Пол")]
