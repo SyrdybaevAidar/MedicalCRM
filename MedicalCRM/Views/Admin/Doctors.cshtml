@@ -75,7 +75,7 @@
 
 @if (!Model.FilterResult.IsFirstPage)
 {
-    <a asp-action="Patients" 
+    <a asp-action="Doctors" 
        asp-route-Inn="@(Model.PatientFilter.Inn)"
        asp-route-Surname="@(Model.PatientFilter.Surname)"
        asp-route-Name="@(Model.PatientFilter.Name)"
@@ -90,7 +90,7 @@
 }
 @if (!Model.FilterResult.IsLastPage)
 {
-    <a asp-action="Patients" 
+    <a asp-action="Doctors" 
        asp-route-Inn="@(Model.PatientFilter.Inn)"
        asp-route-Surname="@(Model.PatientFilter.Surname)"
        asp-route-Name="@(Model.PatientFilter.Name)"
