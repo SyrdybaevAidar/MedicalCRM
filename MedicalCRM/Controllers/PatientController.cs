@@ -38,7 +38,7 @@ namespace MedicalCRM.Controllers {
         public async Task<IActionResult> Index() {
             var result = await _commonService.GetDoctors(CurrentUserId);
             var doctors = _mapper.Map<List<UserIndexViewModel>>(result);
-            var consulations = await _consultationService.GetByDoctorId(CurrentUserId, 3);
+            var consulations = await _consultationService.GetByPatientId(CurrentUserId, 3);
             return View(new PatientMainPageIndexModel() { Doctors = doctors, Consultations = _mapper.Map<List<ConsultationIndexModel>>(consulations) });
         }
         [Authorize(Roles = "Patient")]

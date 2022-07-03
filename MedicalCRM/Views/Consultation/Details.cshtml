@@ -10,7 +10,7 @@
 }
 
 <div>
-    <h4>Подоброно о консультации</h4>
+    <h4>Подоброно об отчете</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -61,9 +61,12 @@
                 <th>
                     Количество
                 </th>
-                <th>
-                    Заметки
-                </th>
+                @if (user.UserType == MedicalCRM.DataAccess.Enums.UserType.Doctor) {
+                    <th>
+                        Заметки
+                    </th>
+                }
+
                 <th>
 
                 </th>
@@ -78,9 +81,11 @@
                     <td>
                         @medicament.Count
                     </td>
-                    <td>
-                        @medicament.Note
-                    </td>
+                    @if (user.UserType == MedicalCRM.DataAccess.Enums.UserType.Doctor) {
+                        <th>
+                            @medicament.Note
+                        </th>
+                    }
                     <td>
                         @Html.ActionLink("Удалить из рецепта", "DeleteMedicament", "Recept", new { medicamentId = medicament.Id}, new {@class = "btn btn-danger"});
                     </td>
@@ -97,12 +102,12 @@
 } else {
     if (user.UserType == MedicalCRM.DataAccess.Enums.UserType.Doctor) {
         <div>
-        @Html.ActionLink("Создать рецепт", "Create", "Recept", new {consultationId = Model.ConsultationId}, new {@class = "btn btn-primary"})
+            @Html.ActionLink("Создать рецепт", "Create", "Recept", new {consultationId = Model.ConsultationId}, new {@class = "btn btn-primary"})
         </div>
     }
 }
 
 <div>
     @Html.ActionLink("Редактировать", "Update", new { consultationId = Model.ConsultationId})
-    <a asp-action="Index" asp-controller="Doctor"  class1="btn btn-primary">Вернуться обратно</a>
+    <a asp-action="Index" asp-controller="Doctor" class1="btn btn-primary">Вернуться обратно</a>
 </div>
