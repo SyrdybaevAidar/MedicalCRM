@@ -37,6 +37,9 @@
                 <div>
                     @Html.ActionLink("Все Докторы", "Doctors", "Admin", new{ @class = "text-decoration-none text-white font-weight-bold"})
                 </div>
+                <div>
+                    @Html.ActionLink("Добавить доктора", "DoctorRegister", "Doctor", new{}, new{ @class = "text-decoration-none text-white font-weight-bold"})
+                </div>
                 }
 
                 @if (user.UserType == UserType.Doctor) {
