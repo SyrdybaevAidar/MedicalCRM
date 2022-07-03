@@ -1,0 +1,16 @@
+﻿.body {
+    font-family: "Arial Unicode MS";
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.header-item1 {
+    max-width: 200px;
+}
+
+.header-item2 {
+    max-width: 200px;
+}

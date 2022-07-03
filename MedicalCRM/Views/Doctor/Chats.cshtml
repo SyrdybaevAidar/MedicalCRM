@@ -28,7 +28,7 @@
                 </td>
                 <td>
                     @{var text = item.Messages.Count() > 0 ? item.Messages.First().Text : null; }
-                    @Html.DisplayFor(modelItem => text);
+                    @Html.DisplayFor(modelItem => text)
                 </td>
                 <td>
                     @Html.ActionLink("Открыть чат", "Private", "Chat", new { ReceiverId = item.PatientUser.Id })

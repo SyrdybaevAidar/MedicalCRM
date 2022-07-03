@@ -104,8 +104,8 @@ namespace MedicalCRM.Controllers {
                 var writer = PdfWriter.GetInstance(document, memoryStream);
                 document.Open();
 
-                using (var cssMemoryStream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(cssText))) {
-                    using (var htmlMemoryStream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(html))) {
+                using (var cssMemoryStream = new MemoryStream(System.Text.Encoding.Unicode.GetBytes(cssText))) {
+                    using (var htmlMemoryStream = new MemoryStream(System.Text.Encoding.Unicode.GetBytes(html))) {
                         XMLWorkerHelper.GetInstance().ParseXHtml(writer, document, htmlMemoryStream, cssMemoryStream);
                     }
                 }
