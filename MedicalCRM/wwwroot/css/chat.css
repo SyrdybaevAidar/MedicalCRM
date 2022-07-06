@@ -141,6 +141,7 @@
         }
 
     .chat .chat-history .my-message {
+        max-width: 500px;
         background: #efefef
     }
 
