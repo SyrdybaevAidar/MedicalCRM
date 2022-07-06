@@ -9,12 +9,20 @@ connection.on("ReceiveMessage", function (sender, message) {
     var li = document.createElement("li");
     document.getElementById("messagesList").appendChild(li);
     li.className = "clearfix";
-    var messageData = document.createElement("div");
+    
     var messageDiv = document.createElement("div");
-    messageDiv.innerText = message;
-    messageDiv.className = "message other-message float-left";
+    messageDiv.className = "message other-message float-left row";
 
-    messageData.className = "message-data";
+    var d = new Date();
+    var messageData = document.createElement("div");
+    messageData.className = "pb-2";
+    messageData.innerText = d.getHours() + ":" + d.getMinutes();
+
+    var messageText = document.createElement("div");
+    messageText.innerText = message;
+    messageDiv.appendChild(messageData);
+    messageDiv.appendChild(messageText);
+
     li.appendChild(messageDiv);
 });
 
@@ -30,15 +38,25 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     var message = document.getElementById("messageInput").value;
 
     if (receiver != "") {
-        var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         var li = document.createElement("li");
         document.getElementById("messagesList").appendChild(li);
         li.className = "clearfix";
+
         var messageDiv = document.createElement("div");
-        messageDiv.innerText = msg;
-        messageDiv.className = "message my-message float-right";
+        messageDiv.className = "message other-message float-right row";
+
+        var d = new Date();
+        var datetext = d.toTimeString();
+        var messageData = document.createElement("div");
+        messageData.className = "pb-2";
+        messageData.innerText = d.getHours() + ":" + d.getMinutes();
+
+        var messageText = document.createElement("div");
+        messageText.innerText = message;
+        messageDiv.appendChild(messageData);
+        messageDiv.appendChild(messageText);
+
         li.appendChild(messageDiv);
-        document.getElementById("messagesList").appendChild(li);
         document.getElementById("messageInput").value = "";
         connection.invoke("SendMessageToGroup", sender, receiver, message).catch(function (err) {
             return console.error(err.toString());
