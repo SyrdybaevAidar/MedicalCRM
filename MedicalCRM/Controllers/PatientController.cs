@@ -91,7 +91,11 @@ namespace MedicalCRM.Controllers {
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(PatientLoginViewModel model) {
-            await _patientManager.LoginAsync(model.Inn, model.RememberMe);
+            var result = await _patientManager.LoginAsync(model.Inn, model.RememberMe);
+            if (result == UserType.Unauthorized) {
+                ModelState.AddModelError(string.Empty, "Паицента с таким ИНН в базе не существует.");
+                return View();
+            }
             return RedirectToAction("Index");
         }
 
@@ -117,44 +121,6 @@ namespace MedicalCRM.Controllers {
             } catch (Exception e) {
                 return BadRequest(e.InnerException + "   " + e.Message);
             }
-        }
-
-        public byte[] GetPdf(string cssText, string html) {
-            using (var memoryStream = new MemoryStream()) {
-                var document = new Document(PageSize.A4, 50, 50, 60, 60);
-                var writer = PdfWriter.GetInstance(document, memoryStream);
-                document.Open();
-
-                using (var cssMemoryStream = new MemoryStream(System.Text.Encoding.Unicode.GetBytes(cssText))) {
-                    using (var htmlMemoryStream = new MemoryStream(System.Text.Encoding.Unicode.GetBytes(html))) {
-                        XMLWorkerHelper.GetInstance().ParseXHtml(writer, document, htmlMemoryStream, cssMemoryStream);
-                    }
-                }
-
-                document.Close();
-
-                return memoryStream.ToArray();
-            }
-        }
-
-        public async Task<IActionResult> ReceptForm() {
-            return View();
-        }
-
-        public string CssText() {
-            return @"        
-        .header{
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .header-item1{
-            max-width: 200px;
-        }
-
-        .header-item2{
-            max-width: 200px;
-        }";
         }
     }
 }

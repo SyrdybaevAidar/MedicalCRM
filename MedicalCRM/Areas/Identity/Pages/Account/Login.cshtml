@@ -8,7 +8,7 @@
 <div class="container d-flex justify-content-around align-items-center pt-5 mt-5">
     <div class="form-container d-flex align-items-center justify-content-around col-6 mt-5 pt-5">
         <section>
-            <form id="account" method="post">
+            <form asp-action="Login" asp-controller="Patient" method="post">
                 <h2>Вход в кабинет пациента</h2>
                 <hr />
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>

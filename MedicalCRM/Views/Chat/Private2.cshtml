@@ -22,7 +22,7 @@
                             
                             <div class="message my-message float-right row">
                                 <div class="pb-4">
-                                    @message.SendDate.ToUniversalTime().ToLocalTime().ToShortTimeString()
+                                    @message.SendDateToLocal.ToShortTimeString()
                                 </div>
                                 <div>
                                     @message.Text
@@ -31,7 +31,7 @@
                                 } else {
                                 <div class="message my-message float-left row">
                                     <div class="pb-2">
-                                        @message.SendDate.ToUniversalTime().ToLocalTime().ToShortTimeString()
+                                        @message.SendDateToLocal.ToShortTimeString()
                                     </div>
                                     <div>
                                         @message.Text

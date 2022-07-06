@@ -40,6 +40,9 @@ namespace MedicalCRM.Business.Services {
 
         public async Task<UserType> LoginAsync(string inn, bool rememberMe) {
             var user = await _userManager.FindByNameAsync(inn);
+            if (user == null) { 
+                return UserType.Unauthorized;
+            }
             var result = await _signInManager.PasswordSignInAsync(user, "Test123!", rememberMe, lockoutOnFailure: false);
             if (!result.Succeeded) {
                 return UserType.Unauthorized;
