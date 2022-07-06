@@ -13,6 +13,6 @@ namespace MedicalCRM.Business.Models {
         public DateTime SendDate { get; set; }
         public bool IsCurrentUserMessage { get; set; }
 
-        public DateTime SendDateToLocal { get => TimeZoneInfo.ConvertTimeFromUtc(SendDate.ToUniversalTime(), TimeZoneInfo.FindSystemTimeZoneById("Central Asia Standard Time ")); }
+        public DateTime SendDateToLocal { get => TimeZoneInfo.ConvertTimeFromUtc(SendDate.ToUniversalTime(), TimeZoneInfo.FindSystemTimeZoneById("Asia/Bishkek")); }
     }
 }
