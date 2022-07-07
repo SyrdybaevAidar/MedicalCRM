@@ -110,9 +110,9 @@ namespace MedicalCRM.Controllers {
                 model.Doctor = _mapper.Map<UserDTO>(recept.Consultation.Doctor);
                 var strings = await this.RenderViewToString("ReceptForm", model);
                 var smtpClient = new System.Net.Mail.SmtpClient("smtp.mail.ru", 587);
-                smtpClient.Credentials = new System.Net.NetworkCredential("medical_center_crm@mail.ru", "3V0mYsZcVtl71OCzrhCj");
+                smtpClient.Credentials = new System.Net.NetworkCredential("medical_family_center@mail.ru", "wSopjHPpYtgAwBPLamMM");
                 smtpClient.EnableSsl = true;
-                var message = new System.Net.Mail.MailMessage("medical_center_crm@mail.ru", model.User.Email, $"Рецепт от: {model.Doctor.GetFullName()}", "Доктор назначил ваш рецептуру, подробно с ней можно ознакомиться в документе ниже");
+                var message = new System.Net.Mail.MailMessage("medical_family_center@mail.ru", model.User.Email, $"Рецепт от: {model.Doctor.GetFullName()}", "Доктор назначил ваш рецептуру, подробно с ней можно ознакомиться в документе ниже");
                 message.Body = strings;
                 message.BodyEncoding = Encoding.UTF8;
                 message.IsBodyHtml = true;
